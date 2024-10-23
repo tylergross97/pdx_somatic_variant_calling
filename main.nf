@@ -15,16 +15,6 @@ process fastp {
     """
 }
 
-// You can run the pipeline with:
 workflow {
     fastp()
 }
-
-docker.enabled = true
-
-process {
-    container = 'pdx_container:latest'  // Specify the Docker container
-}
-
-params.inputFiles = '/Users/tylergross/Desktop/pdx_fastq_test/*'  // Corrected to plural
-
