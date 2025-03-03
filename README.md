@@ -6,7 +6,7 @@ A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel va
 1. [Introduction](#introduction)
 2. [Pipeline Workflow](#pipeline-workflow)
 3. [Prerequisites](#prerequisites)
-4. [Installation](#installation)
+4. [Installation](#clone-this-repository)
 5. [Usage](#usage)
 6. [Pipeline Steps](#pipeline-steps)
 7. [Input](#input)
@@ -78,10 +78,6 @@ For optional downstream analysis:
 7. Python (version 3.6 or later) for downstream analysis of contamination
    - Installation instructions: [Python Installation Guide](https://www.python.org/downloads/)
 
-Please ensure all prerequisites are properly installed and configured before running the pipeline. For detailed installation instructions of each tool, refer to their respective documentation.
-
-Now all you need to do is define the paths of these downloaded files in your nextflow.config file that you will be creating based on the nextflow.config.template file. Instructions [below](#configuration)
-
 ### Reference Genomes
 
 Instructions for obtaining and preparing the reference genomes:
@@ -99,10 +95,15 @@ Instructions for obtaining and preparing the reference genomes:
      ```
      bwa-mem2 index mm39.fa
      ```
+Please ensure all prerequisites are properly installed and configured before running the pipeline. For detailed installation instructions of each tool, refer to their respective documentation.
 
-## Installation
+Now all you need to do is define the paths of these downloaded files in your nextflow.config file that you will be creating based on the nextflow.config.template file! Instructions [below](#configuration)
 
-This pipeline is designed to be easy to set up and run. Now that you've
+All of the remaining software will be automatically installed via containers specified at the top of each process in the main.nf file!
+
+## Clone this repository
+
+This pipeline is designed to be easy to set up and run. 
 
 ## Usage
 
