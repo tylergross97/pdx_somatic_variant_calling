@@ -129,6 +129,8 @@ Note that the nextflow.config.template file is set up for running Singularity. A
 
 ## Usage
 
+### Running locally
+
 With your nextflow.config and main.nf files in your current working directory and nextflow installed, all you need to do is run the following command:
 
 ```bash
