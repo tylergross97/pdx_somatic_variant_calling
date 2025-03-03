@@ -69,7 +69,7 @@ graph TD
     subgraph "Downstream Analyses"
     style M fill:#FFFF00,stroke:#333,stroke-width:2px,color:#000
     style N fill:#ADD8E6,stroke:#333,stroke-width:2px,color:#000
-    M[Contamination Quantification<br>Python]
+    M[Contamination Analysis<br>Python]
     N[maftools Analysis<br>R]
     end
 
