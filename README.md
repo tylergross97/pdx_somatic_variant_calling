@@ -184,11 +184,11 @@ If you are looking to analyses the level of contamination of your original sampl
 
 ### Contamination Analysis (Python)
 Provided is a link to a .pdf file with the necessary code and expected outputs to visualize contamination present in your original sample based on  the output of bamcmp. Set the directory variable to ".results/bamcmp/" 
-![Contamination.ipynb](images/Contamination_bamcmp.pdf)
+[![Contamination.ipynb](images/contamination_analysis_preview.png)](images/Contamination_bamcmp.pdf)
 
 ### maftools analysis (R)
 Provided is an html file with the necessary code to leverage maftools to analyze the filtered.annotated.maf.gz files that are the main output from the pipeline. In the provided example, I was looking to identify mutations in genes known to be implicated in Renal Cell Carcinoma (RCC).
-![maftools.Rmd](images/maftools.pdf)
+[![maftools.Rmd](images/maftools_analysis_preview.png)](images/maftools.pdf)
 
 
 ## Configuration
