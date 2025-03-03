@@ -182,6 +182,9 @@ If you are looking to analyses the level of contamination of your original sampl
 
 ## Downstream analyses
 
+![Contamination.ipynb](images/Contamination_bamcmp.ipynb - Colab.pdf)
+
+
 ## Configuration
 
 ## Troubleshooting
