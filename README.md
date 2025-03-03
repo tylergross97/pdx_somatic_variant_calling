@@ -38,44 +38,7 @@ Performing somatic variant calling without a matched-normal sample also introduc
 
 ## Pipeline Workflow
 
-```mermaid
-graph TD
-    subgraph "Nextflow Pipeline"
-    style A fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
-    style B fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
-    style C fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
-    style D fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
-    style E fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
-    style F fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
-    style G fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
-    style H fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
-    style I fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
-    style J fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
-    style K fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
-    style L fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
-    A[FASTQ Input] --> B[QC<br>FASTP]
-    B --> C[Align<br>BWA-MEM2]
-    C --> D[Deconvolute<br>BAMcmp]
-    D --> E[Human Reads .bam]
-    D --> F[Mouse Reads .bam]
-    E --> G[Mark Duplicates<br>GATK]
-    G --> H[Base Recalibration<br>GATK]
-    H --> I[Call Variants<br>Mutect2]
-    I --> J[Filter Variants<br>GATK]
-    J --> K[Annotate Variants<br>Funcotator]
-    K --> L[VCF/MAF Output]
-    end
-
-    subgraph "Downstream Analyses"
-    style M fill:#FFFF00,stroke:#333,stroke-width:2px,color:#000
-    style N fill:#ADD8E6,stroke:#333,stroke-width:2px,color:#000
-    M[Contamination Analysis<br>Python]
-    N[maftools Analysis<br>R]
-    end
-
-    F -.-> M
-    L -.-> N
-```
+![Workflow Diagram](images/workflow_diagram.png)
 
 ## Prerequisites
 
