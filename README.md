@@ -46,6 +46,56 @@ There is also documentation for downstream analyses of the outputs of the nextfl
 
 ## Prerequisites
 
+Before running this pipeline, ensure you have the following tools and resources installed:
+
+1. Nextflow (version 23.10.0 or later)
+   - Installation instructions: [Nextflow Installation Guide](https://www.nextflow.io/docs/latest/getstarted.html)
+   - Note that if you are using an HPC system, you may be able to load Nextflow using the [module system](https://hpc-wiki.info/hpc/Modules)
+
+2. Singularity (preferred for HPCs) or Docker
+   - Singularity: [Singularity Installation Guide](https://sylabs.io/guides/3.0/user-guide/installation.html)
+      - Note that this may already be installed on your HPC system
+   - Docker: [Docker Installation Guide](https://docs.docker.com/get-docker/)
+
+3. Reference Genomes:
+   - Human (hg38)
+   - Mouse (mm39)
+   - Instructions for obtaining these genomes can be found in the [Reference Genomes](#reference-genomes) section below.
+
+4. GATK Resource Bundle (for hg38)
+   - Download from: [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle)
+
+5. Input Data:
+   - Paired-end FASTQ files from PDX samples
+
+Optional but recommended:
+
+6. R (version 4.0 or later) for downstream analysis with maftools
+   - Installation instructions: [R Installation Guide](https://cran.r-project.org/)
+
+7. Python (version 3.6 or later) for downstream analysis of contamination
+   - Installation instructions: [Python Installation Guide](https://www.python.org/downloads/)
+
+Please ensure all prerequisites are properly installed and configured before running the pipeline. For detailed installation instructions of each tool, refer to their respective documentation.
+
+### Reference Genomes
+
+Instructions for obtaining and preparing the reference genomes:
+
+1. Human (hg38):
+   - Download from: [UCSC Genome Browser](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/)
+   - Prepare the genome for BWA-MEM2 indexing:
+     ```
+     bwa-mem2 index hg38.fa
+     ```
+
+2. Mouse (mm39):
+   - Download from: [UCSC Genome Browser](https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/)
+   - Prepare the genome for BWA-MEM2 indexing:
+     ```
+     bwa-mem2 index mm39.fa
+     ```
+
 ## Installation
 
 ## Usage
