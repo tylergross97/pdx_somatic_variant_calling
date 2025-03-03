@@ -10,11 +10,8 @@ A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel va
 5. [Pipeline Steps](#pipeline-steps)
 6. [Input](#input)
 7. [Output](#output)
-8. [Configuration](#configuration)
-9. [Troubleshooting](#troubleshooting)
-10. [Contributing](#contributing)
-11. [License](#license)
-12. [Citations](#citations)
+8. [Downstream Analysis](#downstream-analysis)
+9. [Citations](#citations)
 
 ## Introduction
 
@@ -183,21 +180,16 @@ If you are looking to analyses the level of contamination of your original sampl
 ## Downstream analyses
 
 ### Contamination Analysis (Python)
-Provided is a link to a .pdf file with the necessary code and expected outputs to visualize contamination present in your original sample based on  the output of bamcmp. Set the directory variable to ".results/bamcmp/" 
+Provided is a link to a .pdf file with the necessary code and expected outputs to visualize contamination present in your original sample based on  the output of bamcmp. Set the directory variable to ".results/bamcmp/" to run your analysis.
+
+Click on image below to view full notebook in .pdf format!
 [![Contamination.ipynb](images/contamination_analysis_preview.png)](images/Contamination_bamcmp.pdf)
 
 ### maftools analysis (R)
 Provided is an html file with the necessary code to leverage maftools to analyze the filtered.annotated.maf.gz files that are the main output from the pipeline. In the provided example, I was looking to identify mutations in genes known to be implicated in Renal Cell Carcinoma (RCC).
+
+Click on image below to view full notebook in .pdf format!
 [![maftools.Rmd](images/maftools_analysis_preview.png)](images/maftools.pdf)
-
-
-## Configuration
-
-## Troubleshooting
-
-##  Contributing
-
-## License
 
 ## Citations
 
