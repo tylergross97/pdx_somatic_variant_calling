@@ -15,3 +15,9 @@ A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel va
 10. [Contributing] (#contributing)
 11. [License] (#license)
 12. [Citations] (#citations)
+
+## Introduction
+
+## Prerequisites
+
+## Installation
