@@ -38,7 +38,7 @@ First, it is important to understand that although the tumor is implanted into t
 Performing somatic variant calling without a matched-normal sample also introduces challenges that must be addressed through the use of a database of common germline variants to be filtered out. In the case of a matched-normal sample, germline variants are defined as those present in both the matched-normal sample and the tumor sample. Although the use of a common germline variant database is more prone to rare germline variants showing up as false-positive somatic variant calls, this is often the reality for many researchers working with PDX models. [Mutect2](https://www.biorxiv.org/content/10.1101/861054v1.abstract)[5] is a somatic short variant caller that has a tumor-only mode available and is used in this pipeline, following [GATK's best practices](https://gatk.broadinstitute.org/hc/en-us/articles/360035894731-Somatic-short-variant-discovery-SNVs-Indels)[2]. The output of the pipeline are called variants in VCF and MAF formats.
 
 ### Optional downstream analyses
-There is also documentation for downstream analyses of the outputs of the nextflow pipeline (see [Downstream Analyses](#downstream-analyses)
+There is also documentation for downstream analyses of the outputs of the nextflow pipeline (see [Downstream Analyses](#downstream-analyses) section)
 
 ## Pipeline Workflow
 
