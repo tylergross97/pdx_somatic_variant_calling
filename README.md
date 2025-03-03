@@ -1,2 +1,1 @@
-# pdx
-Pipeline for PDX
+# PDX Somatic Variant Calling Nextflow Pipeline
