@@ -21,7 +21,7 @@ A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel va
 
 **Note**: I have provided hyperlinks to helpful learning materials for concepts introduced throughout this README
 
-This pipeline is built using [Nextflow](https://www.nextflow.io/) [3], a workflow management software that utilizes [containerization](https://www.ibm.com/think/topics/containerization#:~:text=Containerization%20is%20the%20packaging%20of,runs%20consistently%20on%20any%20infrastructure.) to allow for portable and reproducible bioinformatics pipelines.
+This pipeline is built using [Nextflow](https://www.nextflow.io/), a workflow management software that utilizes [containerization](https://www.ibm.com/think/topics/containerization#:~:text=Containerization%20is%20the%20packaging%20of,runs%20consistently%20on%20any%20infrastructure.) to allow for portable and reproducible bioinformatics pipelines.
 
 This pipeline is designed to perform [somatic short variant calling](https://www.garvan.org.au/news-resources/science-explained/types-of-variants) (SNPs Indels) from [patient-derived xenograft (PDX) models](https://en.wikipedia.org/wiki/Patient_derived_xenograft). Specifically, the pipeline, was built to handle [whole-exome sequencing (WES)](https://www.illumina.com/techniques/sequencing/dna-sequencing/targeted-resequencing/exome-sequencing.html) data without a matched-normal sample, which is referred to tumor-only variant calling.
 
@@ -32,10 +32,10 @@ This pipeline can be conceptually broken down into two main steps:
 - Tumor-only somatic short variant calling of human reads
 
 ### Deconvolution of mouse reads
-First, it is important to understand that although the tumor is implanted into the mouse, it originated from a human patient, meaning that we are interested in understanding the variants of the human tumor cells. However, during and after implanation of the tumor into the mouse, there is some degree of infiltration of mouse cells into the tumor. As discussed and explored throughly in [Jo et al., 2019](https://link.springer.com/article/10.1186/s13059-019-1849-2) [1], this can lead to false-positive variant calls that should be minimized through the explicit filtering of the reads originating the mouse. This pipeline utilizes the [bamcmp](https://github.com/CRUKMI-ComputationalBiology/bamcmp)[4] tool, although there are others available.
+First, it is important to understand that although the tumor is implanted into the mouse, it originated from a human patient, meaning that we are interested in understanding the variants of the human tumor cells. However, during and after implanation of the tumor into the mouse, there is some degree of infiltration of mouse cells into the tumor. As discussed and explored throughly in [Jo et al., 2019](https://link.springer.com/article/10.1186/s13059-019-1849-2), this can lead to false-positive variant calls that should be minimized through the explicit filtering of the reads originating the mouse. This pipeline utilizes the [bamcmp](https://github.com/CRUKMI-ComputationalBiology/bamcmp) tool, although there are others available.
 
 ### Tumor-only somatic short variant calling
-Performing somatic variant calling without a matched-normal sample also introduces challenges that must be addressed through the use of a database of common germline variants to be filtered out. In the case of a matched-normal sample, germline variants are defined as those present in both the matched-normal sample and the tumor sample. Although the use of a common germline variant database is more prone to rare germline variants showing up as false-positive somatic variant calls, this is often the reality for many researchers working with PDX models. [Mutect2](https://www.biorxiv.org/content/10.1101/861054v1.abstract)[5] is a somatic short variant caller that has a tumor-only mode available and is used in this pipeline, following [GATK's best practices](https://gatk.broadinstitute.org/hc/en-us/articles/360035894731-Somatic-short-variant-discovery-SNVs-Indels)[2]. The output of the pipeline are called variants in VCF and MAF formats.
+Performing somatic variant calling without a matched-normal sample also introduces challenges that must be addressed through the use of a database of common germline variants to be filtered out. In the case of a matched-normal sample, germline variants are defined as those present in both the matched-normal sample and the tumor sample. Although the use of a common germline variant database is more prone to rare germline variants showing up as false-positive somatic variant calls, this is often the reality for many researchers working with PDX models. [Mutect2](https://www.biorxiv.org/content/10.1101/861054v1.abstract) is a somatic short variant caller that has a tumor-only mode available and is used in this pipeline, following [GATK's best practices](https://gatk.broadinstitute.org/hc/en-us/articles/360035894731-Somatic-short-variant-discovery-SNVs-Indels)[2]. The output of the pipeline are called variants in VCF and MAF formats.
 
 ### Optional downstream analyses
 There is also documentation for downstream analyses of the outputs of the nextflow pipeline (see [Downstream Analyses](#downstream-analyses) section)
@@ -46,7 +46,7 @@ There is also documentation for downstream analyses of the outputs of the nextfl
 
 ## Prerequisites
 
-Before running this pipeline, ensure you have the following tools and resources installed:
+Before running this pipeline, ensure you have the following tools and resources installed. This is the hardest part, but I have provided documentation!
 
 1. Nextflow (version 23.10.0 or later)
    - Installation instructions: [Nextflow Installation Guide](https://www.nextflow.io/docs/latest/getstarted.html)
@@ -80,6 +80,8 @@ For optional downstream analysis:
 
 Please ensure all prerequisites are properly installed and configured before running the pipeline. For detailed installation instructions of each tool, refer to their respective documentation.
 
+Now all you need to do is define the paths of these downloaded files in your nextflow.config file that you will be creating based on the nextflow.config.template file. Instructions [below](#configuration)
+
 ### Reference Genomes
 
 Instructions for obtaining and preparing the reference genomes:
@@ -99,6 +101,8 @@ Instructions for obtaining and preparing the reference genomes:
      ```
 
 ## Installation
+
+This pipeline is designed to be easy to set up and run. Now that you've
 
 ## Usage
 
