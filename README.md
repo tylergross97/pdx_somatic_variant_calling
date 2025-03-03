@@ -54,10 +54,10 @@ graph TD
     K --> L[VCF/MAF Output]
     end
 
-    subgraph "Optional Analyses"
+    subgraph "Downstream Analyses"
     style M fill:#f9f,stroke:#333,stroke-width:2px,color:#000
     style N fill:#bbf,stroke:#333,stroke-width:2px,color:#000
-    M[Contamination]
+    M[Contamination Quantification]
     N[maftools Analysis]
     end
 
