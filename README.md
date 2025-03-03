@@ -61,6 +61,7 @@ Before running this pipeline, ensure you have the following tools and resources 
    - Human (hg38)
    - Mouse (mm39)
    - Instructions for obtaining these genomes can be found in the [Reference Genomes](#reference-genomes) section below.
+      - Note that as explained in [Zverinova et al., 2021](https://onlinelibrary.wiley.com/doi/10.1002/humu.24311), we recommend using the primary assembly version (see paper for details)
 
 4. GATK Resource Bundle (for hg38)
    - Download from: [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle)
