@@ -39,9 +39,6 @@ Performing somatic variant calling without a matched-normal sample also introduc
 ## Pipeline Workflow
 
 ```mermaid
-## Pipeline Workflow
-
-```mermaid
 graph TD
     subgraph "Nextflow Pipeline"
     style A fill:#90EE90,stroke:#333,stroke-width:2px,color:#000
