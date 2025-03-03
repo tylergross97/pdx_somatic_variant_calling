@@ -1,0 +1,34 @@
+params {
+    // Input data
+    fastq = "/path/to/fastq/directory" // path to directory containing fastq files
+    hg38_fasta = "/path/to/hg38_fasta" // path to primary assembly of the human reference genome
+    mm39_fasta = "/path/to/mm39_fasta" // path to primary assembly of the mouse reference genome
+    dbsnp_vcf = "/path/to/dbsnp_vcf" // path to database of known germline snps for filtering
+    dbsnp_vcf_idx = "/path/to/dbsnp_vcf_idx" // path to idx file
+    known_indels = "/path/to/known_indels" // path to database of known germline indels for filtering
+    known_indels_idx = "/path/to/known_indels_idx" // path to idx file
+    mills_indels = "/path/to/mills_indels" // path to database of known germline indels for filtering
+    mills_indels_idx = "/path/to/mills_indels_idx" // path to idx file
+    pon = "/path/to/pon" // path to panel of normals used to filter out germline variants and technical artifacts
+    pon_idx = "/path/to/pon_idx" // path to idx file
+    gnomad = "/path/to/gnomad" // path to germline resource containing allele fractions
+    gnomad_idx = "/path/to/gnomad_idx" // path to idx file
+    filtered_vcf = "/path/to/filtered_vcf" // path to common germline variant sites derived from gnomAD resource
+    filtered_vcf_idx = "/path/to/filtered_vcf_idx" // path to idx file
+
+    // Output directories
+    outdir_base = "results" // Base directory for all output
+    outdir_fastp = "${params.outdir_base}/fastp"
+    outdir_bam = "${params.outdir_base}/bam"
+    outdir_index = "${params.outdir_base}/index"
+    outdir_bamcmp = "${params.outdir_base}/bamcmp"
+    outdir_markduplicates = "${params.outdir_base}/mark_duplicates"
+    outdir_bqsr = "${params.outdir_base}/bqsr"
+    outdir_resources = "${params.outdir_base}/resources"
+    outdir_mutect2 = "${params.outdir_base}/mutect2"
+}
+
+singularity {
+    enabled = true
+    autoMounts = true
+}
