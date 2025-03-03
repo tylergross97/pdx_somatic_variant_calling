@@ -24,9 +24,17 @@ This pipeline is built using [Nextflow](https://www.nextflow.io/) [3], a workflo
 
 This pipeline is designed to perform [somatic short variant calling](https://www.garvan.org.au/news-resources/science-explained/types-of-variants) (SNPs Indels) from [patient-derived xenograft (PDX) models](https://en.wikipedia.org/wiki/Patient_derived_xenograft). Specifically, the pipeline, was built to handle [whole-exome sequencing (WES)](https://www.illumina.com/techniques/sequencing/dna-sequencing/targeted-resequencing/exome-sequencing.html) data without a matched-normal sample, which is referred to tumor-only variant calling.
 
-Although somatic short variant calling of PDX models without a matched-normal sample is a common task in bioinformatics, particularly in translational oncology research, it introduces a unique set of challenges that many somatic variant calling pipelines do not address. First, it is important to understand that although the tumor is implanted into the mouse, it originated from a human patient, meaning that we are interested in understanding the genome of the human tumor cells. However, during and after implanation of the tumor into the mouse, there is, to a varying extent, some degree of infiltration of mouse cells into the tumor. As discussed and explored throughly in Jo et al., 2019 [2], this can lead to false-positive variant calls that should be minimized through the explicit filtering of the reads f
+Although somatic short variant calling of PDX models without a matched-normal sample is a common task in bioinformatics, particularly in translational oncology research, it introduces a unique set of challenges that many somatic variant calling pipelines do not address.
 
-To achieve this goal, the pipeline begins by 
+This pipeline can be conceptually broken down into two main steps:
+- Deconvolution (filtering) of mouse reads
+- Tumor-only somatic short variant calling of human reads
+
+### Deconvolution of mouse reads
+First, it is important to understand that although the tumor is implanted into the mouse, it originated from a human patient, meaning that we are interested in understanding the variants of the human tumor cells. However, during and after implanation of the tumor into the mouse, there is some degree of infiltration of mouse cells into the tumor. As discussed and explored throughly in [Jo et al., 2019](https://link.springer.com/article/10.1186/s13059-019-1849-2) [2], this can lead to false-positive variant calls that should be minimized through the explicit filtering of the reads originating the mouse. This pipeline utilizes the [bamcmp](https://github.com/CRUKMI-ComputationalBiology/bamcmp)[4] tool, although there are others available.
+
+### Tumor-only somatic short variant calling
+Performing somatic variant calling without a matched-normal sample also introduces challenges that must be addressed through the use of a database of common germline variants to be filtered out. In the case of a matched-normal sample, germline variants are defined as those present in both the matched-normal sample and the tumor sample. Although the use of a common germline variant database is more prone to rare germline variants showing up as false-positive somatic variant calls, this is often the reality for many researchers working with PDX models. [Mutect2](https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2) is a somatic short variant caller that has a tumor-only mode available and is used in this pipeline, following [GATK's best practices](https://gatk.broadinstitute.org/hc/en-us/articles/360035894731-Somatic-short-variant-discovery-SNVs-Indels).
 
 ## Prerequisites
 
@@ -61,3 +69,6 @@ This pipeline is based on the following conceptual frameworks and best practices
 This pipeline uses several tools that should be cited independently:
 
 3. Di Tommaso, P., Chatzou, M., Floden, E. W., Barja, P. P., Palumbo, E., & Notredame, C. (2017). Nextflow enables reproducible computational workflows. Nature biotechnology, 35(4), 316-319.
+4. Garima Khandelwal, Maria Girotti, Christopher Smowton, Sam Taylor, Chris Wirth, Marek Dynowski, Kris Frese, Ged Brady, Deborah Burt, Richard Marais, Crispin Miller. Next-Gen Sequencing Analysis and Algorithms for PDX and CDX Models. Molecular Cancer Research. 2017, 15:8, PMID: 28442585 DOI: 10.1158/1541-7786.MCR-16-0431
+5. 
+
