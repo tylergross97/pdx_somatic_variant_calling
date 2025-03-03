@@ -5,17 +5,16 @@ A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel va
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Pipeline Workflow](#pipeline-workflow)
-3. [Prerequisites](#prerequisites)
-4. [Installation](#clone-this-repository)
-5. [Usage](#usage)
-6. [Pipeline Steps](#pipeline-steps)
-7. [Input](#input)
-8. [Output](#output)
-9. [Configuration](#configuration)
-10. [Troubleshooting](#troubleshooting)
-11. [Contributing](#contributing)
-12. [License](#license)
-13. [Citations](#citations)
+3. [Installation](#installation)
+4. [Usage](#usage)
+5. [Pipeline Steps](#pipeline-steps)
+6. [Input](#input)
+7. [Output](#output)
+8. [Configuration](#configuration)
+9. [Troubleshooting](#troubleshooting)
+10. [Contributing](#contributing)
+11. [License](#license)
+12. [Citations](#citations)
 
 ## Introduction
 
@@ -44,8 +43,17 @@ There is also documentation for downstream analyses of the outputs of the nextfl
 
 ![Workflow Diagram](images/workflow_diagram.png)
 
-## Prerequisites
+## Installation
 
+### Clone Repository
+
+To get started with this pipeline, clone the repository to your local machine or HPC environment:
+
+```bash
+git clone https://github.com/tylergross97/pdx_somatic_variant_calling.git
+cd pdx_somatic_variant_calling
+```
+### Install software and accessory files
 Before running this pipeline, ensure you have the following tools and resources installed. This is the hardest part, but I have provided documentation!
 
 1. Nextflow (version 23.10.0 or later)
@@ -78,7 +86,7 @@ For optional downstream analysis:
 7. Python (version 3.6 or later) for downstream analysis of contamination
    - Installation instructions: [Python Installation Guide](https://www.python.org/downloads/)
 
-### Reference Genomes
+#### Reference Genomes
 
 Instructions for obtaining and preparing the reference genomes:
 
@@ -100,10 +108,6 @@ Please ensure all prerequisites are properly installed and configured before run
 Now all you need to do is define the paths of these downloaded files in your nextflow.config file that you will be creating based on the nextflow.config.template file! Instructions [below](#configuration)
 
 All of the remaining software will be automatically installed via containers specified at the top of each process in the main.nf file!
-
-## Clone this repository
-
-This pipeline is designed to be easy to set up and run. 
 
 ## Usage
 
