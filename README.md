@@ -88,7 +88,8 @@ For optional downstream analysis:
 
 #### Reference Genomes
 
-Instructions for obtaining and preparing the reference genomes:
+Instructions for obtaining and preparing the reference genomes
+- As explained in [Zverinova et al, 2021](https://onlinelibrary.wiley.com/doi/10.1002/humu.24311), we recommend using primary genome assemblies for references
 
 1. Human (hg38):
    - Download from: [UCSC Genome Browser](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/)
