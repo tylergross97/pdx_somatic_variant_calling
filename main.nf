@@ -639,6 +639,3 @@ workflow {
                 FUNCOTATOR_DATA_SOURCE_DOWNLOADER.out.funcotator_sources
         )
 }
-
-
-
