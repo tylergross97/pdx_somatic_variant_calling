@@ -113,31 +113,17 @@ Instructions for obtaining and preparing the reference genomes
 
 1. Human (hg38):
    - Download from: [UCSC Genome Browser](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/)
-   - Prepare the genome for BWA-MEM2 indexing:
-     ```
-     bwa-mem2 index hg38.fa
-     ```
 
 2. Mouse (mm39):
    - Download from: [UCSC Genome Browser](https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/)
-   - Prepare the genome for BWA-MEM2 indexing:
-     ```
-     bwa-mem2 index mm39.fa
-     ```
 
 ### Preparing your nextflow.config file
 
-In your cloned repository directory, you have a nextflow.config.template file. All you need to do is copy this file as 'nextflow.config' and edit it to reflect the paths of your accessory you just downloaded and your fastq files
+In your cloned repository directory, you have a nextflow.config.template file. All you need to do is copy this file as 'nextflow.config' and edit it to reflect the paths of your accessory files you just downloaded and your fastq files
 
 ```bash
 cp nextflow.config.template nextflow.config
 ```
-
-Please ensure all prerequisites are properly installed and configured before running the pipeline. For detailed installation instructions of each tool, refer to their respective documentation.
-
-Now all you need to do is define the paths of these downloaded files in your nextflow.config file that you will be creating based on the nextflow.config.template file! Instructions [below](#configuration)
-
-All of the remaining software will be automatically installed via containers specified at the top of each process in the main.nf file!
 
 ## Usage
 
