@@ -46,7 +46,7 @@ Performing somatic variant calling without a matched-normal sample also introduc
 ## Pipeline Workflow
 
 ```mermaid
-graph LR
+graph TD
     subgraph "Main Pipeline"
     A[FASTQ Input] --> B[QC FASTP]
     B --> C[Align BWA-MEM2]
