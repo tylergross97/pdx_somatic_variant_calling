@@ -46,7 +46,7 @@ Performing somatic variant calling without a matched-normal sample also introduc
 ## Pipeline Workflow
 
 ```mermaid
-graph TD
+graph LR
     subgraph "Main Pipeline"
     A[FASTQ Input] --> B[QC FASTP]
     B --> C[Align BWA-MEM2]
@@ -62,8 +62,8 @@ graph TD
     end
 
     subgraph "Optional Analyses"
-    style M fill:#f9f,stroke:#333,stroke-width:2px
-    style N fill:#bbf,stroke:#333,stroke-width:2px
+    style M fill:#f9f,stroke:#333,stroke-width:2px,color:#000
+    style N fill:#bbf,stroke:#333,stroke-width:2px,color:#000
     M[Contamination]
     N[maftools Analysis]
     end
