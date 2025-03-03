@@ -117,7 +117,7 @@ Instructions for obtaining and preparing the reference genomes
 2. Mouse (mm39):
    - Download from: [UCSC Genome Browser](https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/)
 
-### Preparing your nextflow.config file
+### Preparing your [nextflow.config](https://www.nextflow.io/docs/latest/config.html) file
 
 In your cloned repository directory, you have a nextflow.config.template file. All you need to do is copy this file as 'nextflow.config' and edit it to reflect the paths of your accessory files you just downloaded and your fastq files
 
@@ -125,7 +125,42 @@ In your cloned repository directory, you have a nextflow.config.template file. A
 cp nextflow.config.template nextflow.config
 ```
 
+Note that the nextflow.config.template file is set up for running Singularity. Adjust as needed.
+
 ## Usage
+
+With your nextflow.config and main.nf files in your current working directory and nextflow installed, all you need to do is run the following command:
+
+```bash
+nextflow run main.nf
+```
+
+### Running on SLURM
+
+If you're using a high-performance computing (HPC) cluster that uses SLURM for job scheduling, you can create a [SLURM script](https://www.arch.jhu.edu/short-tutorial-how-to-create-a-slurm-script/) to run the pipeline. It may look something like this:
+
+```bash
+#!/bin/bash
+#SBATCH --job-name=pdx_pipeline
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=128G
+#SBATCH --time=24:00:00
+#SBATCH --output=pdx_pipeline_%j.out
+#SBATCH --error=pdx_pipeline_%j.err
+
+# Load Nextflow module (adjust or remove if Nextflow is in your PATH)
+module load nextflow
+
+# Set environment variables
+export NXF_WORK=$SCRATCH/pdx_work
+export SINGULARITY_CACHEDIR=$HOME/singularity_cache
+export NXF_SINGULARITY_CACHEDIR=$HOME/nextflow_singularity_cache
+
+# Run the Nextflow pipeline
+nextflow run main.nf
+```
 
 ## Pipeline Steps
 
