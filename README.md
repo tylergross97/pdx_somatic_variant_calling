@@ -73,7 +73,7 @@ If you use this pipeline in your work, please cite:
 
 This pipeline is based on the following conceptual frameworks and best practices:
 1. Jo, S. Y., Kim, E., & Kim, S. (2019). Impact of mouse contamination in genomic profiling of patient-derived models and best practice for robust analysis. Genome Biology, 20, 1-13.
-2. 2. GATK Best Practices for somatic short variant discovery (SNVs + Indels)
+2. GATK Best Practices for somatic short variant discovery (SNVs + Indels)
    Broad Institute. (2023). Somatic short variant discovery (SNVs + Indels). Retrieved Jan. 2025, from https://gatk.broadinstitute.org/hc/en-us/articles/360035894731-Somatic-short-variant-discovery-SNVs-Indels
 
 This pipeline uses several tools that should be cited independently:
