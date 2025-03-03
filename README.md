@@ -65,14 +65,15 @@ Before running this pipeline, ensure you have the following tools and resources 
 
 4. GATK Resource Bundle (for hg38)
    - Download from: [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle)
+      - This contains the accessory files needed for the variant calling portion of the pipeline (e.g., database of common germline variants)
 
 5. Input Data:
-   - Paired-end FASTQ files from PDX samples
+   - Paired-end FASTQ files from your PDX samples
 
-Optional but recommended:
+For optional downstream analysis:
 
 6. R (version 4.0 or later) for downstream analysis with maftools
-   - Installation instructions: [R Installation Guide](https://cran.r-project.org/)
+   - Installation instructions: [R Installation Guide](https://cran.r-project.org/) and [maftools](https://www.bioconductor.org/packages/release/bioc/html/maftools.html)
 
 7. Python (version 3.6 or later) for downstream analysis of contamination
    - Installation instructions: [Python Installation Guide](https://www.python.org/downloads/)
@@ -132,4 +133,5 @@ This pipeline uses several tools that should be cited independently:
 3. Di Tommaso, P., Chatzou, M., Floden, E. W., Barja, P. P., Palumbo, E., & Notredame, C. (2017). Nextflow enables reproducible computational workflows. Nature biotechnology, 35(4), 316-319.
 4. Garima Khandelwal, Maria Girotti, Christopher Smowton, Sam Taylor, Chris Wirth, Marek Dynowski, Kris Frese, Ged Brady, Deborah Burt, Richard Marais, Crispin Miller. Next-Gen Sequencing Analysis and Algorithms for PDX and CDX Models. Molecular Cancer Research. 2017, 15:8, PMID: 28442585 DOI: 10.1158/1541-7786.MCR-16-0431
 5. Benjamin, D., Sato, T., Cibulskis, K., Getz, G., Stewart, C., & Lichtenstein, L. (2019). Calling somatic SNVs and indels with Mutect2. BioRxiv, 861054.
+6. Mayakonda A, Lin D, Assenov Y, Plass C, Koeffler PH (2018). “Maftools: efficient and comprehensive analysis of somatic variants in cancer.” Genome Research. doi:10.1101/gr.239244.118.
 
