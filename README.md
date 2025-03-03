@@ -170,12 +170,15 @@ nextflow run main.nf
 3. [bamcmp](https://github.com/CRUKMI-ComputationalBiology/bamcmp) to perform deconvolution of mouse reads
 4. [GATK MarkDuplicates](https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard) to identify duplicate reads
 5. [GATK BaseRecalibrator](https://gatk.broadinstitute.org/hc/en-us/articles/360036898312-BaseRecalibrator) and [GATK ApplyBQSR](https://gatk.broadinstitute.org/hc/en-us/articles/360037055712-ApplyBQSR) for base quality score recalibration
-6. 
-7. 
-
-## Input
+6. [Mutect2](https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2) to call somatic short variants
+7. [GATK GetPileupSummaries](https://gatk.broadinstitute.org/hc/en-us/articles/360037593451-GetPileupSummaries), [GATK CalculateContamination](https://gatk.broadinstitute.org/hc/en-us/articles/360036888972-CalculateContamination), and [GATK FilterMutectCalls](https://gatk.broadinstitute.org/hc/en-us/articles/360036856831-FilterMutectCalls) to filter variant calls
+8. [Funcotator](https://gatk.broadinstitute.org/hc/en-us/articles/360037224432-Funcotator) to annotate variants and generate .vcf and .maf files
 
 ## Output
+
+There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main files were are interested in are the annotated .vcf and .maf files that can loaded into an R markdown file for analysis with maftools, see [below](#downstream-analysis). These .vcf and .maf files were be saved to the 
+
+If you are looking to analyses the level of contamination of your original samples, you will need to access the files outputted from bamcmp in the 
 
 ## Downstream analyses
 
