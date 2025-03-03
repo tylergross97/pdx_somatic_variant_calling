@@ -188,6 +188,7 @@ Provided is a link to a .pdf file with the necessary code and expected outputs t
 
 ### maftools analysis (R)
 Provided is an html file with the necessary code to leverage maftools to analyze the filtered.annotated.maf.gz files that are the main output from the pipeline. In the provided example, I was looking to identify mutations in genes known to be implicated in Renal Cell Carcinoma (RCC).
+![maftools.Rmd](images/maftools.pdf)
 
 
 ## Configuration
