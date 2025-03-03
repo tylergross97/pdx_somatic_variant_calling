@@ -77,6 +77,26 @@ Before running this pipeline, ensure you have the following tools and resources 
 
 5. Input Data:
    - Paired-end FASTQ files from your PDX samples
+   - FASTQ File Naming Convention:
+      This pipeline requires a specific naming convention for input FASTQ files. Files should follow this pattern:
+      
+      *_S*_R{1,2}_001.fastq.gz
+      
+      Where:
+      
+      * can be any string (usually sample name or identifier)
+      S* represents the sample number (e.g., S1, S2, S3, etc.)
+      R{1,2} specifies whether it's the forward (R1) or reverse (R2) read file
+      001 is a common suffix in Illumina sequencing output
+      Files must be gzipped (.gz extension)
+
+      Examples of correctly named files:
+      
+      Sample1_S1_R1_001.fastq.gz and Sample1_S1_R2_001.fastq.gz
+     
+      PDX-tumor_S2_R1_001.fastq.gz and PDX-tumor_S2_R2_001.fastq.gz
+
+      If your files don't match this naming convention, you may need to rename them before running the pipeline.
 
 For optional downstream analysis:
 
@@ -104,6 +124,15 @@ Instructions for obtaining and preparing the reference genomes
      ```
      bwa-mem2 index mm39.fa
      ```
+
+### Preparing your nextflow.config file
+
+In your cloned repository directory, you have a nextflow.config.template file. All you need to do is copy this file as 'nextflow.config' and edit it to reflect the paths of your accessory you just downloaded and your fastq files
+
+```bash
+cp nextflow.config.template nextflow.config
+```
+
 Please ensure all prerequisites are properly installed and configured before running the pipeline. For detailed installation instructions of each tool, refer to their respective documentation.
 
 Now all you need to do is define the paths of these downloaded files in your nextflow.config file that you will be creating based on the nextflow.config.template file! Instructions [below](#configuration)
