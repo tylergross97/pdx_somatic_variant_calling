@@ -42,7 +42,35 @@ Performing somatic variant calling without a matched-normal sample also introduc
 
 ## Usage
 
-## Pipeline Steps
+## Pipeline Workflow
+## Pipeline Workflow
+
+```mermaid
+graph TD
+    subgraph "Main Pipeline"
+    A[FASTQ Input] --> B[QC FASTP]
+    B --> C[Align BWA-MEM2]
+    C --> D[Deconvolute BAMcmp]
+    D --> E[Human Reads]
+    D --> F[Mouse Reads]
+    E --> G[Mark Duplicates]
+    G --> H[Base Recalibration]
+    H --> I[Call Variants]
+    I --> J[Filter Variants]
+    J --> K[Annotate Variants]
+    K --> L[VCF/MAF Output]
+    end
+
+    subgraph "Optional Analyses"
+    style M fill:#f9f,stroke:#333,stroke-width:2px
+    style N fill:#bbf,stroke:#333,stroke-width:2px
+    M[Contamination]
+    N[maftools Analysis]
+    end
+
+    F -.-> M
+    L -.-> N
+```
 
 ## Input
 
