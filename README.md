@@ -10,7 +10,7 @@ A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel va
 5. [Pipeline Steps](#pipeline-steps)
 6. [Input](#input)
 7. [Output](#output)
-8. [Downstream Analysis](#downstream-analysis)
+8. [Downstream Analysis](#optional-downstream-analysis)
 9. [Citations](#citations)
 
 ## Introduction
@@ -94,7 +94,7 @@ Before running this pipeline, ensure you have the following tools and resources 
 
       If your files don't match this naming convention, you may need to rename them before running the pipeline.
 
-For optional downstream analysis:
+For [optional downstream analysis](#optional-downstream-analysis):
 
 6. R (version 4.0 or later) for downstream analysis with maftools
    - Installation instructions: [R Installation Guide](https://cran.r-project.org/) and [maftools](https://www.bioconductor.org/packages/release/bioc/html/maftools.html)
