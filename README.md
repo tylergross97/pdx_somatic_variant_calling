@@ -147,14 +147,17 @@ Before running this pipeline, ensure you have the following tools and resources 
          If your files don't match this naming convention, you may need to rename them before running the pipeline.
 
 7. Intervals
-      - It is important to note this pipeline is designed to handle whole-genome sequencing (WGS), whole-exome sequencing (WES), or targeted sequencing
-      - If you have WES or targeted sequencing data, you may provide want to provide the capture-kit-specific intervals of the capture site in the form of a BED
-         - This improves computational effiency and reduces off-target noise. However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred - for this reason we recommend adding padding of ~100bp. See this [article](https://sites.google.com/a/broadinstitute.org/legacy-gatk-documentation/frequently-asked-questions/4133-When-should-I-use-L-to-pass-in-a-list-of-intervals) for a discussion around this topic
-      - If you choose you provide an interval file, you must add this to your nextflow.config file as a param and include it in your main.nf file the base recalibration and mutect2 processes
-      - Here is a command to download the .bed file provided by Illumina for their Illumina Exome 2.5 Panel HG38 genome:
-           ```bash
-           curl -O https://support.illumina.com/content/dam/illumina-support/documents/downloads/productfiles/illumina-prep/exome/hg38_Twist_ILMN_Exome_2.5_Panel_annotated.BED
-           ```
+      - It is important to note that although this pipeline can handle variant calling in targeted regions of the genome with a few adjustments to the nextflow.config and main.nf file, its out-of-the-box functionality is to perform variant calling of the entire genome
+      - If you have WES or targeted sequencing data, you may want to provide the capture-kit-specific intervals of the capture site in the form of a BED file
+         - This improves computational effiency and reduces off-target noise of both base recalibration and variant calling
+         - However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred and you may miss some important variants - for this reason we recommend adding padding
+            - See this [article](https://sites.google.com/a/broadinstitute.org/legacy-gatk-documentation/frequently-asked-questions/4133-When-should-I-use-L-to-pass-in-a-list-of-intervals) for a discussion around this topic
+      - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param and include this param in your main.nf file
+         - Here is a command to download the .bed file provided by Illumina for their Illumina Exome 2.5 Panel HG38 genome:
+              ```bash
+              curl -O https://support.illumina.com/content/dam/illumina-support/documents/downloads/productfiles/illumina-prep/exome/hg38_Twist_ILMN_Exome_2.5_Panel_annotated.BED
+              ```
+              - You would then add the following param to your nextflow.config file:
 
 8. R (version 4.0 or later) for downstream analysis with maftools
    - Installation instructions: [R Installation Guide](https://cran.r-project.org/) and [maftools](https://www.bioconductor.org/packages/release/bioc/html/maftools.html)
