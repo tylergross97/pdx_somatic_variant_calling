@@ -251,7 +251,7 @@ Click on image below to view full markdown file in .pdf format!
 ## Citations
 
 If you use this pipeline in your work, please cite:
-[Tyler Gross] (2025). Tumor-Only and Whole-Exome Sequencing PDX Somatic Variant Calling Nextflow Pipeline [Computer software]. https://github.com/tylergross97/pdx_somatic_variant_calling
+[Tyler Gross] (2025). Tumor-Only PDX Somatic Variant Calling Nextflow Pipeline [Computer software]. https://github.com/tylergross97/pdx_somatic_variant_calling
 
 This pipeline is based on the following conceptual frameworks and best practices:
 1. Jo, S. Y., Kim, E., & Kim, S. (2019). Impact of mouse contamination in genomic profiling of patient-derived models and best practice for robust analysis. Genome Biology, 20, 1-13.
