@@ -152,7 +152,7 @@ Before running this pipeline, ensure you have the following tools and resources 
          - This improves computational effiency and reduces off-target noise of both base recalibration and variant calling
          - However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred and you may miss some important variants - for this reason we recommend adding padding
             - See this [article](https://sites.google.com/a/broadinstitute.org/legacy-gatk-documentation/frequently-asked-questions/4133-When-should-I-use-L-to-pass-in-a-list-of-intervals) for a discussion around this topic
-      - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#nextflow-config-template-with-intervals-specified) and include this param in your main.nf file
+      - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#adding-intervals) and include this param in your main.nf file
          - Here is a command to download the .bed file provided by Illumina for their Illumina Exome 2.5 Panel HG38 genome:
               ```bash
               curl -O https://support.illumina.com/content/dam/illumina-support/documents/downloads/productfiles/illumina-prep/exome/hg38_Twist_ILMN_Exome_2.5_Panel_annotated.BED
@@ -171,11 +171,11 @@ In your cloned repository directory, you have a nextflow.config.template file. A
 ```bash
 cp nextflow.config.template nextflow.config
 ```
-#### Nextflow config template without intervals specified
+#### Nextflow config template
    ![Nextflow config](images/nextflow.config.template.png)
-#### Nextflow config template with intervals specified
+##### Adding Intervals
    ![Nextflow config with intervals](images/nextflow.config.template.intervals.png)
-
+##### Changing
 Note that the nextflow.config.template file is set up for running Singularity. Adjust as needed.
 
 ## Usage
