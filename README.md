@@ -168,6 +168,9 @@ Before running this pipeline, ensure you have the following tools and resources 
 ### Preparing your [nextflow.config](https://www.nextflow.io/docs/latest/config.html) file
 
 In your cloned repository directory, you have a nextflow.config.template file. All you need to do is copy this file as 'nextflow.config' and edit it to reflect the paths of your accessory files you just downloaded and your fastq files
+- This the nextflow.config.template file:
+![Nextflow config](images/nextflow.config.template.png)
+   - If you are specifying an interval, your make the following addition
 
 ```bash
 cp nextflow.config.template nextflow.config
