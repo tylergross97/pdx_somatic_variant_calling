@@ -67,22 +67,23 @@ Before running this pipeline, ensure you have the following tools and resources 
    - Docker: [Docker Installation Guide](https://docs.docker.com/get-docker/)
 
 3. Reference Genomes:
-   - Human (hg38)
-     ```bash
-     curl -O https://42basepairs.com/download/s3/ont-open-data/colo829_2023.04/analysis/sup_wf_som_var/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
-     ```
-   - Mouse (mm39)
-     ```bash
-     curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/GCF_000001635.27_GRCm39_genomic.fna.gz
-     gunzip GCF_000001635.27_GRCm39_genomic.fna.gz
-      ```
    - As explained in [Zverinova et al, 2021](https://onlinelibrary.wiley.com/doi/10.1002/humu.24311), we recommend using primary genome assemblies for references
+      - Human (hg38)
+        ```bash
+        curl -O https://42basepairs.com/download/s3/ont-open-data/colo829_2023.04/analysis/sup_wf_som_var/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
+        ```
+      - Mouse (mm39)
+        ```bash
+        curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/GCF_000001635.27_GRCm39_genomic.fna.gz
+        gunzip GCF_000001635.27_GRCm39_genomic.fna.gz
+         ```
 
-4. GATK Resource Bundle (for hg38)
+5. GATK Resource Bundle (for hg38)
    - Download from: [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle)
       - This contains the accessory files needed for the variant calling portion of the pipeline (e.g., database of common germline variants)
+         - dbsnp_vcf and dbsnp_vcf_idx: 
 
-5. Input Data:
+6. Input Data:
    - Paired-end FASTQ files from your PDX samples
    - FASTQ File Naming Convention:
       This pipeline requires a specific naming convention for input FASTQ files. Files should follow this pattern:
@@ -105,22 +106,11 @@ Before running this pipeline, ensure you have the following tools and resources 
 
       If your files don't match this naming convention, you may need to rename them before running the pipeline.
 
-6. R (version 4.0 or later) for downstream analysis with maftools
+7. R (version 4.0 or later) for downstream analysis with maftools
    - Installation instructions: [R Installation Guide](https://cran.r-project.org/) and [maftools](https://www.bioconductor.org/packages/release/bioc/html/maftools.html)
 
-7. Python (version 3.6 or later) for downstream analysis of contamination
+8. Python (version 3.6 or later) for downstream analysis of contamination
    - Installation instructions: [Python Installation Guide](https://www.python.org/downloads/)
-
-#### Reference Genomes
-
-Instructions for obtaining and preparing the reference genomes
-- As explained in [Zverinova et al, 2021](https://onlinelibrary.wiley.com/doi/10.1002/humu.24311), we recommend using primary genome assemblies for references
-
-1. Human (hg38):
-   - Download from: [UCSC Genome Browser](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/)
-
-2. Mouse (mm39):
-   - Download from: [UCSC Genome Browser](https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/)
 
 ### Preparing your [nextflow.config](https://www.nextflow.io/docs/latest/config.html) file
 
