@@ -1,22 +1,22 @@
 params {
-    // Input data
+    // Input data -  UPDATE THESE
     fastq = "/path/to/fastq/directory" // path to directory containing fastq files
     hg38_fasta = "/path/to/hg38_fasta" // path to primary assembly of the human reference genome
     mm39_fasta = "/path/to/mm39_fasta" // path to primary assembly of the mouse reference genome
-    dbsnp_vcf = "/path/to/dbsnp_vcf" // path to database of known germline snps for filtering
+    dbsnp_vcf = "/path/to/dbsnp_vcf" // path to database of known germline snps for base recalibration
     dbsnp_vcf_idx = "/path/to/dbsnp_vcf_idx" // path to idx file
-    known_indels = "/path/to/known_indels" // path to database of known germline indels for filtering
+    known_indels = "/path/to/known_indels" // path to database of known germline indels for base recalibration
     known_indels_idx = "/path/to/known_indels_idx" // path to idx file
-    mills_indels = "/path/to/mills_indels" // path to database of known germline indels for filtering
+    mills_indels = "/path/to/mills_indels" // path to database of known germline indels for base recalibration
     mills_indels_idx = "/path/to/mills_indels_idx" // path to idx file
-    pon = "/path/to/pon" // path to panel of normals used to filter out germline variants and technical artifacts
+    pon = "/path/to/pon" // path to panel of normals used to filter out technical artifacts
     pon_idx = "/path/to/pon_idx" // path to idx file
-    gnomad = "/path/to/gnomad" // path to germline resource containing allele fractions
+    gnomad = "/path/to/gnomad" // path to germline resource containing allele fractions to determine probability of a variant being germline
     gnomad_idx = "/path/to/gnomad_idx" // path to idx file
-    filtered_vcf = "/path/to/filtered_vcf" // path to common germline variant sites derived from gnomAD resource
+    filtered_vcf = "/path/to/filtered_vcf" // path to common germline variant sites derived from gnomAD resource for furthering filtering
     filtered_vcf_idx = "/path/to/filtered_vcf_idx" // path to idx file
 
-    // Output directories
+    // Output directories - LEAVE THESE AS IS
     outdir_base = "results" // Base directory for all output
     outdir_fastp = "${params.outdir_base}/fastp"
     outdir_bam = "${params.outdir_base}/bam"
@@ -28,6 +28,7 @@ params {
     outdir_mutect2 = "${params.outdir_base}/mutect2"
 }
 
+// CHANGE THIS IF USING DOCKER
 singularity {
     enabled = true
     autoMounts = true
