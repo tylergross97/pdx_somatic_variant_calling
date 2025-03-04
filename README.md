@@ -168,7 +168,6 @@ Before running this pipeline, ensure you have the following tools and resources 
               ```bash
               curl -O https://support.illumina.com/content/dam/illumina-support/documents/downloads/productfiles/illumina-prep/exome/hg38_Twist_ILMN_Exome_2.5_Panel_annotated.BED
               ```
-              - You would then add the following param to your nextflow.config file:
 
 8. R (version 4.0 or later) for downstream analysis with maftools
    - Installation instructions: [R Installation Guide](https://cran.r-project.org/) and [maftools](https://www.bioconductor.org/packages/release/bioc/html/maftools.html)
@@ -228,6 +227,7 @@ nextflow run main.nf
 ```
 ### Using intervals for targeted variant calling
 ![main.intervals.nf](images/main.intervals.nf.png)
+![main.intervals.workflow.nf](images/main.intervals.workflow.nf.png)
 ## Pipeline Outputs
 
 There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main files we are interested in are the annotated [.vcf](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format) and [.maf](https://docs.gdc.cancer.gov/Data/File_Formats/MAF_Format/) files, saved to the ./results/mutect2/directory. We are particularly interested in the filtered and annotated files. These can be loaded into an R markdown file for analysis with maftools, see [below](#optional-downstream-analyses).
