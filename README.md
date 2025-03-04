@@ -23,7 +23,7 @@ This pipeline is designed to perform [somatic short variant calling](https://www
 
 [![pdx_diagram](images/pdx_diagram.png)](https://www.criver.com/products-services/discovery-services/pharmacology-studies/oncology-immuno-oncology-studies/oncology-study-models/patient-derived-xenografts-pdx-models?region=3601)
 
-Somatic short variant calling of PDX models without matched-normals is a common task for bioinformatician. However, it is important to address the unique set of challenges that this task presents, which will be covered shortly.
+Somatic short variant calling of PDX models without matched-normals is a common task for bioinformaticians. However, it is important to address the unique set of challenges that this task presents, which will be covered shortly.
 
 This pipeline can be conceptually broken down into two main steps:
 - Deconvolution (filtering) of mouse reads
