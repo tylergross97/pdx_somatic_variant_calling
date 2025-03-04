@@ -83,7 +83,18 @@ Before running this pipeline, ensure you have the following tools and resources 
 5. GATK Resource Bundle (for hg38)
    - Download from: [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle)
       - This contains the accessory files needed for the variant calling portion of the pipeline (e.g., database of common germline variants)
-         - dbsnp_vcf and dbsnp_vcf_idx: 
+         - Note that some of these files are multiple GBs - this is one of the reasons I personally use an HPC system and not my local computer!
+         - You could download the  entire bucket, but not all of the files are needed. I've provided commands to download the necessary files for you below.
+         - dbsnp_vcf and dbsnp_vcf_idx: These contain common germline SNPs in vcf format
+              ```bash
+              curl -O https://storage.cloud.google.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf
+              curl -O https://storage.cloud.google.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf.idx
+              ```
+         - known_indels and known_indels_idx: These contain common germline Indels in vcf format
+              ```bash
+              curl -O https://storage.cloud.google.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.known_indels.vcf.gz
+              curl -O https://storage.cloud.google.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.known_indels.vcf.gz.tbi
+              ```
 
 6. Input Data:
    - Paired-end FASTQ files from your PDX samples
