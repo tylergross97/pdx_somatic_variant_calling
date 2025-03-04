@@ -159,7 +159,7 @@ Before running this pipeline, ensure you have the following tools and resources 
       - It is important to note that although this pipeline can handle variant calling in targeted regions of the genome with a few adjustments to the nextflow.config and main.nf file, its out-of-the-box functionality is to perform variant calling of the entire genome
       - If you have WES or targeted sequencing data, you may want to provide the capture-kit-specific intervals of the capture site in the form of a BED file
          - This improves computational effiency and reduces off-target noise of both base recalibration and variant calling
-         - However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred and you may miss some important variants - for this reason we recommend adding padding
+         - However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred and you may miss some important variants - for this reason we recommend padding your intervals
             - See this [article](https://sites.google.com/a/broadinstitute.org/legacy-gatk-documentation/frequently-asked-questions/4133-When-should-I-use-L-to-pass-in-a-list-of-intervals) for a discussion around this topic
       - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#adding-intervals) and include this param in your main.nf file as shown [here](#using-intervals-for-targeted-variant-calling)
          - Here is a command to download the .bed file provided by Illumina for their Illumina Exome 2.5 Panel HG38 genome:
