@@ -1,6 +1,6 @@
 # PDX Somatic Variant Calling Nextflow Pipeline
 
-A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel variant calling on Whole Exome Sequencing (WES) data from Patient-Derived Xenograft (PDX) models. The pipeline is designed to work out-of-box for HPC users.
+A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel variant calling from Patient-Derived Xenograft (PDX) models. The pipeline is designed to work out-of-box for HPC users.
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -19,7 +19,7 @@ A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel va
 
 This pipeline is built using [Nextflow](https://www.nextflow.io/), a workflow management software that utilizes [containerization](https://www.ibm.com/think/topics/containerization#:~:text=Containerization%20is%20the%20packaging%20of,runs%20consistently%20on%20any%20infrastructure.) to allow for portable and reproducible bioinformatics pipelines.
 
-This pipeline is designed to perform [somatic short variant calling](https://www.garvan.org.au/news-resources/science-explained/types-of-variants) (SNPs Indels) from [patient-derived xenograft (PDX) models](https://en.wikipedia.org/wiki/Patient_derived_xenograft). Specifically, it was built to handle [whole-exome sequencing (WES)](https://www.illumina.com/techniques/sequencing/dna-sequencing/targeted-resequencing/exome-sequencing.html) data without a matched-normal sample, which is referred to tumor-only variant calling.
+This pipeline is designed to perform [somatic short variant calling](https://www.garvan.org.au/news-resources/science-explained/types-of-variants) (SNPs Indels) from [patient-derived xenograft (PDX) models](https://en.wikipedia.org/wiki/Patient_derived_xenograft). Specifically, it was built to handle data without a matched-normal sample, which is referred to tumor-only variant calling.
 
 [![pdx_diagram](images/pdx_diagram.png)](https://www.criver.com/products-services/discovery-services/pharmacology-studies/oncology-immuno-oncology-studies/oncology-study-models/patient-derived-xenografts-pdx-models?region=3601)
 
@@ -146,10 +146,13 @@ Before running this pipeline, ensure you have the following tools and resources 
    
          If your files don't match this naming convention, you may need to rename them before running the pipeline.
 
-7. R (version 4.0 or later) for downstream analysis with maftools
+7. Intervals
+      - It is important to note this pipeline is designed to handle whole-genome sequencing (WGS), whole-exome sequencing (WES), or targeted sequencing. If you have WES or targeted sequencing data, you may provide want to provide the capture-kit-specific intervals of the capture site in the form of a BED. This improves computational effiency and reduces off-target noise. However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred. See this [article](https://gatk.broadinstitute.org/hc/en-us/articles/360035531852-Intervals-and-interval-lists) for a discussion around this topic
+
+8. R (version 4.0 or later) for downstream analysis with maftools
    - Installation instructions: [R Installation Guide](https://cran.r-project.org/) and [maftools](https://www.bioconductor.org/packages/release/bioc/html/maftools.html)
 
-8. Python (version 3.6 or later) for downstream analysis of contamination
+9. Python (version 3.6 or later) for downstream analysis of contamination
    - Installation instructions: [Python Installation Guide](https://www.python.org/downloads/)
 
 ### Preparing your [nextflow.config](https://www.nextflow.io/docs/latest/config.html) file
