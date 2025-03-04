@@ -5,11 +5,11 @@ A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel va
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Pipeline Workflow](#pipeline-workflow)
-3. [Installation](#installation)
-4. [Usage](#usage)
-5. [Pipeline Steps](#pipeline-steps)
+3. [Pipeline Steps](#pipeline-steps)
+4. [Getting Set Up](#getting-set-up)
+5. [How to Run Pipeline](#how-to-run-pipeline)
 6. [Input](#input)
-7. [Output](#output)
+7. [Pipeline Outputs](#pipeline-outputs)
 8. [Downstream Analysis](#optional-downstream-analyses)
 9. [Citations](#citations)
 
@@ -46,7 +46,18 @@ There is also documentation for downstream analyses of the outputs of the nextfl
 
 ![Workflow Diagram](images/workflow_diagram.png)
 
-## Installation
+## Pipeline Steps
+
+1. [fastp](https://github.com/OpenGene/fastp) for quality control and adapter trimming
+2. [bwa-mem2](https://github.com/bwa-mem2/bwa-mem2) to align trimmed fastq files to both human and mouse reference genomes
+3. [bamcmp](https://github.com/CRUKMI-ComputationalBiology/bamcmp) to perform deconvolution of mouse reads
+4. [GATK MarkDuplicates](https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard) to identify duplicate reads
+5. [GATK BaseRecalibrator](https://gatk.broadinstitute.org/hc/en-us/articles/360036898312-BaseRecalibrator) and [GATK ApplyBQSR](https://gatk.broadinstitute.org/hc/en-us/articles/360037055712-ApplyBQSR) for base quality score recalibration
+6. [Mutect2](https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2) to call somatic short variants
+7. [GATK GetPileupSummaries](https://gatk.broadinstitute.org/hc/en-us/articles/360037593451-GetPileupSummaries), [GATK CalculateContamination](https://gatk.broadinstitute.org/hc/en-us/articles/360036888972-CalculateContamination), and [GATK FilterMutectCalls](https://gatk.broadinstitute.org/hc/en-us/articles/360036856831-FilterMutectCalls) to filter variant calls
+8. [Funcotator](https://gatk.broadinstitute.org/hc/en-us/articles/360037224432-Funcotator) to annotate variants and generate .vcf and .maf files
+
+## Getting Set Up
 
 ### Clone Repository
 
@@ -179,7 +190,7 @@ cp nextflow.config.template nextflow.config
 Note that the nextflow.config.template file is set up for running Singularity. If using Docker, make the following changes:
    ![Nextflow config with docker](images/nextflow.config.template.docker.png)
 
-## Usage
+## How to Run Pipeline
 
 ### Running locally
 
@@ -216,18 +227,7 @@ export NXF_SINGULARITY_CACHEDIR=$HOME/nextflow_singularity_cache
 nextflow run main.nf
 ```
 
-## Pipeline Steps
-
-1. [fastp](https://github.com/OpenGene/fastp) for quality control and adapter trimming
-2. [bwa-mem2](https://github.com/bwa-mem2/bwa-mem2) to align trimmed fastq files to both human and mouse reference genomes
-3. [bamcmp](https://github.com/CRUKMI-ComputationalBiology/bamcmp) to perform deconvolution of mouse reads
-4. [GATK MarkDuplicates](https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard) to identify duplicate reads
-5. [GATK BaseRecalibrator](https://gatk.broadinstitute.org/hc/en-us/articles/360036898312-BaseRecalibrator) and [GATK ApplyBQSR](https://gatk.broadinstitute.org/hc/en-us/articles/360037055712-ApplyBQSR) for base quality score recalibration
-6. [Mutect2](https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2) to call somatic short variants
-7. [GATK GetPileupSummaries](https://gatk.broadinstitute.org/hc/en-us/articles/360037593451-GetPileupSummaries), [GATK CalculateContamination](https://gatk.broadinstitute.org/hc/en-us/articles/360036888972-CalculateContamination), and [GATK FilterMutectCalls](https://gatk.broadinstitute.org/hc/en-us/articles/360036856831-FilterMutectCalls) to filter variant calls
-8. [Funcotator](https://gatk.broadinstitute.org/hc/en-us/articles/360037224432-Funcotator) to annotate variants and generate .vcf and .maf files
-
-## Output
+## Pipeline Outputs
 
 There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main files we are interested in are the annotated [.vcf](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format) and [.maf](https://docs.gdc.cancer.gov/Data/File_Formats/MAF_Format/) files, saved to the ./results/mutect2/directory. We are particularly interested in the filtered and annotated files. These can be loaded into an R markdown file for analysis with maftools, see [below](#optional-downstream-analyses).
 
