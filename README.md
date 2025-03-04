@@ -226,7 +226,9 @@ export NXF_SINGULARITY_CACHEDIR=$HOME/nextflow_singularity_cache
 nextflow run main.nf
 ```
 ### Using intervals for targeted variant calling
+#### Update these process blocks:
 ![main.intervals.nf](images/main.intervals.nf.png)
+#### Update the workflow:
 ![main.intervals.workflow.nf](images/main.intervals.workflow.nf.png)
 ## Pipeline Outputs
 
