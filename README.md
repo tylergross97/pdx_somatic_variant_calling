@@ -175,8 +175,9 @@ cp nextflow.config.template nextflow.config
    ![Nextflow config](images/nextflow.config.template.png)
 ##### Adding Intervals
    ![Nextflow config with intervals](images/nextflow.config.template.intervals.png)
-##### Changing
-Note that the nextflow.config.template file is set up for running Singularity. Adjust as needed.
+##### Changing to Docker
+Note that the nextflow.config.template file is set up for running Singularity. If using Docker, make the following changes:
+   ![Nextflow config with docker](images/nextflow.config.template.docker.png)
 
 ## Usage
 
