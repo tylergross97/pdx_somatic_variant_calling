@@ -68,8 +68,11 @@ Before running this pipeline, ensure you have the following tools and resources 
 
 3. Reference Genomes:
    - Human (hg38)
+     ```bash
+     curl -O https://42basepairs.com/browse/s3/ont-open-data/colo829_2023.04/analysis/sup_wf_som_var?file=GCA_000001405.15_GRCh38_no_alt_analysis_set.fna&preview=
+     ```
    - Mouse (mm39)
-   - Instructions for obtaining these genomes can be found in the [Reference Genomes](#reference-genomes) section below.
+   - As explained in [Zverinova et al, 2021](https://onlinelibrary.wiley.com/doi/10.1002/humu.24311), we recommend using primary genome assemblies for references
 
 4. GATK Resource Bundle (for hg38)
    - Download from: [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle)
