@@ -163,7 +163,7 @@ Before running this pipeline, ensure you have the following tools and resources 
          - This improves computational effiency and reduces off-target noise of both base recalibration and variant calling
          - However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred and you may miss some important variants - for this reason we recommend adding padding
             - See this [article](https://sites.google.com/a/broadinstitute.org/legacy-gatk-documentation/frequently-asked-questions/4133-When-should-I-use-L-to-pass-in-a-list-of-intervals) for a discussion around this topic
-      - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#adding-intervals) and include this param in your main.nf file
+      - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#adding-intervals) and include this param in your main.nf file as shown [here](#using-intervals-for-targeted-analysis)
          - Here is a command to download the .bed file provided by Illumina for their Illumina Exome 2.5 Panel HG38 genome:
               ```bash
               curl -O https://support.illumina.com/content/dam/illumina-support/documents/downloads/productfiles/illumina-prep/exome/hg38_Twist_ILMN_Exome_2.5_Panel_annotated.BED
@@ -226,7 +226,8 @@ export NXF_SINGULARITY_CACHEDIR=$HOME/nextflow_singularity_cache
 # Run the Nextflow pipeline
 nextflow run main.nf
 ```
-
+### Using intervals for targeted variant calling
+![main.intervals.nf](images/main.intervals.nf.png)
 ## Pipeline Outputs
 
 There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main files we are interested in are the annotated [.vcf](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format) and [.maf](https://docs.gdc.cancer.gov/Data/File_Formats/MAF_Format/) files, saved to the ./results/mutect2/directory. We are particularly interested in the filtered and annotated files. These can be loaded into an R markdown file for analysis with maftools, see [below](#optional-downstream-analyses).
