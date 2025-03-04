@@ -86,38 +86,65 @@ Before running this pipeline, ensure you have the following tools and resources 
          - Note that some of these files are multiple GBs - this is one of the reasons I personally use an HPC system and not my local computer!
          - You could download the  entire bucket, but not all of the files are needed. I've provided commands to download the necessary files for you below.
          - dbsnp_vcf and dbsnp_vcf_idx: These contain common germline SNPs in vcf format
+           - These known variants are to ensure that common variants are not mistaken for sequencing errors and throw off recalibration 
               ```bash
-              curl -O https://storage.cloud.google.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf
-              curl -O https://storage.cloud.google.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf.idx
+              curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf
+              curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf.idx
               ```
-         - known_indels and known_indels_idx: These contain common germline Indels in vcf format
+         - known_indels and known_indels_idx: These contain common germline Indels in vcf format used in base recalibration
+            - These known variants are to ensure that common variants are not mistaken for sequencing errors and throw off recalibration 
               ```bash
-              curl -O https://storage.cloud.google.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.known_indels.vcf.gz
-              curl -O https://storage.cloud.google.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.known_indels.vcf.gz.tbi
+              curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.known_indels.vcf.gz
+              curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.known_indels.vcf.gz.tbi
               ```
-
+         - mills_indels and mills_indels_idx: Another source of common germline indels in vcf format used in base  recalibration
+           - These known variants are to ensure that common variants are not mistaken for sequencing errors and throw off recalibration 
+              ```bash
+              curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
+              curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi
+              ```
+           - gnomad and gnomad_idx: Provides germline variants from the Genome Aggregation Database and there allele frequencies needed for Mutect2 to calculate the likelihood of a variant being germline rather than somatic
+              - If we had a matched-normal sample, we would use that, but this is important for tumor-only mode
+             ```bash
+             curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/af-only-gnomad.hg38.vcf.gz
+             curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/af-only-gnomad.hg38.vcf.gz.tbi
+             ```
+         - filtered_vcf and filtered_vcf_idx: Common germline SNPs only (allele frequency > 5%) from the Exome Aggregation Consortium and used as filtering of variants
+            ```bash
+            curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/small_exac_common_3.hg38.vcf.gz
+            curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/small_exac_common_3.hg38.vcf.gz.tbi
+            ```
+         - pon and pon_idx
+           - Panel of normals (PoN) from 1000 Genomes
+               - A PoN is used to filter out technical sources of variation and is recommended input for Mutect
+               - Because we are looking at technical bias, it is essential that the PoN is generated from a sequencing protocol as similar to the one used to generate your data
+                  - Ideally this is from the same capture kit and at the same sequencing facility but if that is not available, the one I have provided is considered a good option as it is considered representative of the general population
+            ```bash
+            curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/1000g_pon.hg38.vcf.gz
+            curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/1000g_pon.hg38.vcf.gz.tbi
+            ```
 6. Input Data:
    - Paired-end FASTQ files from your PDX samples
-   - FASTQ File Naming Convention:
-      This pipeline requires a specific naming convention for input FASTQ files. Files should follow this pattern:
-      
-      *_S*_R{1,2}_001.fastq.gz
-      
-      Where:
-      
-      * can be any string (usually sample name or identifier)
-      S* represents the sample number (e.g., S1, S2, S3, etc.)
-      R{1,2} specifies whether it's the forward (R1) or reverse (R2) read file
-      001 is a common suffix in Illumina sequencing output
-      Files must be gzipped (.gz extension)
-
-      Examples of correctly named files:
-      
-      Sample1_S1_R1_001.fastq.gz and Sample1_S1_R2_001.fastq.gz
-     
-      PDX-tumor_S2_R1_001.fastq.gz and PDX-tumor_S2_R2_001.fastq.gz
-
-      If your files don't match this naming convention, you may need to rename them before running the pipeline.
+      - FASTQ File Naming Convention:
+         This pipeline requires a specific naming convention for input FASTQ files. Files should follow this pattern:
+         
+         *_S*_R{1,2}_001.fastq.gz
+         
+         Where:
+         
+         * can be any string (usually sample name or identifier)
+         S* represents the sample number (e.g., S1, S2, S3, etc.)
+         R{1,2} specifies whether it's the forward (R1) or reverse (R2) read file
+         001 is a common suffix in Illumina sequencing output
+         Files must be gzipped (.gz extension)
+   
+         Examples of correctly named files:
+         
+         Sample1_S1_R1_001.fastq.gz and Sample1_S1_R2_001.fastq.gz
+        
+         PDX-tumor_S2_R1_001.fastq.gz and PDX-tumor_S2_R2_001.fastq.gz
+   
+         If your files don't match this naming convention, you may need to rename them before running the pipeline.
 
 7. R (version 4.0 or later) for downstream analysis with maftools
    - Installation instructions: [R Installation Guide](https://cran.r-project.org/) and [maftools](https://www.bioconductor.org/packages/release/bioc/html/maftools.html)
