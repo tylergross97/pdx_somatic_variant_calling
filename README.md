@@ -10,7 +10,7 @@ A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel va
 5. [Pipeline Steps](#pipeline-steps)
 6. [Input](#input)
 7. [Output](#output)
-8. [Downstream Analysis](#optional-downstream-analysis)
+8. [Downstream Analysis](#optional-downstream-analyses)
 9. [Citations](#citations)
 
 ## Introduction
