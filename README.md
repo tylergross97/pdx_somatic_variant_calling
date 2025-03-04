@@ -21,6 +21,8 @@ This pipeline is built using [Nextflow](https://www.nextflow.io/), a workflow ma
 
 This pipeline is designed to perform [somatic short variant calling](https://www.garvan.org.au/news-resources/science-explained/types-of-variants) (SNPs Indels) from [patient-derived xenograft (PDX) models](https://en.wikipedia.org/wiki/Patient_derived_xenograft). Specifically, it was built to handle [whole-exome sequencing (WES)](https://www.illumina.com/techniques/sequencing/dna-sequencing/targeted-resequencing/exome-sequencing.html) data without a matched-normal sample, which is referred to tumor-only variant calling.
 
+[![pdx_diagram](images/pdx_diagram.png)](https://www.criver.com/products-services/discovery-services/pharmacology-studies/oncology-immuno-oncology-studies/oncology-study-models/patient-derived-xenografts-pdx-models?region=3601)
+
 Somatic short variant calling of PDX models without matched-normals is a common task for bioinformatician. However, it is important to address the unique set of challenges that this task presents, which will be covered shortly.
 
 This pipeline can be conceptually broken down into two main steps:
