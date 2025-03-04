@@ -173,7 +173,7 @@ nextflow run main.nf
 
 ## Output
 
-There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main files were are interested in are the annotated .vcf and .maf files that can loaded into an R markdown file for analysis with maftools, see [below](#downstream-analysis). These filtered.annotated.vcf.gz and filtered.annotated.maf.gz files were be saved to the ./results/mutect2/directory
+There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main files were are interested in are the annotated [.vcf](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format) and [.maf](https://docs.gdc.cancer.gov/Data/File_Formats/MAF_Format/) files that can loaded into an R markdown file for analysis with maftools, see [below](#downstream-analysis). These filtered.annotated.vcf.gz and filtered.annotated.maf.gz files were be saved to the ./results/mutect2/directory
 
 If you are looking to analyses the level of contamination of your original samples, you will need to access the files outputted from bamcmp in the ./results/bamcmp directory
 
