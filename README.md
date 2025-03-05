@@ -84,11 +84,17 @@ Before running this pipeline, ensure you have the following tools and resources 
         ```bash
         curl -O https://42basepairs.com/download/s3/ont-open-data/colo829_2023.04/analysis/sup_wf_som_var/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
         ```
-      - Mouse (mm39)
-        ```bash
-        curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/GCF_000001635.27_GRCm39_genomic.fna.gz
-        gunzip GCF_000001635.27_GRCm39_genomic.fna.gz
-         ```
+      - Mouse (mm10_nsg)
+        - Note: If your PDX models utilized NSG (immunocompromised) mice, we recommend using the following NSG-adapted reference genome from [Hynds et al., 2024](https://www.nature.com/articles/s41467-024-47547-3)
+           - Use of this reference genome has been shown to improve the filtering of mouse reads when NSG mice are used for the PDX models
+             ```bash
+             curl -O https://zenodo.org/records/10304175/files/nsg_adapted_reference.zip?download=1
+             mv 'nsg_adapted_reference.zip?download=1' nsg_adapted_reference.zip
+             unzip nsg_adapted_reference.zip
+             cd nsgReference/
+             ls
+             ```
+             - Here you will see the 'mm10.nsgSpike.fa' reference genome that you can specify in your nextflow.config file
 
 4. GATK Resource Bundle (for hg38)
    - Download from: [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle)
@@ -266,4 +272,5 @@ This pipeline uses several tools that should be cited independently:
 7. Chen, S., Zhou, Y., Chen, Y., & Gu, J. (2018). fastp: an ultra-fast all-in-one FASTQ preprocessor. Bioinformatics, 34(17), i884-i890.
 8. Li, H. (2013). Aligning sequence reads, clone sequences and assembly contigs with BWA-MEM. arXiv preprint arXiv:1303.3997.
 9. Halperin, R. F., Carpten, J. D., Manojlovic, Z., Aldrich, J., Keats, J., Byron, S., ... & Craig, D. W. (2017). A method to reduce ancestry related germline false positives in tumor only somatic variant calling. BMC medical genomics, 10, 1-17.
+10. Hynds, R. E., Huebner, A., Pearce, D. R., Hill, M. S., Akarca, A. U., Moore, D. A., ... & Swanton, C. (2024). Representation of genomic intratumor heterogeneity in multi-region non-small cell lung cancer patient-derived xenograft models. Nature communications, 15(1), 4653.
 
