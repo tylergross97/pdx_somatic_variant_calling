@@ -1,6 +1,6 @@
 # PDX Somatic Variant Calling Nextflow Pipeline
 
-A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel variant calling from Patient-Derived Xenograft (PDX) models. The pipeline is designed to be easy to implement for HPC users or locally.
+A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel variant calling from Patient-Derived Xenograft (PDX) models. The pipeline is designed to be easy to implement for HPC users or locally. Can be used for whole-genome sequencing (WGS) or targeted sequencing data (e.g., whole-exome sequencing (WES), as explain in the 'Intervals' section [Getting Set Up](#getting-set-up).
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -157,12 +157,12 @@ Before running this pipeline, ensure you have the following tools and resources 
          If your files don't match this naming convention, you may need to rename them before running the pipeline.
 
 7. Intervals
-      - It is important to note that although this pipeline can handle variant calling in targeted regions of the genome with a few adjustments to the nextflow.config and main.nf file, its out-of-the-box functionality is to perform variant calling of the entire genome
+      - The default behavior of this pipeline is to perform variant calling across the entire genome
       - If you have WES or targeted sequencing data, you may want to provide the capture-kit-specific intervals of the capture site in the form of a BED file
          - This improves computational effiency and reduces off-target noise of both base recalibration and variant calling
          - However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred and you may miss some important variants - for this reason we recommend padding your intervals
             - See this [article](https://sites.google.com/a/broadinstitute.org/legacy-gatk-documentation/frequently-asked-questions/4133-When-should-I-use-L-to-pass-in-a-list-of-intervals) for a discussion around this topic
-      - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#adding-intervals) and run main.intervals.nf instead of main.nf
+      - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#adding-intervals) and **run main.intervals.nf instead of main.nf**
          - Here is a command to download the .bed file provided by Illumina for their Illumina Exome 2.5 Panel HG38 genome:
               ```bash
               curl -O https://support.illumina.com/content/dam/illumina-support/documents/downloads/productfiles/illumina-prep/exome/hg38_Twist_ILMN_Exome_2.5_Panel_annotated.BED
@@ -226,8 +226,6 @@ export NXF_SINGULARITY_CACHEDIR=$HOME/nextflow_singularity_cache
 # Run the Nextflow pipeline
 nextflow run main.nf
 ```
-### Using intervals for targeted variant calling
-Use the main.intervals.nf script instead of the main.nf script
 ## Pipeline Outputs
 
 There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main files we are interested in are the annotated [.vcf](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format) and [.maf](https://docs.gdc.cancer.gov/Data/File_Formats/MAF_Format/) files, saved to the ./results/mutect2/directory. We are particularly interested in the filtered and annotated files. These can be loaded into an R markdown file for analysis with maftools, see [below](#optional-downstream-analyses).
