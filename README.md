@@ -206,12 +206,15 @@ Note that the nextflow.config.template file is set up for running Singularity. I
 
 ### Running locally
 
-With your nextflow.config and main.nf (or main.intervals.nf) files in your current working directory and nextflow installed, all you need to do is run the following command:
+With your nextflow.config and main.nf (or main.intervals.nf) files in your current working directory and nextflow installed, all you need to do is run the following command for genome-wide variant calling:
 
 ```bash
 nextflow run main.nf
 ```
-
+Or the following command for targeted variant calling:
+```bash
+nextflow run main.intervals.nf
+```
 ### Running on SLURM
 
 If you're using a high-performance computing (HPC) cluster that uses SLURM for job scheduling, you can create a [SLURM script](https://www.arch.jhu.edu/short-tutorial-how-to-create-a-slurm-script/) to run the pipeline. It may look something like this:
