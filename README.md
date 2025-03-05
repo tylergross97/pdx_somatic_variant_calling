@@ -22,6 +22,7 @@ This pipeline is built using [Nextflow](https://www.nextflow.io/), a workflow ma
 This pipeline is designed to perform [somatic short variant calling](https://www.garvan.org.au/news-resources/science-explained/types-of-variants) (SNPs Indels) from [patient-derived xenograft (PDX) models](https://en.wikipedia.org/wiki/Patient_derived_xenograft). Specifically, it was built to handle data without a matched-normal sample, which is referred to tumor-only variant calling.
 
 [![pdx_diagram](images/pdx_diagram.png)](https://www.criver.com/products-services/discovery-services/pharmacology-studies/oncology-immuno-oncology-studies/oncology-study-models/patient-derived-xenografts-pdx-models?region=3601)
+Source: https://www.criver.com/products-services/discovery-services/pharmacology-studies/oncology-immuno-oncology-studies/oncology-study-models/patient-derived-xenografts-pdx-models?region=3601
 
 Somatic short variant calling of PDX models without matched-normals is a common task for bioinformaticians. However, it is important to address the unique set of challenges that this task presents, which will be covered shortly.
 
@@ -180,9 +181,10 @@ In your cloned repository directory, you have a nextflow.config.template file. A
 ```bash
 cp nextflow.config.template nextflow.config
 ```
-#### Nextflow config template
+#### Nextflow config template (default)
    ![Nextflow config](images/nextflow.config.template.png)
 ##### Adding Intervals
+Make the following changes to the nextflow.config file by specifying the path to your intervals .bed file
    ![Nextflow config with intervals](images/nextflow.config.template.intervals.png)
 ##### Changing to Docker
 Note that the nextflow.config.template file is set up for running Singularity. If using Docker, make the following changes:
@@ -192,7 +194,7 @@ Note that the nextflow.config.template file is set up for running Singularity. I
 
 ### Running locally
 
-With your nextflow.config and main.nf files in your current working directory and nextflow installed, all you need to do is run the following command:
+With your nextflow.config and main.nf (or main.intervals.nf) files in your current working directory and nextflow installed, all you need to do is run the following command:
 
 ```bash
 nextflow run main.nf
