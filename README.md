@@ -1,6 +1,6 @@
 # PDX Somatic Variant Calling Nextflow Pipeline
 
-A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel variant calling from Patient-Derived Xenograft (PDX) models. The pipeline is designed to be easy to implement for HPC users or locally. Can be used for whole-genome sequencing (WGS) or targeted sequencing data (e.g., whole-exome sequencing (WES), as explain in the 'Intervals' section [Getting Set Up](#getting-set-up).
+A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel variant calling from Patient-Derived Xenograft (PDX) models. The pipeline is designed to be easy to implement for HPC users or locally and can be used on whole-genome sequencing (WGS) or whole-exome sequencing (WES) data, as explain in the 'Intervals' section [Getting Set Up](#getting-set-up).
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -90,7 +90,7 @@ Before running this pipeline, ensure you have the following tools and resources 
         gunzip GCF_000001635.27_GRCm39_genomic.fna.gz
          ```
 
-5. GATK Resource Bundle (for hg38)
+4. GATK Resource Bundle (for hg38)
    - Download from: [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle)
       - This contains the accessory files needed for the variant calling portion of the pipeline (e.g., database of common germline variants)
          - Note that some of these files are multiple GBs - this is one of the reasons I personally use an HPC system and not my local computer!
@@ -133,7 +133,7 @@ Before running this pipeline, ensure you have the following tools and resources 
             curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/1000g_pon.hg38.vcf.gz
             curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/1000g_pon.hg38.vcf.gz.tbi
             ```
-6. Input Data:
+5. Input Data:
    - Paired-end FASTQ files from your PDX samples
       - FASTQ File Naming Convention:
          This pipeline requires a specific naming convention for input FASTQ files. Files should follow this pattern:
@@ -156,23 +156,24 @@ Before running this pipeline, ensure you have the following tools and resources 
    
          If your files don't match this naming convention, you may need to rename them before running the pipeline.
 
-7. Intervals
+6. Intervals
       - The default behavior of this pipeline is to perform variant calling across the entire genome
-      - If you have WES or targeted sequencing data, you may want to provide the capture-kit-specific intervals of the capture site in the form of a BED file
-         - This improves computational effiency and reduces off-target noise of both base recalibration and variant calling
-         - However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred and you may miss some important variants - for this reason we recommend padding your intervals
-            - See this [article](https://sites.google.com/a/broadinstitute.org/legacy-gatk-documentation/frequently-asked-questions/4133-When-should-I-use-L-to-pass-in-a-list-of-intervals) for a discussion around this topic
-      - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#adding-intervals) and **run main.intervals.nf instead of main.nf**
-         - Here is a command to download the .bed file provided by Illumina for their Illumina Exome 2.5 Panel HG38 genome:
-              ```bash
-              curl -O https://support.illumina.com/content/dam/illumina-support/documents/downloads/productfiles/illumina-prep/exome/hg38_Twist_ILMN_Exome_2.5_Panel_annotated.BED
-              ```
+      - If you have WES data, you may want to provide the capture-kit-specific intervals of the capture site in the form of a BED file
          - The main.intervals.nf is designed to perform variant calling on targeted regions
+         - Targeting your analysis to specific intervals improves computational effiency and reduces off-target noise of both base recalibration and variant calling
+         - However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred and you may miss some important variants - for this reason we pad each genomic interval by 100 base pairs on each side
+            - See this [article](https://sites.google.com/a/broadinstitute.org/legacy-gatk-documentation/frequently-asked-questions/4133-When-should-I-use-L-to-pass-in-a-list-of-intervals) for a discussion around this topic
+         - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#adding-intervals) and **run main.intervals.nf instead of main.nf**
+            - Here is a command to download the .bed file provided by Illumina for their Illumina Exome 2.5 Panel HG38 genome:
+                 ```bash
+                 curl -O https://support.illumina.com/content/dam/illumina-support/documents/downloads/productfiles/illumina-prep/exome/hg38_Twist_ILMN_Exome_2.5_Panel_annotated.BED
+                 ```
+      
 
-8. R (version 4.0 or later) for downstream analysis with maftools
+7. R (version 4.0 or later) for downstream analysis with maftools
    - Installation instructions: [R Installation Guide](https://cran.r-project.org/) and [maftools](https://www.bioconductor.org/packages/release/bioc/html/maftools.html)
 
-9. Python (version 3.6 or later) for downstream analysis of contamination
+8. Python (version 3.6 or later) for downstream analysis of contamination
    - Installation instructions: [Python Installation Guide](https://www.python.org/downloads/)
 
 ### Preparing your [nextflow.config](https://www.nextflow.io/docs/latest/config.html) file
