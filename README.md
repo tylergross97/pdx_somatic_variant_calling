@@ -1,6 +1,6 @@
 # PDX Somatic Variant Calling Nextflow Pipeline
 
-A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel variant calling from Patient-Derived Xenograft (PDX) models. The pipeline is designed to work out-of-box for HPC users.
+A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel variant calling from Patient-Derived Xenograft (PDX) models. The pipeline is designed to be easy to implement for HPC users or locally and can be used on whole-genome sequencing (WGS) or whole-exome sequencing (WES) data, as explain in the 'Intervals' section [Getting Set Up](#getting-set-up).
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -22,6 +22,7 @@ This pipeline is built using [Nextflow](https://www.nextflow.io/), a workflow ma
 This pipeline is designed to perform [somatic short variant calling](https://www.garvan.org.au/news-resources/science-explained/types-of-variants) (SNPs Indels) from [patient-derived xenograft (PDX) models](https://en.wikipedia.org/wiki/Patient_derived_xenograft). Specifically, it was built to handle data without a matched-normal sample, which is referred to tumor-only variant calling.
 
 [![pdx_diagram](images/pdx_diagram.png)](https://www.criver.com/products-services/discovery-services/pharmacology-studies/oncology-immuno-oncology-studies/oncology-study-models/patient-derived-xenografts-pdx-models?region=3601)
+Source: [Charles River](https://www.criver.com/products-services/discovery-services/pharmacology-studies/oncology-immuno-oncology-studies/oncology-study-models/patient-derived-xenografts-pdx-models?region=3601)
 
 Somatic short variant calling of PDX models without matched-normals is a common task for bioinformaticians. However, it is important to address the unique set of challenges that this task presents, which will be covered shortly.
 
@@ -83,13 +84,24 @@ Before running this pipeline, ensure you have the following tools and resources 
         ```bash
         curl -O https://42basepairs.com/download/s3/ont-open-data/colo829_2023.04/analysis/sup_wf_som_var/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
         ```
-      - Mouse (mm39)
+      - Mouse (mm39 or mm10_nsg)
+        - Mouse (mm39)
         ```bash
         curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/GCF_000001635.27_GRCm39_genomic.fna.gz
         gunzip GCF_000001635.27_GRCm39_genomic.fna.gz
          ```
+        - Note: If your PDX models utilized NSG (immunocompromised) mice, we recommend using the following NSG-adapted reference genome from [Hynds et al., 2024](https://www.nature.com/articles/s41467-024-47547-3)
+           - Use of this reference genome has been shown to improve the filtering of mouse reads when NSG mice are used for the PDX models
+             ```bash
+             curl -O https://zenodo.org/records/10304175/files/nsg_adapted_reference.zip?download=1
+             mv 'nsg_adapted_reference.zip?download=1' nsg_adapted_reference.zip
+             unzip nsg_adapted_reference.zip
+             cd nsgReference/
+             ls
+             ```
+             - Here you will see the 'mm10.nsgSpike.fa' reference genome that you can specify in your nextflow.config file for params.mm39_fasta instead of the unmodified mouse reference genome
 
-5. GATK Resource Bundle (for hg38)
+4. GATK Resource Bundle (for hg38)
    - Download from: [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle)
       - This contains the accessory files needed for the variant calling portion of the pipeline (e.g., database of common germline variants)
          - Note that some of these files are multiple GBs - this is one of the reasons I personally use an HPC system and not my local computer!
@@ -132,7 +144,7 @@ Before running this pipeline, ensure you have the following tools and resources 
             curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/1000g_pon.hg38.vcf.gz
             curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/1000g_pon.hg38.vcf.gz.tbi
             ```
-6. Input Data:
+5. Input Data:
    - Paired-end FASTQ files from your PDX samples
       - FASTQ File Naming Convention:
          This pipeline requires a specific naming convention for input FASTQ files. Files should follow this pattern:
@@ -155,22 +167,24 @@ Before running this pipeline, ensure you have the following tools and resources 
    
          If your files don't match this naming convention, you may need to rename them before running the pipeline.
 
-7. Intervals
-      - It is important to note that although this pipeline can handle variant calling in targeted regions of the genome with a few adjustments to the nextflow.config and main.nf file, its out-of-the-box functionality is to perform variant calling of the entire genome
-      - If you have WES or targeted sequencing data, you may want to provide the capture-kit-specific intervals of the capture site in the form of a BED file
-         - This improves computational effiency and reduces off-target noise of both base recalibration and variant calling
-         - However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred and you may miss some important variants - for this reason we recommend padding your intervals
+6. Intervals
+      - The default behavior of this pipeline is to perform variant calling across the entire genome
+      - If you have WES data, you may want to provide the capture-kit-specific intervals of the capture site in the form of a BED file
+         - The main.intervals.nf is designed to perform variant calling on targeted regions
+         - Targeting your analysis to specific intervals improves computational effiency and reduces off-target noise of both base recalibration and variant calling
+         - However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred and you may miss some important variants - for this reason we pad each genomic interval by 100 base pairs on each side
             - See this [article](https://sites.google.com/a/broadinstitute.org/legacy-gatk-documentation/frequently-asked-questions/4133-When-should-I-use-L-to-pass-in-a-list-of-intervals) for a discussion around this topic
-      - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#adding-intervals) and include this param in your main.nf file as shown [here](#using-intervals-for-targeted-variant-calling)
-         - Here is a command to download the .bed file provided by Illumina for their Illumina Exome 2.5 Panel HG38 genome:
-              ```bash
-              curl -O https://support.illumina.com/content/dam/illumina-support/documents/downloads/productfiles/illumina-prep/exome/hg38_Twist_ILMN_Exome_2.5_Panel_annotated.BED
-              ```
+         - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#adding-intervals) and **run main.intervals.nf instead of main.nf**
+            - Here is a command to download the .bed file provided by Illumina for their Illumina Exome 2.5 Panel HG38 genome:
+                 ```bash
+                 curl -O https://support.illumina.com/content/dam/illumina-support/documents/downloads/productfiles/illumina-prep/exome/hg38_Twist_ILMN_Exome_2.5_Panel_annotated.BED
+                 ```
+      
 
-8. R (version 4.0 or later) for downstream analysis with maftools
+7. R (version 4.0 or later) for downstream analysis with maftools
    - Installation instructions: [R Installation Guide](https://cran.r-project.org/) and [maftools](https://www.bioconductor.org/packages/release/bioc/html/maftools.html)
 
-9. Python (version 3.6 or later) for downstream analysis of contamination
+8. Python (version 3.6 or later) for downstream analysis of contamination
    - Installation instructions: [Python Installation Guide](https://www.python.org/downloads/)
 
 ### Preparing your [nextflow.config](https://www.nextflow.io/docs/latest/config.html) file
@@ -179,9 +193,10 @@ In your cloned repository directory, you have a nextflow.config.template file. A
 ```bash
 cp nextflow.config.template nextflow.config
 ```
-#### Nextflow config template
+#### Nextflow config template (default)
    ![Nextflow config](images/nextflow.config.template.png)
 ##### Adding Intervals
+Make the following changes to the nextflow.config file by specifying the path to your intervals .bed file
    ![Nextflow config with intervals](images/nextflow.config.template.intervals.png)
 ##### Changing to Docker
 Note that the nextflow.config.template file is set up for running Singularity. If using Docker, make the following changes:
@@ -191,12 +206,15 @@ Note that the nextflow.config.template file is set up for running Singularity. I
 
 ### Running locally
 
-With your nextflow.config and main.nf files in your current working directory and nextflow installed, all you need to do is run the following command:
+With your nextflow.config and main.nf (or main.intervals.nf) files in your current working directory and nextflow installed, all you need to do is run the following command for genome-wide variant calling:
 
 ```bash
 nextflow run main.nf
 ```
-
+Or the following command for targeted variant calling:
+```bash
+nextflow run main.intervals.nf
+```
 ### Running on SLURM
 
 If you're using a high-performance computing (HPC) cluster that uses SLURM for job scheduling, you can create a [SLURM script](https://www.arch.jhu.edu/short-tutorial-how-to-create-a-slurm-script/) to run the pipeline. It may look something like this:
@@ -223,16 +241,11 @@ export NXF_SINGULARITY_CACHEDIR=$HOME/nextflow_singularity_cache
 # Run the Nextflow pipeline
 nextflow run main.nf
 ```
-### Using intervals for targeted variant calling
-#### Update these process blocks:
-![main.intervals.nf](images/main.intervals.nf.png)
-#### Update the workflow:
-![main.intervals.workflow.nf](images/main.intervals.workflow.nf.png)
 ## Pipeline Outputs
 
 There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main files we are interested in are the annotated [.vcf](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format) and [.maf](https://docs.gdc.cancer.gov/Data/File_Formats/MAF_Format/) files, saved to the ./results/mutect2/directory. We are particularly interested in the filtered and annotated files. These can be loaded into an R markdown file for analysis with maftools, see [below](#optional-downstream-analyses).
 
-If you are looking to analyses the level of contamination of your original samples, you will need to access the files outputted from bamcmp in the ./results/bamcmp directory
+If you are looking to analyze the level of contamination of your original samples, you will need to access the files outputted from bamcmp in the ./results/bamcmp directory
 
 ## Downstream analyses
 
@@ -267,4 +280,5 @@ This pipeline uses several tools that should be cited independently:
 7. Chen, S., Zhou, Y., Chen, Y., & Gu, J. (2018). fastp: an ultra-fast all-in-one FASTQ preprocessor. Bioinformatics, 34(17), i884-i890.
 8. Li, H. (2013). Aligning sequence reads, clone sequences and assembly contigs with BWA-MEM. arXiv preprint arXiv:1303.3997.
 9. Halperin, R. F., Carpten, J. D., Manojlovic, Z., Aldrich, J., Keats, J., Byron, S., ... & Craig, D. W. (2017). A method to reduce ancestry related germline false positives in tumor only somatic variant calling. BMC medical genomics, 10, 1-17.
+10. Hynds, R. E., Huebner, A., Pearce, D. R., Hill, M. S., Akarca, A. U., Moore, D. A., ... & Swanton, C. (2024). Representation of genomic intratumor heterogeneity in multi-region non-small cell lung cancer patient-derived xenograft models. Nature communications, 15(1), 4653.
 
