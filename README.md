@@ -99,7 +99,7 @@ Before running this pipeline, ensure you have the following tools and resources 
              cd nsgReference/
              ls
              ```
-             - Here you will see the 'mm10.nsgSpike.fa' reference genome that you can specify in your nextflow.config file for params.mm39 instead of the mm39
+             - Here you will see the 'mm10.nsgSpike.fa' reference genome that you can specify in your nextflow.config file for params.mm39_fasta instead of the unmodified mouse reference genome
 
 4. GATK Resource Bundle (for hg38)
    - Download from: [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle)
