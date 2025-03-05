@@ -1,6 +1,6 @@
 # PDX Somatic Variant Calling Nextflow Pipeline
 
-A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel variant calling from Patient-Derived Xenograft (PDX) models. The pipeline is designed to be easy to implement for HPC users or locally and can be used on whole-genome sequencing (WGS) or whole-exome sequencing (WES) data, as explain in the 'Intervals' section [Getting Set Up](#getting-set-up).
+A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel variant calling from Patient-Derived Xenograft (PDX) models. The pipeline is designed to be easy to implement for HPC users or locally and can be used on whole-genome sequencing (WGS) or whole-exome sequencing (WES) data, as explained in the 'Intervals' section [Getting Set Up](#getting-set-up).
 
 ## Table of Contents
 1. [Introduction](#introduction)
