@@ -101,7 +101,7 @@ Before running this pipeline, ensure you have the following tools and resources 
              ```
              - Here you will see the 'mm10.nsgSpike.fa' reference genome that you can specify in your nextflow.config file for params.mm39_fasta instead of the unmodified mouse reference genome
 
-4. GATK Resource Bundle (for hg38)
+4. GATK Resource Bundle (accessory files)
    - Download from: [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle)
       - This contains the accessory files needed for the variant calling portion of the pipeline (e.g., database of common germline variants)
          - Note that some of these files are multiple GBs - this is one of the reasons I personally use an HPC system and not my local computer!
@@ -144,7 +144,7 @@ Before running this pipeline, ensure you have the following tools and resources 
             curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/1000g_pon.hg38.vcf.gz
             curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/1000g_pon.hg38.vcf.gz.tbi
             ```
-5. Input Data:
+5. FASTQ files:
    - Paired-end FASTQ files from your PDX samples
       - FASTQ File Naming Convention:
          This pipeline requires a specific naming convention for input FASTQ files. Files should follow this pattern:
@@ -167,8 +167,8 @@ Before running this pipeline, ensure you have the following tools and resources 
    
          If your files don't match this naming convention, you may need to rename them before running the pipeline.
 
-6. Intervals
-      - The default behavior of this pipeline is to perform variant calling across the entire genome
+6. Intervals.bed file (for WES data)
+      - The default behavior of this pipeline is to perform variant calling across the entire genome (main.nf)
       - If you have WES data, you may want to provide the capture-kit-specific intervals of the capture site in the form of a BED file
          - The main.intervals.nf is designed to perform variant calling on targeted regions
          - Targeting your analysis to specific intervals improves computational effiency and reduces off-target noise of both base recalibration and variant calling
