@@ -10,7 +10,8 @@ A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel va
 5. [How to Run Pipeline](#how-to-run-pipeline)
 6. [Pipeline Outputs](#pipeline-outputs)
 7. [Downstream Analyses](#downstream-analyses)
-8. [Citations](#citations)
+8. [Planned Updates](#planned-updates)
+9. [Citations](#citations)
 
 ## Introduction
 
@@ -257,6 +258,11 @@ Provided is an example of an R Markdown file that uses maftools to analyze the f
 
 Click on image below to view full markdown file in .pdf format!
 [![maftools.Rmd](images/maftools_analysis_preview.png)](images/maftools.pdf)
+
+## Planned Updates
+- The following changes are expected to made to increase usability and improve analysis in the near future. Collaboration is welcome!
+   - Automatic handling targeted variant calling in main.nf if params.intervals is specified in the nextflow.config file, eliminating the need to have a separate main.intervals.nf file
+   - Downloading the accessory files as part of main.nf workflow through the addition of a DOWNLOAD_ACCESSORY_FILES process, eliminating the need to manually download these files and specify their path in nextflow.config file
 
 ## Citations
 
