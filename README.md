@@ -192,10 +192,8 @@ In your cloned repository directory, you have a nextflow.config.template file. A
 ```bash
 cp nextflow.config.template nextflow.config
 ```
-#### Nextflow config template (default)
-   ![Nextflow config](images/nextflow.config.template.png)
 ##### Adding Intervals
-Make the following changes to the nextflow.config file by specifying the path to your intervals .bed file
+Add the following param to your nextflow.config file and speciy its path
    ![Nextflow config with intervals](images/nextflow.config.template.intervals.png)
 ##### Changing to Docker
 Note that the nextflow.config.template file is set up for running Singularity. If using Docker, make the following changes:
@@ -244,7 +242,7 @@ nextflow run main.nf
 
 There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main files we are interested in are the annotated [.vcf](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format) and [.maf](https://docs.gdc.cancer.gov/Data/File_Formats/MAF_Format/) files, saved to the ./results/mutect2/directory. We are particularly interested in the filtered and annotated files. These can be loaded into an R markdown file for analysis with maftools, see [below](#optional-downstream-analyses).
 
-If you are looking to analyze the level of contamination of your original samples, you will need to access the files outputted from bamcmp in the ./results/bamcmp directory
+If you are looking to analyze the level of contamination of your original samples, you will need to access the .txt files for each sample outputted from bamcmp in the ./results/bamcmp directory
 
 ## Downstream analyses
 
