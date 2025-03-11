@@ -104,7 +104,7 @@ Before running this pipeline, ensure you have the following tools and resources 
 4. GATK Resource Bundle (accessory files)
    - The required accessory files are automatically downloaded from [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle) at the beginning of the pipeline
          - Note that some of these files are multiple GBs - this is one of the reasons I personally use an HPC system and not my local computer!
-         - I've provided some details on the accessory files for you ![here](images/accessory_files.pdf)
+         - I've provided some details on the accessory files for you [here](images/accessory_files.pdf)
 5. FASTQ files:
    - Paired-end FASTQ files from your PDX samples
       - FASTQ File Naming Convention:
