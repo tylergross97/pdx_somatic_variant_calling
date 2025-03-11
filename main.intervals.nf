@@ -609,6 +609,7 @@ process FUNCOTATOR_MAF {
 }
 
 workflow {
+	ACCESSORY_FILES_DOWNLOAD()
 	FASTP(ch_fastq)
 	MULTIQC(FASTP.out.json_report.collect())
 	human_index = INDEX_HUMAN(params.hg38_fasta)
@@ -666,12 +667,12 @@ workflow {
 		params.hg38_fasta,
 		INDEX_REFERENCE.out.fasta_index,
 		CREATE_DICT.out.dict_file,
-		params.dbsnp_vcf,
-		params.dbsnp_vcf_idx,
-		params.known_indels,
-		params.known_indels_idx,
-		params.mills_indels,
-		params.mills_indels_idx,
+		ACCESSORY_FILES_DOWNLOAD.out.dbsnp_vcf,
+		ACCESSORY_FILES_DOWNLOAD.out.dbsnp_vcf_idx,
+		ACCESSORY_FILES_DOWNLOAD.out.known_indels,
+		ACCESSORY_FILES_DOWNLOAD.out.known_indels_idx,
+		ACCESSORY_FILES_DOWNLOAD.out.mills_indels,
+		ACCESSORY_FILES_DOWNLOAD.out.mills_indels_idx,
 		params.intervals
 
 	)
@@ -686,16 +687,16 @@ workflow {
 		INDEX_REFERENCE.out.fasta_index,
 		CREATE_DICT.out.dict_file,
 		APPLY_BQSR.out.recal_bam,
-		params.gnomad,
-		params.gnomad_idx,
-		params.pon,
-		params.pon_idx,
+		ACCESSORY_FILES_DOWNLOAD.out.gnomad,
+		ACCESSORY_FILES_DOWNLOAD.out.gnomad_idx,
+		ACCESSORY_FILES_DOWNLOAD.out.pon,
+		ACCESSORY_FILES_DOWNLOAD.out.pon_idx,
 		params.intervals
 	)
 	GET_PILEUP_SUMMARIES(
 		APPLY_BQSR.out.recal_bam,
-		params.filtered_vcf,
-		params.filtered_vcf_idx
+		ACCESSORY_FILES_DOWNLOAD.out.filtered_vcf,
+		ACCESSORY_FILES_DOWNLOAD.out.filtered_vcf_idx
 	)
 	CALCULATE_CONTAMINATION(GET_PILEUP_SUMMARIES.out.pileup_table)
 	INDEX_UNFILTERED_VCF(MUTECT2.out.unfiltered_vcf)
