@@ -155,7 +155,7 @@ In your cloned repository directory, you have a nextflow.config.template file. A
 cp nextflow.config.template nextflow.config
 ```
 ##### Adding Intervals
-Add the following param to your nextflow.config file and speciy its path
+Add the following param to your nextflow.config file and specify its path
    ![Nextflow config with intervals](images/nextflow.config.template.intervals.png)
 ##### Changing to Docker
 Note that the nextflow.config.template file is set up for running Singularity. If using Docker, make the following changes:
