@@ -102,48 +102,9 @@ Before running this pipeline, ensure you have the following tools and resources 
              - Here you will see the 'mm10.nsgSpike.fa' reference genome that you can specify in your nextflow.config file for params.mm39_fasta instead of the unmodified mouse reference genome
 
 4. GATK Resource Bundle (accessory files)
-   - Download from: [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle)
-      - This contains the accessory files needed for the variant calling portion of the pipeline (e.g., database of common germline variants)
+   - The required accessory files are automatically downloaded from [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle) at the beginning of the pipeline
          - Note that some of these files are multiple GBs - this is one of the reasons I personally use an HPC system and not my local computer!
-         - You could download the  entire bucket, but not all of the files are needed. I've provided commands to download the necessary files for you below.
-         - dbsnp_vcf and dbsnp_vcf_idx: These contain common germline SNPs in vcf format
-           - These known variants are to ensure that common variants are not mistaken for sequencing errors and throw off recalibration 
-              ```bash
-              curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf
-              curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf.idx
-              ```
-         - known_indels and known_indels_idx: These contain common germline Indels in vcf format used in base recalibration
-            - These known variants are to ensure that common variants are not mistaken for sequencing errors and throw off recalibration 
-              ```bash
-              curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.known_indels.vcf.gz
-              curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.known_indels.vcf.gz.tbi
-              ```
-         - mills_indels and mills_indels_idx: Another source of common germline indels in vcf format used in base  recalibration
-           - These known variants are to ensure that common variants are not mistaken for sequencing errors and throw off recalibration 
-              ```bash
-              curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
-              curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi
-              ```
-           - gnomad and gnomad_idx: Provides germline variants from the Genome Aggregation Database and there allele frequencies needed for Mutect2 to calculate the likelihood of a variant being germline rather than somatic
-              - If we had a matched-normal sample, we would use that, but this is important for tumor-only mode
-             ```bash
-             curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/af-only-gnomad.hg38.vcf.gz
-             curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/af-only-gnomad.hg38.vcf.gz.tbi
-             ```
-         - filtered_vcf and filtered_vcf_idx: Common germline SNPs only (allele frequency > 5%) from the Exome Aggregation Consortium and used as filtering of variants
-            ```bash
-            curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/small_exac_common_3.hg38.vcf.gz
-            curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/small_exac_common_3.hg38.vcf.gz.tbi
-            ```
-         - pon and pon_idx
-           - Panel of normals (PoN) from 1000 Genomes
-               - A PoN is used to filter out technical sources of variation and is recommended input for Mutect
-               - Because we are looking at technical bias, it is essential that the PoN is generated from a sequencing protocol as similar to the one used to generate your data
-                  - Ideally this is from the same capture kit and at the same sequencing facility but if that is not available, the one I have provided is considered a good option as it is considered representative of the general population
-            ```bash
-            curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/1000g_pon.hg38.vcf.gz
-            curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/1000g_pon.hg38.vcf.gz.tbi
-            ```
+         - I've provided some details on the accessory files for you [here](images/accessory_files.pdf)
 5. FASTQ files:
    - Paired-end FASTQ files from your PDX samples
       - FASTQ File Naming Convention:
@@ -184,7 +145,7 @@ Before running this pipeline, ensure you have the following tools and resources 
 7. R (version 4.0 or later) for downstream analysis with maftools
    - Installation instructions: [R Installation Guide](https://cran.r-project.org/) and [maftools](https://www.bioconductor.org/packages/release/bioc/html/maftools.html)
 
-8. Python (version 3.6 or later) for downstream analysis of contamination
+9. Python (version 3.6 or later) for downstream analysis of contamination
    - Installation instructions: [Python Installation Guide](https://www.python.org/downloads/)
 
 ### Preparing your [nextflow.config](https://www.nextflow.io/docs/latest/config.html) file
@@ -194,7 +155,7 @@ In your cloned repository directory, you have a nextflow.config.template file. A
 cp nextflow.config.template nextflow.config
 ```
 ##### Adding Intervals
-Add the following param to your nextflow.config file and speciy its path
+Add the following param to your nextflow.config file and specify its path
    ![Nextflow config with intervals](images/nextflow.config.template.intervals.png)
 ##### Changing to Docker
 Note that the nextflow.config.template file is set up for running Singularity. If using Docker, make the following changes:

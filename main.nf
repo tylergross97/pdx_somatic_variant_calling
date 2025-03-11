@@ -3,6 +3,58 @@ nextflow.enable.dsl = 2
 
 ch_fastq = Channel.fromFilePairs("${params.fastq}/*_S*_R{1,2}_001.fastq.gz", checkIfExists: true)
 
+process ACCESSORY_FILES_DOWNLOAD {
+    conda "conda-forge::curl=7.86.0"
+    publishDir params.outdir_accessory_files, mode: 'copy'
+
+    output:
+    // dbSNP files
+    path "Homo_sapiens_assembly38.dbsnp138.vcf", emit: dbsnp_vcf
+    path "Homo_sapiens_assembly38.dbsnp138.vcf.idx", emit: dbsnp_vcf_idx
+    // Known indels
+    path "Homo_sapiens_assembly38.known_indels.vcf.gz", emit: known_indels
+    path "Homo_sapiens_assembly38.known_indels.vcf.gz.tbi", emit: known_indels_idx
+    // Mills indels
+    path "Mills_and_1000G_gold_standard.indels.hg38.vcf.gz", emit: mills_indels
+    path "Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi", emit: mills_indels_idx
+    // gnomAD
+    path "af-only-gnomad.hg38.vcf.gz", emit: gnomad
+    path "af-only-gnomad.hg38.vcf.gz.tbi", emit: gnomad_idx
+    // Filtered VCF (ExAC common SNPs)
+    path "small_exac_common_3.hg38.vcf.gz", emit: filtered_vcf
+    path "small_exac_common_3.hg38.vcf.gz.tbi", emit: filtered_vcf_idx
+    // Panel of Normals (PoN)
+    path "1000g_pon.hg38.vcf.gz", emit: pon
+    path "1000g_pon.hg38.vcf.gz.tbi", emit: pon_idx
+
+    script:
+    """
+    # dbSNP files
+    curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf
+    curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf.idx
+
+    # Known indels
+    curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.known_indels.vcf.gz
+    curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.known_indels.vcf.gz.tbi
+
+    # Mills indels
+    curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
+    curl -O https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi
+
+    # gnomAD
+    curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/af-only-gnomad.hg38.vcf.gz
+    curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/af-only-gnomad.hg38.vcf.gz.tbi
+
+    # Filtered VCF (ExAC common SNPs)
+    curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/small_exac_common_3.hg38.vcf.gz
+    curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/small_exac_common_3.hg38.vcf.gz.tbi
+
+    # Panel of Normals (PoN)
+    curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/1000g_pon.hg38.vcf.gz
+    curl -O https://storage.googleapis.com/gatk-best-practices/somatic-hg38/1000g_pon.hg38.vcf.gz.tbi
+    """
+}
+
 process FASTP {
 	container "quay.io/biocontainers/fastp:0.24.0--heae3180_1"
 	publishDir params.outdir_fastp, mode: 'copy'
@@ -532,6 +584,7 @@ process FUNCOTATOR_MAF {
 }
 
 workflow {
+	ACCESSORY_FILES_DOWNLOAD()
 	FASTP(ch_fastq)
 	MULTIQC(FASTP.out.json_report.collect())
 	human_index = INDEX_HUMAN(params.hg38_fasta)
@@ -588,12 +641,12 @@ workflow {
 		params.hg38_fasta,
 		INDEX_REFERENCE.out.fasta_index,
 		CREATE_DICT.out.dict_file,
-		params.dbsnp_vcf,
-		params.dbsnp_vcf_idx,
-		params.known_indels,
-		params.known_indels_idx,
-		params.mills_indels,
-		params.mills_indels_idx
+		ACCESSORY_FILES_DOWNLOAD.out.dbsnp_vcf,
+		ACCESSORY_FILES_DOWNLOAD.out.dbsnp_vcf_idx,
+		ACCESSORY_FILES_DOWNLOAD.out.known_indels,
+		ACCESSORY_FILES_DOWNLOAD.out.known_indels_idx,
+		ACCESSORY_FILES_DOWNLOAD.out.mills_indels,
+		ACCESSORY_FILES_DOWNLOAD.out.mills_indels_idx
 
 	)
 	bqsr_input = MARK_DUPLICATES.out.marked_dup_bam.join(BASE_RECALIBRATOR.out.recal_data_table)
@@ -603,15 +656,15 @@ workflow {
 		INDEX_REFERENCE.out.fasta_index,
 		CREATE_DICT.out.dict_file,
 		APPLY_BQSR.out.recal_bam,
-		params.gnomad,
-		params.gnomad_idx,
-		params.pon,
-		params.pon_idx,
+		ACCESSORY_FILES_DOWNLOAD.out.gnomad,
+		ACCESSORY_FILES_DOWNLOAD.out.gnomad_idx,
+		ACCESSORY_FILES_DOWNLOAD.out.pon,
+		ACCESSORY_FILES_DOWNLOAD.out.pon_idx,
 	)
 	GET_PILEUP_SUMMARIES(
 		APPLY_BQSR.out.recal_bam,
-		params.filtered_vcf,
-		params.filtered_vcf_idx
+		ACCESSORY_FILES_DOWNLOAD.out.filtered_vcf,
+		ACCESSORY_FILES_DOWNLOAD.out.filtered_vcf_idx
 	)
 	CALCULATE_CONTAMINATION(GET_PILEUP_SUMMARIES.out.pileup_table)
 	INDEX_UNFILTERED_VCF(MUTECT2.out.unfiltered_vcf)
