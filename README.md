@@ -272,6 +272,7 @@ Click on image below to view full markdown file in .pdf format!
       - Quantifying the degree of similarity between the PDX sample and the original patient sample
    - Perform somatic copy number analysis
    - Add public dataset for users to test the pipeline on
+   - Allow for a sample sheet for input files
 
 ## Citations
 
