@@ -271,6 +271,7 @@ Click on image below to view full markdown file in .pdf format!
    - Providing additional functionality for those with the original patient tumor sample:
       - Quantifying the degree of similarity between the PDX sample and the original patient sample
    - Perform somatic copy number analysis
+   - Add public dataset for users to test the pipeline on
 
 ## Citations
 
