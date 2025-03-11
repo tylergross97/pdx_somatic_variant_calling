@@ -104,21 +104,7 @@ Before running this pipeline, ensure you have the following tools and resources 
 4. GATK Resource Bundle (accessory files)
    - The required accessory files are automatically downloaded from [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle) at the beginning of the pipeline
          - Note that some of these files are multiple GBs - this is one of the reasons I personally use an HPC system and not my local computer!
-         - I've provided some details on the accessory files for you below.
-         - dbsnp_vcf and dbsnp_vcf_idx: These contain common germline SNPs in vcf format
-           - These known variants are to ensure that common variants are not mistaken for sequencing errors and throw off recalibration 
-         - known_indels and known_indels_idx: These contain common germline Indels in vcf format used in base recalibration
-            - These known variants are to ensure that common variants are not mistaken for sequencing errors and throw off recalibration 
-         - mills_indels and mills_indels_idx: Another source of common germline indels in vcf format used in base  recalibration
-           - These known variants are to ensure that common variants are not mistaken for sequencing errors and throw off recalibration 
-           - gnomad and gnomad_idx: Provides germline variants from the Genome Aggregation Database and there allele frequencies needed for Mutect2 to calculate the likelihood of a variant being germline rather than somatic
-              - If we had a matched-normal sample, we would use that, but this is important for tumor-only mode
-         - filtered_vcf and filtered_vcf_idx: Common germline SNPs only (allele frequency > 5%) from the Exome Aggregation Consortium and used as filtering of variants
-         - pon and pon_idx
-           - Panel of normals (PoN) from 1000 Genomes
-               - A PoN is used to filter out technical sources of variation and is recommended input for Mutect
-               - Because we are looking at technical bias, it is essential that the PoN is generated from a sequencing protocol as similar to the one used to generate your data
-                  - Ideally this is from the same capture kit and at the same sequencing facility but if that is not available, the one I have provided is considered a good option as it is considered representative of the general population
+         - I've provided some details on the accessory files for you [here]
 5. FASTQ files:
    - Paired-end FASTQ files from your PDX samples
       - FASTQ File Naming Convention:
