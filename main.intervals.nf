@@ -17,6 +17,7 @@ include { INDEX_BAM } from './modules/index_bam.nf'
 include { COUNT_READS } from './modules/count_reads.nf'
 include { MARK_DUPLICATES } from './modules/mark_duplicates.nf'
 include { INDEX_MARKED_DUPLICATES_INTERVALS } from './modules/index_marked_duplicates_intervals.nf'
+include { INDEX_REFERENCE } from './modules/index_reference.nf'
 include { CREATE_DICT } from './modules/create_dict.nf'
 include { BASE_RECALIBRATOR_INTERVALS } from './modules/base_recalibrator_intervals.nf'
 include { APPLY_BQSR_INTERVALS } from './modules/apply_bqsr_intervals.nf'
@@ -81,11 +82,11 @@ workflow {
 		.groupTuple()
 	COUNT_READS(bams_for_counting)
 	MARK_DUPLICATES(MERGE_BAMS.out.human_merged_sorted_bam)
-	INDEX_MARKED_DUPLICATES(MARK_DUPLICATES.out.marked_dup_bam)
+	INDEX_MARKED_DUPLICATES_INTERVALS(MARK_DUPLICATES.out.marked_dup_bam)
 	INDEX_REFERENCE(params.hg38_fasta)
 	CREATE_DICT(params.hg38_fasta)
-	BASE_RECALIBRATOR(
-		INDEX_MARKED_DUPLICATES.out.indexed_bam,
+	BASE_RECALIBRATOR_INTERVALS(
+		INDEX_MARKED_DUPLICATES_INTERVALS.out.indexed_bam,
 		params.hg38_fasta,
 		INDEX_REFERENCE.out.fasta_index,
 		CREATE_DICT.out.dict_file,
@@ -98,17 +99,17 @@ workflow {
 		params.intervals
 
 	)
-	bqsr_input = INDEX_MARKED_DUPLICATES.out.indexed_bam
-		.join(BASE_RECALIBRATOR.out.recal_data_table)
+	bqsr_input = INDEX_MARKED_DUPLICATES_INTERVALS.out.indexed_bam
+		.join(BASE_RECALIBRATOR_INTERVALS.out.recal_data_table)
 		.map { sample_id, bam, bai, recal_table ->
 			tuple(sample_id, bam, bai, recal_table)
 		}
-	APPLY_BQSR(bqsr_input, params.intervals)
-	MUTECT2(
+	APPLY_BQSR_INTERVALS(bqsr_input, params.intervals)
+	MUTECT2_INTERVALS(
 		params.hg38_fasta,
 		INDEX_REFERENCE.out.fasta_index,
 		CREATE_DICT.out.dict_file,
-		APPLY_BQSR.out.recal_bam,
+		APPLY_BQSR_INTERVALS.out.recal_bam,
 		ACCESSORY_FILES_DOWNLOAD.out.gnomad,
 		ACCESSORY_FILES_DOWNLOAD.out.gnomad_idx,
 		ACCESSORY_FILES_DOWNLOAD.out.pon,
@@ -116,13 +117,13 @@ workflow {
 		params.intervals
 	)
 	GET_PILEUP_SUMMARIES(
-		APPLY_BQSR.out.recal_bam,
+		APPLY_BQSR_INTERVALS.out.recal_bam,
 		ACCESSORY_FILES_DOWNLOAD.out.filtered_vcf,
 		ACCESSORY_FILES_DOWNLOAD.out.filtered_vcf_idx
 	)
 	CALCULATE_CONTAMINATION(GET_PILEUP_SUMMARIES.out.pileup_table)
-	INDEX_UNFILTERED_VCF(MUTECT2.out.unfiltered_vcf)
-	mutect2_contamination = MUTECT2.out.unfiltered_vcf.join(CALCULATE_CONTAMINATION.out.contamination_table).join(INDEX_UNFILTERED_VCF.out.unfiltered_vcf_idx)
+	INDEX_UNFILTERED_VCF(MUTECT2_INTERVALS.out.unfiltered_vcf)
+	mutect2_contamination = MUTECT2_INTERVALS.out.unfiltered_vcf.join(CALCULATE_CONTAMINATION.out.contamination_table).join(INDEX_UNFILTERED_VCF.out.unfiltered_vcf_idx)
  	FILTER_MUTECT_CALLS(
 		params.hg38_fasta,
 		INDEX_REFERENCE.out.fasta_index,
