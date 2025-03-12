@@ -233,6 +233,7 @@ Click on image below to view full markdown file in .pdf format!
    - Perform somatic copy number analysis
    - Add public dataset for users to test the pipeline on
    - Allow for a sample sheet for input files
+   - Converting each process to a module and calling modules in the main.nf script
 
 ## Citations
 
