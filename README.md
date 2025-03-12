@@ -226,7 +226,6 @@ Click on image below to view full markdown file in .pdf format!
       - If mouse read contamination is high, perform strict HAMA filtering
       - If mouse read contamination is lower, perform lenient HAMA filtering
    - Automatic handling targeted variant calling in main.nf if params.intervals is specified in the nextflow.config file, eliminating the need to have a separate main.intervals.nf file
-   - Downloading the accessory files as part of main.nf workflow through the addition of a DOWNLOAD_ACCESSORY_FILES process, eliminating the need to manually download these files and specify their path in nextflow.config file
    - Providing additionality functionality for those with a matched-normal sample:
       - Using this to filter germline variants
    - Providing additional functionality for those with the original patient tumor sample:
