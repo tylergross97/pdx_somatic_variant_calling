@@ -1,4 +1,4 @@
-process BASE_RECALIBRATOR {
+process BASE_RECALIBRATOR_INTERVALS {
 	container "community.wave.seqera.io/library/gatk4:4.6.1.0--e3124bcb2431f4a9"
 	publishDir params.outdir_bqsr, mode: 'symlink'
 
