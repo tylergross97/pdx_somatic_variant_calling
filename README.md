@@ -209,16 +209,16 @@ If you are looking to analyze the level of contamination of your original sample
 ## Downstream analyses
 
 ### Contamination Analysis (Python)
-Provided is an example of a Python notebook that you can use to visualize contamination present in your original sample. Set the directory variable to ".results/bamcmp/" to run your analysis on the output of the bamcmp process.
+Provided is an example of a Python script that you can use to visualize contamination present in your original sample. Set the directory variable to ".results/bamcmp/" to run your analysis on the output of the bamcmp process.
 
-Click on image below to view full notebook in .pdf format!
-[![Contamination.ipynb](images/contamination_analysis_preview.png)](images/Contamination_bamcmp.pdf)
+[Python script](scripts/contamination_bamcmp.py)!
+[![Contamination_analysis](images/contamination_analysis_preview.png)](images/contamination_analysis_preview.png)
 
 ### maftools analysis (R)
-Provided is an example of an R Markdown file that uses maftools to analyze the filtered.annotated.maf.gz files. These files are output of the final process the pipeline. In the provided example, I was looking to identify mutations in genes known to be implicated in Renal Cell Carcinoma (RCC) for the purpose of genomic characterization of my PDX models.
+Provided is an example of an R scripts that uses maftools to analyze the filtered.annotated.maf.gz files. These files are output of the final process the pipeline. In the provided example, I was looking to identify mutations in genes known to be implicated in Renal Cell Carcinoma (RCC) for the purpose of genomic characterization of my PDX models.
 
-Click on image below to view full markdown file in .pdf format!
-[![maftools.Rmd](images/maftools_analysis_preview.png)](images/maftools.pdf)
+[R script](scripts/maftools_analysis.R)
+[![maftools_analysis](images/maftools_analysis_preview.png)
 
 ## Planned Updates
 - The following changes are expected to made (in no particular order) to increase usability and improve analysis in the near future. Collaboration is welcome!
