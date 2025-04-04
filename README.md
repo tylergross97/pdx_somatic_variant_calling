@@ -213,7 +213,7 @@ Provided is an example of a Python script that you can use to visualize contamin
 
 [Python script](scripts/contamination_bamcmp.py)
 
-![Contamination_analysis](images/contamination_analysis_preview.png)](images/contamination_analysis_preview.png)
+![Contamination_analysis](images/contamination_analysis_preview.png)]
 
 ### maftools analysis (R)
 Provided is an example of an R scripts that uses maftools to analyze the filtered.annotated.maf.gz files. These files are output of the final process the pipeline. In the provided example, I was looking to identify mutations in genes known to be implicated in Renal Cell Carcinoma (RCC) for the purpose of genomic characterization of my PDX models.
