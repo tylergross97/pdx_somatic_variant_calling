@@ -225,9 +225,7 @@ Provided is an example of an R scripts that uses maftools to analyze the filtere
 
 ## Planned Updates
 - The following changes are expected to made (in no particular order) to increase usability and improve analysis in the near future. Collaboration is welcome!
-   - Additional filtering of human-aligned mouse alleles (HAMAs) as described in [Jo et al., 2019](https://pmc.ncbi.nlm.nih.gov/articles/PMC6844030/)
-      - If mouse read contamination is high, perform strict HAMA filtering
-      - If mouse read contamination is lower, perform lenient HAMA filtering
+   - Additional filtering of high-risk human-aligned mouse alleles (HAMAs) as described in [Jo et al., 2019](https://pmc.ncbi.nlm.nih.gov/articles/PMC6844030/)
    - Automatic handling targeted variant calling in main.nf if params.intervals is specified in the nextflow.config file, eliminating the need to have a separate main.intervals.nf file
    - Providing additionality functionality for those with a matched-normal sample:
       - Using this to filter germline variants
