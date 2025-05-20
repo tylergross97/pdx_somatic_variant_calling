@@ -3,3 +3,4 @@ nextflow.config
 work/
 results/
 .DS_Store
+slurm*
