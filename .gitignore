@@ -4,3 +4,4 @@ work/
 results*/
 .DS_Store
 slurm*
+run.sh
