@@ -1,6 +1,6 @@
-# PDX Somatic Variant Calling Nextflow Pipeline
+# PDX Somatic Variant Calling Nextflow Pipeline (Tumor-Only)
 
-A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel variant calling from Patient-Derived Xenograft (PDX) models. The pipeline is designed to be easy to implement for HPC users or locally and can be used on whole-genome sequencing (WGS) or whole-exome sequencing (WES) data, as explained in the 'Intervals' section of [Getting Set Up](#getting-set-up).
+A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel variant calling from Patient-Derived Xenograft (PDX) models. The pipeline is designed to be easy to implement for HPC users or locally and can be used on whole-genome sequencing (WGS) or whole-exome sequencing (WES) data.
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -36,10 +36,7 @@ First, it is important to understand that although the tumor is implanted into t
 ### Tumor-only somatic short variant calling
 In an ideal world, a matched-normal tissue, which is typically a blood sample or a nearby healthy tissue, is collected from the same patient from which the tumor was extracted. This allows bioinformaticians to identify which variants are present in the tumor and matched-normal tissue and mark these are germline, meaning that they are inherited. The variants from the tumor that are not present in the matched-normal tissue are therefore somatic.
 
-In reality, we often do not have a matched-normal tissue. In the case of PDX models, it can be particularly challenging to retrospectively obtain these matched-normal tissues. The next-best thing is to leverage a database of common germline variants from the general population in place of the matched-normal tissue. If the variants from the tumor are present in this database, we can infer that these variants are germline. This "tumor-only" approach to somatic variant calling should be interpreted with caution, as there is a higher risk for germline variants (particularly rare ones) being called as false-positive somatic variants. This topic is extensively covered in [Haperlin et al., 2017](https://link.springer.com/article/10.1186/s12920-017-0296-8). This pipeline leverages [Mutect2's](https://www.biorxiv.org/content/10.1101/861054v1.abstract) tumor-only mode and follows [GATK's best practices](https://gatk.broadinstitute.org/hc/en-us/articles/360035894731-Somatic-short-variant-discovery-SNVs-Indels)[2]. The output of the pipeline are called variants in VCF and MAF formats.
-
-### Optional downstream analyses
-There is also documentation for downstream analyses of the outputs of the nextflow pipeline (see [Downstream Analyses](#downstream-analyses) section)
+In reality, we often do not have a matched-normal tissue. In the case of PDX models, it can be particularly challenging to retrospectively obtain these matched-normal tissues. The next-best thing is to leverage a database of common germline variants from the general population in place of the matched-normal tissue. If the variants from the tumor are present in this database, we can infer that these variants are germline. This "tumor-only" approach to somatic variant calling should be interpreted with caution, as there is a higher risk for germline variants (particularly rare ones) being called as false-positive somatic variants. This topic is extensively covered in [Haperlin et al., 2017](https://link.springer.com/article/10.1186/s12920-017-0296-8). This pipeline leverages [Mutect2's](https://www.biorxiv.org/content/10.1101/861054v1.abstract) tumor-only mode and follows [GATK's best practices](https://gatk.broadinstitute.org/hc/en-us/articles/360035894731-Somatic-short-variant-discovery-SNVs-Indels)[2]. The output of the pipeline are called variants in VCF format.
 
 ## Pipeline Workflow
 
@@ -55,7 +52,6 @@ There is also documentation for downstream analyses of the outputs of the nextfl
 6. [Mutect2](https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2) to call somatic short variants
 7. [GATK GetPileupSummaries](https://gatk.broadinstitute.org/hc/en-us/articles/360037593451-GetPileupSummaries), [GATK CalculateContamination](https://gatk.broadinstitute.org/hc/en-us/articles/360036888972-CalculateContamination), and [GATK FilterMutectCalls](https://gatk.broadinstitute.org/hc/en-us/articles/360036856831-FilterMutectCalls) to filter variant calls
 8. [Additional filtering of high-risk human-aligned mouse alleles (HAMAs)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6844030/#Fig4)
-9. [Funcotator](https://gatk.broadinstitute.org/hc/en-us/articles/360037224432-Funcotator) to annotate variants and generate .vcf and .maf files
 
 ## Getting Set Up
 
@@ -132,21 +128,18 @@ Before running this pipeline, ensure you have the following tools and resources 
 6. Intervals.bed file (for WES data)
       - The default behavior of this pipeline is to perform variant calling across the entire genome (main.nf)
       - If you have WES data, you may want to provide the capture-kit-specific intervals of the capture site in the form of a BED file
-         - The main.intervals.nf is designed to perform variant calling on targeted regions
+         - If params.intervals is provided in your nextflow.config file, variant calling will be performed only on these targeted regions
          - Targeting your analysis to specific intervals improves computational effiency and reduces off-target noise of both base recalibration and variant calling
          - However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred and you may miss some important variants - for this reason we pad each genomic interval by 100 base pairs on each side
             - See this [article](https://sites.google.com/a/broadinstitute.org/legacy-gatk-documentation/frequently-asked-questions/4133-When-should-I-use-L-to-pass-in-a-list-of-intervals) for a discussion around this topic
-         - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#adding-intervals) and **run main.intervals.nf instead of main.nf**
+         - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#adding-intervals)
             - Here is a command to download the .bed file provided by Illumina for their Illumina Exome 2.5 Panel HG38 genome:
                  ```bash
                  curl -O https://support.illumina.com/content/dam/illumina-support/documents/downloads/productfiles/illumina-prep/exome/hg38_Twist_ILMN_Exome_2.5_Panel_annotated.BED
                  ```
       
 
-7. R (version 4.0 or later) for downstream analysis with maftools
-   - Installation instructions: [R Installation Guide](https://cran.r-project.org/) and [maftools](https://www.bioconductor.org/packages/release/bioc/html/maftools.html)
-
-9. Python (version 3.6 or later) for downstream analysis of contamination
+7. Python (version 3.6 or later) for downstream analysis of contamination
    - Installation instructions: [Python Installation Guide](https://www.python.org/downloads/)
 
 ### Preparing your [nextflow.config](https://www.nextflow.io/docs/latest/config.html) file
@@ -156,7 +149,7 @@ In your cloned repository directory, you have a nextflow.config.template file. A
 cp nextflow.config.template nextflow.config
 ```
 ##### Adding Intervals
-Add the following param to your nextflow.config file and specify its path
+If you have WES data, you can add the following param to your nextflow.config file and specify its path
    ![Nextflow config with intervals](images/nextflow.config.template.intervals.png)
 ##### Changing to Docker
 Note that the nextflow.config.template file is set up for running Singularity. If using Docker, make the following changes:
@@ -170,10 +163,6 @@ With your nextflow.config and main.nf (or main.intervals.nf) files in your curre
 
 ```bash
 nextflow run main.nf
-```
-Or the following command for targeted variant calling:
-```bash
-nextflow run main.intervals.nf
 ```
 ### Running on SLURM
 
@@ -203,7 +192,7 @@ nextflow run main.nf
 ```
 ## Pipeline Outputs
 
-There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main files we are interested in are the annotated [.vcf](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format) and [.maf](https://docs.gdc.cancer.gov/Data/File_Formats/MAF_Format/) files, saved to the ./results/mutect2/directory. We are particularly interested in the filtered and annotated files. These can be loaded into an R markdown file for analysis with maftools, see [below](#optional-downstream-analyses).
+There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main file we are interested in are the annotated [.vcf](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format) file, saved to the ./results/mutect2/directory.
 
 If you are looking to analyze the level of contamination of your original samples, you will need to access the .txt files for each sample outputted from bamcmp in the ./results/bamcmp directory
 
@@ -216,17 +205,9 @@ Provided is an example of a Python script that you can use to visualize contamin
 
 ![Contamination_analysis](images/contamination_analysis_preview.png)]
 
-### maftools analysis (R)
-Provided is an example of an R scripts that uses maftools to analyze the filtered.annotated.maf.gz files. These files are output of the final process the pipeline. In the provided example, I was looking to identify mutations in genes known to be implicated in Renal Cell Carcinoma (RCC) for the purpose of genomic characterization of my PDX models.
-
-[R script](scripts/maftools_analysis.R)
-
-![maftools_analysis](images/maftools_analysis_preview.png)
-
 ## Planned Updates
 - The following changes are expected to made (in no particular order) to increase usability and improve analysis in the near future. Collaboration is welcome!
    - Additional filtering of high-risk human-aligned mouse alleles (HAMAs) as described in [Jo et al., 2019](https://pmc.ncbi.nlm.nih.gov/articles/PMC6844030/)
-   - Automatic handling targeted variant calling in main.nf if params.intervals is specified in the nextflow.config file, eliminating the need to have a separate main.intervals.nf file
    - Providing additionality functionality for those with a matched-normal sample:
       - Using this to filter germline variants
    - Providing additional functionality for those with the original patient tumor sample:
@@ -234,7 +215,7 @@ Provided is an example of an R scripts that uses maftools to analyze the filtere
    - Perform somatic copy number analysis
    - Add public dataset for users to test the pipeline on
    - Allow for a sample sheet for input files
-     
+   - Benchmarking Pipeline  
 ## Citations
 
 If you use this pipeline in your work, please cite:
