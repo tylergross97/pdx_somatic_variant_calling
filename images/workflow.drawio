@@ -1,0 +1,109 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36" version="27.0.6">
+  <diagram name="Page-1" id="_h1tMU2-etPjvMwYcw31">
+    <mxGraphModel dx="1186" dy="770" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--2" value="FASTQ Input" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="260" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--3" value="Quality Control&lt;div&gt;(fastp)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="260" y="120" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--4" value="Alignment to Human Genome (BWA-MEM2)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="200" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--5" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="WKxCgJ4ltwnQkhOCbic--3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="320" y="80" as="sourcePoint" />
+            <mxPoint x="330" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--6" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="WKxCgJ4ltwnQkhOCbic--3" target="WKxCgJ4ltwnQkhOCbic--4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="280" y="170" as="sourcePoint" />
+            <mxPoint x="380" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--7" value="Alignment to Mouse Genome (BWA-MEM2)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="200" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--8" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="WKxCgJ4ltwnQkhOCbic--3" target="WKxCgJ4ltwnQkhOCbic--7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="345" y="170" as="sourcePoint" />
+            <mxPoint x="270" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--9" value="&lt;div&gt;Deconvolution of Mouse Reads (bamcmp)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="280" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--10" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="WKxCgJ4ltwnQkhOCbic--7" target="WKxCgJ4ltwnQkhOCbic--9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="405" y="240" as="sourcePoint" />
+            <mxPoint x="330" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--11" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="WKxCgJ4ltwnQkhOCbic--4" target="WKxCgJ4ltwnQkhOCbic--9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="215" y="300" as="sourcePoint" />
+            <mxPoint x="140" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--12" value="&lt;div&gt;Mark Duplicate Reads (GATK)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="360" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--13" value="&lt;div&gt;Base Recalibration (GATK)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="440" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--14" value="Tumor-Only Variant Calling (Mutect2)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="520" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--15" value="&lt;div&gt;Filter Variants (GATK)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="520" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--16" value="&lt;div&gt;Filter HAMAs&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="440" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--17" value="&lt;div&gt;Functional Variant Annotation (snpeff)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="360" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--18" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="319.5" y="320" as="sourcePoint" />
+            <mxPoint x="319.5" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--19" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="319.5" y="400" as="sourcePoint" />
+            <mxPoint x="319.5" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--20" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="319.5" y="480" as="sourcePoint" />
+            <mxPoint x="319.5" y="520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--21" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="WKxCgJ4ltwnQkhOCbic--15">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="539.5" as="sourcePoint" />
+            <mxPoint x="430" y="539.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--22" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="509.5" y="520" as="sourcePoint" />
+            <mxPoint x="509.5" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WKxCgJ4ltwnQkhOCbic--23" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="509.5" y="440" as="sourcePoint" />
+            <mxPoint x="509.5" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
