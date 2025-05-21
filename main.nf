@@ -25,6 +25,7 @@ include { INDEX_UNFILTERED_VCF } from './modules/index_unfiltered_vcf.nf'
 include { FILTER_MUTECT_CALLS } from './modules/filter_mutect_calls.nf'
 include { INDEX_FILTERED_VCF } from './modules/index_filtered_vcf.nf'
 include { HAMA_CSV_TO_BED } from './modules/hama_csv_to_bed.nf'
+include { FILTER_HAMA_VARIANTS } from './modules/filter_hama_variants.nf'
 
 // Modules for non-interval workflow
 include { BASE_RECALIBRATOR } from './modules/base_recalibrator.nf'
@@ -187,5 +188,12 @@ workflow {
         CREATE_DICT.out.dict_file,
         mutect2_contamination
     )
-    INDEX_FILTERED_VCF(FILTER_MUTECT_CALLS.out.filtered_vcf)
+
+    // Filter out HAMA variants
+    FILTER_HAMA_VARIANTS(
+    	FILTER_MUTECT_CALLS.out.filtered_vcf,
+    	HAMA_CSV_TO_BED.out.hama_bed
+    )
+    
+    INDEX_FILTERED_VCF(FILTER_HAMA_VARIANTS.out.hama_filtered_vcf)
 }
