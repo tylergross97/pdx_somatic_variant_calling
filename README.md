@@ -40,7 +40,7 @@ In reality, we often do not have a matched-normal tissue. In the case of PDX mod
 
 ## Pipeline Workflow
 
-![Workflow Diagram](images/workflow.drawio)
+![Workflow Diagram](images/workflow.drawio.png)
 
 ## Pipeline Steps
 
