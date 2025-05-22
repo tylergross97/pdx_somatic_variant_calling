@@ -196,7 +196,7 @@ nextflow run main.nf
 ```
 ## Pipeline Outputs
 
-There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main file we are interested in are the annotated [.vcf](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format) file, saved to the ./results/mutect2/directory.
+There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main file we are interested are the {sample}.filtered.hama_filtered.vcf.gz [.vcf](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format) file, saved to the ./results/mutect2/directory.
 
 If you are looking to analyze the level of contamination of your original samples, you will need to access the .txt files for each sample outputted from bamcmp in the ./results/bamcmp directory
 
