@@ -86,12 +86,12 @@ Before running this pipeline, ensure you have the following tools and resources 
         curl -O https://42basepairs.com/download/s3/ont-open-data/colo829_2023.04/analysis/sup_wf_som_var/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
         ```
       - Mouse (mm39 or mm10_nsg)
-        - Mouse (mm39)
+        - General: mouse (mm39)
         ```bash
         curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/GCF_000001635.27_GRCm39_genomic.fna.gz
         gunzip GCF_000001635.27_GRCm39_genomic.fna.gz
          ```
-        - Note: If your PDX models utilized NSG (immunocompromised) mice, we recommend using the following NSG-adapted reference genome from [Hynds et al., 2024](https://www.nature.com/articles/s41467-024-47547-3)
+        - If your PDX models utilized NSG (immunocompromised) mice, we recommend using the following NSG-adapted reference genome from [Hynds et al., 2024](https://www.nature.com/articles/s41467-024-47547-3)
            - Use of this reference genome has been shown to improve the filtering of mouse reads when NSG mice are used for the PDX models
              ```bash
              curl -O https://zenodo.org/records/10304175/files/nsg_adapted_reference.zip?download=1
