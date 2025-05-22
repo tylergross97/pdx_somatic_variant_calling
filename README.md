@@ -26,9 +26,10 @@ Source: [Charles River](https://www.criver.com/products-services/discovery-servi
 
 Somatic short variant calling of PDX models without matched-normals is a common task for bioinformaticians. However, it is important to address the unique set of challenges that this task presents, which will be covered shortly.
 
-This pipeline can be conceptually broken down into two main steps:
+This pipeline can be conceptually broken down into three main parts:
 - Deconvolution (filtering) of mouse reads
 - Tumor-only somatic short variant calling of human reads
+- Lenient blacklisting of human genome-aligned mouse alleles (HAMAs) [1]
 
 ### Deconvolution of mouse reads
 First, it is important to understand that although the tumor is implanted into the mouse, it originated from a human patient and we are interested in these human tumor cells. However, during and after implanation of the tumor into the mouse, there is some degree of infiltration of mouse cells into the tumor, leading to "contamination". As discussed and explored throughly in [Jo et al., 2019](https://link.springer.com/article/10.1186/s13059-019-1849-2), this can lead to false-positive variant calls. This is because mouse reads can align to the human reference genome and be detected as variants. This pipeline utilizes the [bamcmp](https://github.com/CRUKMI-ComputationalBiology/bamcmp) tool, although there are others available to accomplish deconvolution of mouse reads.
@@ -37,6 +38,9 @@ First, it is important to understand that although the tumor is implanted into t
 In an ideal world, a matched-normal tissue, which is typically a blood sample or a nearby healthy tissue, is collected from the same patient from which the tumor was extracted. This allows bioinformaticians to identify which variants are present in the tumor and matched-normal tissue and mark these are germline, meaning that they are inherited. The variants from the tumor that are not present in the matched-normal tissue are therefore somatic.
 
 In reality, we often do not have a matched-normal tissue. In the case of PDX models, it can be particularly challenging to retrospectively obtain these matched-normal tissues. The next-best thing is to leverage a database of common germline variants from the general population in place of the matched-normal tissue. If the variants from the tumor are present in this database, we can infer that these variants are germline. This "tumor-only" approach to somatic variant calling should be interpreted with caution, as there is a higher risk for germline variants (particularly rare ones) being called as false-positive somatic variants. This topic is extensively covered in [Haperlin et al., 2017](https://link.springer.com/article/10.1186/s12920-017-0296-8). This pipeline leverages [Mutect2's](https://www.biorxiv.org/content/10.1101/861054v1.abstract) tumor-only mode and follows [GATK's best practices](https://gatk.broadinstitute.org/hc/en-us/articles/360035894731-Somatic-short-variant-discovery-SNVs-Indels)[2]. The output of the pipeline are called variants in VCF format.
+
+### Lenient blacklisting of human genome-aligned mouse alleles (HAMAs)
+As described in Jo et al. (2019), although deconvolution and filtering of mouse reads via a tool such as bamcmp can remove a large number of mouse reads, there is still a risk of false-positive variant calls, particuarly from mouse reads that are alignable to the human genome, known as HAMAs. To be conservative, this pipeline performs lenient blacklisting, filtering only high-risk HAMAs from the VCF file, as recommended by the authors of the paper as a minimum-risk general strategy.
 
 ## Pipeline Workflow
 
@@ -207,7 +211,6 @@ Provided is an example of a Python script that you can use to visualize contamin
 
 ## Planned Updates
 - The following changes are expected to made (in no particular order) to increase usability and improve analysis in the near future. Collaboration is welcome!
-   - Additional filtering of high-risk human-aligned mouse alleles (HAMAs) as described in [Jo et al., 2019](https://pmc.ncbi.nlm.nih.gov/articles/PMC6844030/)
    - Providing additionality functionality for those with a matched-normal sample:
       - Using this to filter germline variants
    - Providing additional functionality for those with the original patient tumor sample:
