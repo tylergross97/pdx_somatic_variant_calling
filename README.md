@@ -202,7 +202,7 @@ These files are your original filtered VCFs with an additional annotation column
 
 HAMA_ID shows which variants fall into known high-risk HAMA regions from Jo et al. (2019).
 
-If a variant's HAMA_ID is . or missing, it means the variant does NOT overlap any known HAMA high-risk region. This is likely going to the case for the majority of variants.
+If a variant's HAMA_ID is '.', it means the variant does NOT overlap any known HAMA high-risk region. This is likely going to the case for the majority of variants.
 
 ```
  bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\t%INFO/HAMA_ID\n' IU112_S101.filtered.hama_annotated.vcf.gz | head
@@ -218,7 +218,7 @@ chr1	126108	G	A	.
 chr1	126113	C	A	.
 ```
 
-If it has a string ID, that ID corresponds to the BED region that variant overlaps. We can specifically query the variants that are present in the high-risk HAMA list (and therefore likely false positives) with the following command:
+If a variant's HAMA_ID has a string ID, that ID corresponds to the BED region that variant overlaps. We can specifically query the variants that are present in the high-risk HAMA list (and therefore likely false positives) with the following command:
 
 ```
 bcftools view -i 'INFO/HAMA_ID!="."' IU112_S101.filtered.hama_annotated.vcf.gz | \
