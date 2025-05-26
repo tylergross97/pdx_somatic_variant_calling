@@ -40,7 +40,7 @@ In an ideal world, a matched-normal tissue, which is typically a blood sample or
 In reality, we often do not have a matched-normal tissue. In the case of PDX models, it can be particularly challenging to retrospectively obtain these matched-normal tissues. The next-best thing is to leverage a database of common germline variants from the general population in place of the matched-normal tissue. If the variants from the tumor are present in this database, we can infer that these variants are germline. This "tumor-only" approach to somatic variant calling should be interpreted with caution, as there is a higher risk for germline variants (particularly rare ones) being called as false-positive somatic variants. This topic is extensively covered in [Haperlin et al., 2017](https://link.springer.com/article/10.1186/s12920-017-0296-8). This pipeline leverages [Mutect2's](https://www.biorxiv.org/content/10.1101/861054v1.abstract) tumor-only mode and follows [GATK's best practices](https://gatk.broadinstitute.org/hc/en-us/articles/360035894731-Somatic-short-variant-discovery-SNVs-Indels)[2]. The output of the pipeline are called variants in VCF format.
 
 ### Lenient blacklisting of human genome-aligned mouse alleles (HAMAs)
-As described in Jo et al. (2019), although deconvolution and filtering of mouse reads via a tool such as bamcmp can remove a large number of mouse reads, there is still a risk of false-positive variant calls, particuarly from mouse reads that are alignable to the human genome, known as HAMAs. To be conservative, this pipeline performs lenient blacklisting, filtering only high-risk HAMAs from the VCF file, as recommended by the authors of the paper as a minimum-risk general strategy.
+As described in Jo et al. (2019), although deconvolution and filtering of mouse reads via a tool such as bamcmp can remove a large number of mouse reads, there is still a risk of false-positive variant calls, particuarly from mouse reads that are alignable to the human genome, known as HAMAs. To be conservative, this pipeline performs lenient blacklisting, by annotating high-risk HAMAs from the VCF file, as recommended by the authors of the paper as a minimum-risk general strategy. See [Pipeline Outputs](#pipeline-outputs) for more details.
 
 ## Pipeline Workflow
 
@@ -241,7 +241,7 @@ Provided is an example of a Python script that you can use to visualize contamin
 
 [Python script](scripts/contamination_bamcmp.py)
 
-![Contamination_analysis](images/contamination_analysis_preview.png)]
+![Contamination_analysis](images/contamination_analysis_preview.png)
 
 ## Planned Updates
 - The following changes are expected to made (in no particular order) to increase usability and improve analysis in the near future. Collaboration is welcome!
