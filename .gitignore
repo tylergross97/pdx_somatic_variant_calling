@@ -1,5 +1,7 @@
 nextflow.config
 .nextflow*
 work/
-results/
+results*/
 .DS_Store
+slurm*
+run.sh
