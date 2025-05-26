@@ -23,7 +23,6 @@ include { GET_PILEUP_SUMMARIES } from './modules/get_pileup_summaries.nf'
 include { CALCULATE_CONTAMINATION } from './modules/calculate_contamination.nf'
 include { INDEX_UNFILTERED_VCF } from './modules/index_unfiltered_vcf.nf'
 include { FILTER_MUTECT_CALLS } from './modules/filter_mutect_calls.nf'
-//include { INDEX_FILTERED_VCF } from './modules/index_filtered_vcf.nf'
 include { HAMA_CSV_TO_BED } from './modules/hama_csv_to_bed.nf'
 include { FILTER_HAMA_VARIANTS } from './modules/filter_hama_variants.nf'
 
@@ -195,5 +194,4 @@ workflow {
     	HAMA_CSV_TO_BED.out.hama_bed
     )
     
-    //INDEX_FILTERED_VCF(FILTER_HAMA_VARIANTS.out.hama_filtered_vcf)
 }
