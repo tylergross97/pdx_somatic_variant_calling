@@ -196,9 +196,43 @@ nextflow run main.nf
 ```
 ## Pipeline Outputs
 
-There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main file we are interested are the {sample}.filtered.hama_filtered.vcf.gz [.vcf](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format) file, saved to the ./results/mutect2/directory.
+There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main file we are interested are the {sample}.filtered.hama_annotated.vcf.gz [.vcf](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format) file, saved to the ./results/mutect2/directory.
 
-If you are looking to analyze the level of contamination of your original samples, you will need to access the .txt files for each sample outputted from bamcmp in the ./results/bamcmp directory
+These files are your original filtered VCFs with an additional annotation column HAMA_ID in the INFO field.
+
+HAMA_ID shows which variants fall into known high-risk HAMA regions from Jo et al. (2019).
+
+If a variant's HAMA_ID is . or missing, it means the variant does NOT overlap any known HAMA high-risk region. This is likely going to the case for the majority of variants.
+
+```
+ bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\t%INFO/HAMA_ID\n' IU112_S101.filtered.hama_annotated.vcf.gz | head
+chr1	15211	T	G	.
+chr1	16682	G	A	.
+chr1	16688	G	A	.
+chr1	16737	G	T	.
+chr1	16742	G	C	.
+chr1	30923	G	T	.
+chr1	70210	ATG	A	.
+chr1	70215	T	G	.
+chr1	126108	G	A	.
+chr1	126113	C	A	.
+```
+
+If it has a string ID, that ID corresponds to the BED region that variant overlaps. We can specifically query the variants that are present in the high-risk HAMA list (and therefore likely false positives) with the following command:
+
+```
+bcftools view -i 'INFO/HAMA_ID!="."' IU112_S101.filtered.hama_annotated.vcf.gz | \
+bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\t%INFO/HAMA_ID\n'
+chr1	15970045	C	A	chr1_15970045_T_C
+chr1	53676194	C	A	chr1_53676194_C_T
+chr1	160267367	CTTTTT	C	chr1_160267371_T_C
+chr1	201868806	CGT	C	chr1_201868806_A_G
+chr2	74474361	CG	TT	chr2_74474362_T_C
+chr2	74474365	A	G	chr2_74474365_G_A
+.
+.
+.
+```
 
 ## Downstream analyses
 
