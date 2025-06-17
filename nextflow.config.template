@@ -5,6 +5,7 @@ params {
     mm39_fasta = "/path/to/mm39_fasta"  // UPDATE: path to primary assembly of the mouse reference genome
 
     // Output directories
+    test_results = "test_results"
     outdir_base = "results"  // UPDATE: Base directory for all output
     outdir_accessory_files = "${params.outdir_base}/accessory_files"
     outdir_fastp = "${params.outdir_base}/fastp"
