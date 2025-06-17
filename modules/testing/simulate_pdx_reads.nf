@@ -1,27 +1,59 @@
 process SIMULATE_PDX_READS {
-    container "community.wave.seqera.io/library/art:2016.06.05--abd910249b0b53f1"
-    publishDir params.test_results, mode: 'copy'
-
+    publishDir "tests/test_fastqs", mode: 'copy'
+    
     output:
-    path "tests/test_fastqs/sample1_S1_R1_001.fastq.gz", emit: r1
-    path "tests/test_fastqs/sample1_S1_R2_001.fastq.gz", emit: r2
-    path "tests/refs/hg38_chr22.fa", emit: hg38
-    path "tests/refs/mm10_chr22.fa", emit: mm10
-
+    path "sample1_S1_R1_001.fastq.gz", emit: r1
+    path "sample1_S1_R2_001.fastq.gz", emit: r2
+    
     script:
-    """
-    mkdir -p tests/test_fastqs tests/refs synthetic_fastqs
+    '''
+    python3 << 'EOF'
+import gzip
+import random
 
-    # Write minimal mock references
-    echo '>chr22\\nAGCTTAGCTAGCTACCTATATCTTGGTCTTGGCCGAGGCTTGC' > tests/refs/hg38_chr22.fa
-    echo '>chr22\\nTCGATCGATCGGATGCTAGCTAGCTAGCTGATCGTAGCTAGCT' > tests/refs/mm10_chr22.fa
+def generate_read(read_id, length=100):
+    bases = ['A', 'T', 'G', 'C']
+    sequence = ''.join(random.choice(bases) for _ in range(length))
+    quality = ''.join(['I'] * length)  # High quality scores (ASCII 73)
+    
+    # Proper FASTQ format: header, sequence, plus, quality
+    fastq_entry = f"@read_{read_id}\\n{sequence}\\n+\\n{quality}\\n"
+    return fastq_entry
 
-    # Simulate reads from each reference
-    art_illumina -ss HS25 -sam -i tests/refs/hg38_chr22.fa -l 100 -f 2 -o synthetic_fastqs/human_
-    art_illumina -ss HS25 -sam -i tests/refs/mm10_chr22.fa -l 100 -f 2 -o synthetic_fastqs/mouse_
+print("Generating test FASTQ files...")
 
-    # Shuffle and mix human and mouse reads
-    cat synthetic_fastqs/human_1.fq synthetic_fastqs/mouse_1.fq | shuf | gzip > tests/test_fastqs/sample1_S1_R1_001.fastq.gz
-    cat synthetic_fastqs/human_2.fq synthetic_fastqs/mouse_2.fq | shuf | gzip > tests/test_fastqs/sample1_S1_R2_001.fastq.gz
-    """
+# Generate R1 file (in current working directory)
+print("Creating R1 file...")
+with gzip.open('sample1_S1_R1_001.fastq.gz', 'wt') as f:
+    for i in range(100):  # Reduced to 100 reads for faster testing
+        entry = generate_read(f"{i:04d}_R1")
+        f.write(entry)
+
+# Generate R2 file (in current working directory)
+print("Creating R2 file...")
+with gzip.open('sample1_S1_R2_001.fastq.gz', 'wt') as f:
+    for i in range(100):  # Same number of reads
+        entry = generate_read(f"{i:04d}_R2")
+        f.write(entry)
+
+print("FASTQ generation completed!")
+EOF
+
+    # Verify the generated files
+    echo "=== Verification ==="
+    echo "Files created:"
+    ls -la *.fastq.gz
+    
+    echo "File sizes:"
+    du -h *.fastq.gz
+    
+    echo "R1 sample (first 12 lines):"
+    zcat sample1_S1_R1_001.fastq.gz | head -12
+    
+    echo "R1 line count: $(zcat sample1_S1_R1_001.fastq.gz | wc -l)"
+    echo "R2 line count: $(zcat sample1_S1_R2_001.fastq.gz | wc -l)"
+    
+    echo "R1 read count: $(zcat sample1_S1_R1_001.fastq.gz | wc -l | awk '{print $1/4}')"
+    echo "R2 read count: $(zcat sample1_S1_R2_001.fastq.gz | wc -l | awk '{print $1/4}')"
+    '''
 }

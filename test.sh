@@ -21,4 +21,4 @@ export SINGULARITY_CACHEDIR=/projects/academic/rpili/tgross2/tmp
 export SINGULARITY_TMPDIR=/projects/academic/rpili/tgross2/tmp
 export NXF_SINGULARITY_CACHEDIR=/projects/academic/rpili/tgross2/singularity_cache
 
-nextflow run test.nf
+nextflow run test.nf -resume
