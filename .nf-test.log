@@ -1,0 +1,11 @@
+Jun-21 18:19:48.198 [main] INFO  com.askimed.nf.test.App - nf-test 0.9.2
+Jun-21 18:19:48.232 [main] INFO  com.askimed.nf.test.App - Arguments: [test, tests/main.nf.test, --verbose]
+Jun-21 18:19:50.262 [main] INFO  com.askimed.nf.test.App - Nextflow Version: 23.10.0
+Jun-21 18:19:50.265 [main] INFO  com.askimed.nf.test.commands.RunTestsCommand - Load config from file /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/nf-test.config...
+Jun-21 18:19:51.644 [main] INFO  com.askimed.nf.test.lang.dependencies.DependencyResolver - Loaded 33 files from directory /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling in 0.455 sec
+Jun-21 18:19:51.645 [main] INFO  com.askimed.nf.test.lang.dependencies.DependencyResolver - Found 1 files containing tests.
+Jun-21 18:19:51.645 [main] DEBUG com.askimed.nf.test.lang.dependencies.DependencyResolver - Found files: [/projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/tests/main.nf.test]
+Jun-21 18:19:51.806 [main] INFO  com.askimed.nf.test.commands.RunTestsCommand - Found 1 tests to execute.
+Jun-21 18:19:51.807 [main] INFO  com.askimed.nf.test.core.TestExecutionEngine - Started test plan
+Jun-21 18:19:51.807 [main] INFO  com.askimed.nf.test.core.TestExecutionEngine - Running testsuite 'Test Workflow main.nf' from file '/projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/tests/main.nf.test'.
+Jun-21 18:19:51.807 [main] INFO  com.askimed.nf.test.core.TestExecutionEngine - Run test '714d7be4: Should run without failures'. type: com.askimed.nf.test.lang.pipeline.PipelineTest

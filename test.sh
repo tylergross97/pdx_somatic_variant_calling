@@ -12,7 +12,14 @@
 #SBATCH --mail-user=tgross2@buffalo.edu
 #SBATCH --mail-type=ALL
 
-module load nextflow/23.10.0
+# Source your setup script
+source /projects/academic/rpili/tgross2/setup_nextflow_env.sh
+# Verify environment
+echo "=== Environment Check ==="
+echo "Java version: $(java -version 2>&1 | head -1)"
+echo "Nextflow version: $(nextflow -version 2>&1 | grep version)"
+echo "nf-test version: $(nf-test version 2>&1 | grep version)"
+echo "=========================="
 
 export NXF_HOME=/projects/academic/rpili/tgross2/tmp/.nextflow
 export NXF_WORK=/vscratch/grp-rpili/pdx
@@ -21,4 +28,4 @@ export SINGULARITY_CACHEDIR=/projects/academic/rpili/tgross2/tmp
 export SINGULARITY_TMPDIR=/projects/academic/rpili/tgross2/tmp
 export NXF_SINGULARITY_CACHEDIR=/projects/academic/rpili/tgross2/singularity_cache
 
-nextflow run test.nf -resume
+nf-test test tests/main.nf.test --verbose

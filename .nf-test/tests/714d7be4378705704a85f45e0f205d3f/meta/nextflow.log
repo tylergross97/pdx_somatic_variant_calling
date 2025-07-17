@@ -1,0 +1,231 @@
+Jun-21 18:19:55.157 [main] DEBUG nextflow.cli.Launcher - $> nextflow -log /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/meta/nextflow.log run /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/main.nf -c /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/nextflow.config -c /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/tests/nextflow.config -params-file /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/meta/params.json -ansi-log false -with-trace /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/meta/trace.csv -w /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work
+Jun-21 18:19:55.257 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 23.10.0
+Jun-21 18:19:55.301 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/projects/academic/rpili/tgross2/tmp/.nextflow/plugins; core-plugins: nf-amazon@2.1.4,nf-azure@1.3.2,nf-cloudcache@0.3.0,nf-codecommit@0.1.5,nf-console@1.0.6,nf-ga4gh@1.1.0,nf-google@1.8.3,nf-tower@1.6.3,nf-wave@1.0.0
+Jun-21 18:19:55.318 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Jun-21 18:19:55.320 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Jun-21 18:19:55.324 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.4.1 in 'deployment' mode
+Jun-21 18:19:55.342 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Jun-21 18:19:55.364 [main] DEBUG nextflow.config.ConfigBuilder - Found config base: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/nextflow.config
+Jun-21 18:19:55.373 [main] DEBUG nextflow.config.ConfigBuilder - User config file: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/nextflow.config
+Jun-21 18:19:55.373 [main] DEBUG nextflow.config.ConfigBuilder - User config file: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/tests/nextflow.config
+Jun-21 18:19:55.373 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/nextflow.config
+Jun-21 18:19:55.374 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/nextflow.config
+Jun-21 18:19:55.374 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/tests/nextflow.config
+Jun-21 18:19:55.425 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Jun-21 18:19:56.096 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Jun-21 18:19:56.103 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Jun-21 18:19:56.202 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 from script declararion
+Jun-21 18:19:56.271 [main] INFO  nextflow.cli.CmdRun - Launching `/projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/main.nf` [trusting_sammet] DSL2 - revision: 927d96f9fe
+Jun-21 18:19:56.271 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Jun-21 18:19:56.272 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[]
+Jun-21 18:19:56.295 [main] DEBUG n.secret.LocalSecretsProvider - Secrets store: /projects/academic/rpili/tgross2/tmp/.nextflow/secrets/store.json
+Jun-21 18:19:56.304 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@117d32e] - activable => nextflow.secret.LocalSecretsProvider@117d32e
+Jun-21 18:19:56.432 [main] DEBUG nextflow.Session - Session UUID: 9af24f6c-faa4-4fab-8e4c-9748c7f73238
+Jun-21 18:19:56.432 [main] DEBUG nextflow.Session - Run name: trusting_sammet
+Jun-21 18:19:56.433 [main] DEBUG nextflow.Session - Executor pool size: 16
+Jun-21 18:19:56.450 [main] DEBUG nextflow.file.FilePorter - File porter settings maxRetries=3; maxTransfers=50; pollTimeout=null
+Jun-21 18:19:56.534 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 23.10.0 build 5889
+  Created: 15-10-2023 15:07 UTC 
+  System: Linux 6.8.0-60-generic
+  Runtime: Groovy 3.0.19 on OpenJDK 64-Bit Server VM 21.0.2+13-58
+  Encoding: UTF-8 (UTF-8)
+  Process: 2043025@cpn-q06-36-01.core.ccr.buffalo.edu [10.17.5.196]
+  CPUs: 16 - Mem: 754.4 GB (134.2 GB) - Swap: 0 (0) - Virtual threads ON
+Jun-21 18:19:56.592 [main] DEBUG nextflow.Session - Work-dir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work [nfs]
+Jun-21 18:19:56.593 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/bin
+Jun-21 18:19:56.622 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Jun-21 18:19:56.656 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Jun-21 18:19:56.706 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+Jun-21 18:19:56.733 [main] DEBUG nextflow.util.CustomPoolFactory - Creating virtual thread pool
+Jun-21 18:19:56.986 [main] DEBUG nextflow.Session - Session start
+Jun-21 18:19:57.000 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow started -- trace file: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/meta/trace.csv
+Jun-21 18:19:57.565 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Jun-21 18:19:59.152 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.152 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.158 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Jun-21 18:19:59.169 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=16; memory=754.4 GB; capacity=16; pollInterval=100ms; dumpInterval=5m
+Jun-21 18:19:59.173 [main] DEBUG n.processor.TaskPollingMonitor - >>> barrier register (monitor: local)
+Jun-21 18:19:59.275 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.275 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.298 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.298 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.304 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.304 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.308 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.308 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.311 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.311 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.315 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.315 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.323 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.323 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.345 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.345 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.350 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.350 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.354 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.354 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.388 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.388 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.394 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.394 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.398 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.398 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.401 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.401 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.412 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.412 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.415 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.415 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.419 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.419 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.424 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.425 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.428 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.428 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.434 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.434 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.437 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.437 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.440 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.440 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.447 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.447 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.451 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jun-21 18:19:59.451 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jun-21 18:19:59.453 [main] DEBUG nextflow.Session - Workflow process names [dsl2]: FILTER_HAMA_VARIANTS, ALIGN_HUMAN, CALCULATE_CONTAMINATION, APPLY_BQSR, MULTIQC, COUNT_READS, BASE_RECALIBRATOR_INTERVALS, INDEX_UNFILTERED_VCF, SORT_BAM, HAMA_CSV_TO_BED, FASTP, ALIGN_MOUSE, INDEX_MARKED_DUPLICATES_INTERVALS, INDEX_HUMAN, GET_PILEUP_SUMMARIES, INDEX_MOUSE, APPLY_BQSR_INTERVALS, MUTECT2, ACCESSORY_FILES_DOWNLOAD, BASE_RECALIBRATOR, INDEX_BAM, BAMCMP, FILTER_MUTECT_CALLS, MUTECT2_INTERVALS, MERGE_BAMS, CREATE_DICT, INDEX_REFERENCE, MARK_DUPLICATES
+Jun-21 18:19:59.454 [main] DEBUG nextflow.Session - Igniting dataflow network (26)
+Jun-21 18:19:59.460 [PathVisitor-1] DEBUG nextflow.file.PathVisitor - files for syntax: glob; folder: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/test_data/test_fastqs/; pattern: *_S*_R{1,2}_001.fastq.gz; options: [checkIfExists:true]
+Jun-21 18:19:59.462 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > ACCESSORY_FILES_DOWNLOAD
+Jun-21 18:19:59.463 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > FASTP
+Jun-21 18:19:59.463 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > MULTIQC
+Jun-21 18:19:59.463 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > INDEX_HUMAN
+Jun-21 18:19:59.464 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > INDEX_MOUSE
+Jun-21 18:19:59.464 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > ALIGN_HUMAN
+Jun-21 18:19:59.464 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > ALIGN_MOUSE
+Jun-21 18:19:59.464 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > SORT_BAM
+Jun-21 18:19:59.465 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > BAMCMP
+Jun-21 18:19:59.465 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > MERGE_BAMS
+Jun-21 18:19:59.465 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > INDEX_BAM
+Jun-21 18:19:59.465 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > COUNT_READS
+Jun-21 18:19:59.468 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > MARK_DUPLICATES
+Jun-21 18:19:59.468 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > INDEX_REFERENCE
+Jun-21 18:19:59.468 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > CREATE_DICT
+Jun-21 18:19:59.468 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > HAMA_CSV_TO_BED
+Jun-21 18:19:59.469 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > INDEX_MARKED_DUPLICATES_INTERVALS
+Jun-21 18:19:59.469 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > BASE_RECALIBRATOR_INTERVALS
+Jun-21 18:19:59.469 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > APPLY_BQSR_INTERVALS
+Jun-21 18:19:59.470 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > MUTECT2_INTERVALS
+Jun-21 18:19:59.470 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > GET_PILEUP_SUMMARIES
+Jun-21 18:19:59.470 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > CALCULATE_CONTAMINATION
+Jun-21 18:19:59.470 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > INDEX_UNFILTERED_VCF
+Jun-21 18:19:59.470 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > FILTER_MUTECT_CALLS
+Jun-21 18:19:59.471 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > FILTER_HAMA_VARIANTS
+Jun-21 18:19:59.471 [main] DEBUG nextflow.script.ScriptRunner - Parsed script files:
+  Script_af16ceeaa3b6511e: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/index_reference.nf
+  Script_ebc8ffa6a60d4cd5: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/index_mouse.nf
+  Script_60b28a08da45fd73: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/index_marked_duplicates_intervals.nf
+  Script_01215960be8b65db: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/apply_bqsr_intervals.nf
+  Script_bbc05f462815cfbd: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/create_dict.nf
+  Script_4ee95c5ed2568757: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/base_recalibrator_intervals.nf
+  Script_e33ed11f0a369dcf: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/align_mouse.nf
+  Script_c9877f63867708f8: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/index_unfiltered_vcf.nf
+  Script_87b1e3f9e14896c9: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/mutect2_intervals.nf
+  Script_7ac6460b28943ec4: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/filter_mutect_calls.nf
+  Script_53bbf70885ad7e87: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/align_human.nf
+  Script_aae231cf240ffb7c: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/multiqc.nf
+  Script_491f5f5b51ab1d77: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/base_recalibrator.nf
+  Script_e9483c967c699620: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/sort_bam.nf
+  Script_5795194d6abe528c: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/merge_bams.nf
+  Script_5f45789211751091: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/accessory_files_download.nf
+  Script_6034d1029dd2a98e: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/filter_hama_variants.nf
+  Script_597131d054f8df1e: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/apply_bqsr.nf
+  Script_8a1541f599ba302a: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/mutect2.nf
+  Script_54060219bfdc881a: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/mark_duplicates.nf
+  Script_2ba37fb074d65ad0: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/index_human.nf
+  Script_fafff05becc98d78: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/main.nf
+  Script_061607dfdb8f4899: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/hama_csv_to_bed.nf
+  Script_9bc730f7a7f82fa5: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/get_pileup_summaries.nf
+  Script_e7782be432fdd859: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/bamcmp.nf
+  Script_0aa1f68a1f4d8bcb: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/calculate_contamination.nf
+  Script_dfe94dbcbacd7fb6: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/count_reads.nf
+  Script_3013a95e37f298e7: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/fastp.nf
+  Script_76c77ef910674458: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/./modules/index_bam.nf
+Jun-21 18:19:59.471 [main] DEBUG nextflow.script.ScriptRunner - > Awaiting termination 
+Jun-21 18:19:59.471 [main] DEBUG nextflow.Session - Session await
+Jun-21 18:19:59.553 [Actor Thread 88] DEBUG nextflow.container.SingularityCache - Singularity found local store for image=docker://quay.io/biocontainers/fastp:0.24.0--heae3180_1; path=/projects/academic/rpili/tgross2/singularity_cache/quay.io-biocontainers-fastp-0.24.0--heae3180_1.img
+Jun-21 18:19:59.553 [Actor Thread 89] DEBUG nextflow.container.SingularityCache - Singularity found local store for image=docker://community.wave.seqera.io/library/bwa-mem2_samtools:b7ce408fd27b2698; path=/projects/academic/rpili/tgross2/singularity_cache/community.wave.seqera.io-library-bwa-mem2_samtools-b7ce408fd27b2698.img
+Jun-21 18:19:59.553 [Actor Thread 85] DEBUG nextflow.container.SingularityCache - Singularity found local store for image=docker://quay.io/biocontainers/python:3.9--1; path=/projects/academic/rpili/tgross2/singularity_cache/quay.io-biocontainers-python-3.9--1.img
+Jun-21 18:19:59.553 [Actor Thread 87] DEBUG nextflow.container.SingularityCache - Singularity found local store for image=docker://community.wave.seqera.io/library/gatk4:4.6.1.0--e3124bcb2431f4a9; path=/projects/academic/rpili/tgross2/singularity_cache/community.wave.seqera.io-library-gatk4-4.6.1.0--e3124bcb2431f4a9.img
+Jun-21 18:19:59.553 [Actor Thread 86] DEBUG nextflow.container.SingularityCache - Singularity found local store for image=docker://quay.io/biocontainers/bwa-mem2:2.2.1--he70b90d_6; path=/projects/academic/rpili/tgross2/singularity_cache/quay.io-biocontainers-bwa-mem2-2.2.1--he70b90d_6.img
+Jun-21 18:19:59.717 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jun-21 18:19:59.720 [Task submitter] INFO  nextflow.Session - [00/b5f8a8] Submitted process > INDEX_MOUSE
+Jun-21 18:19:59.741 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jun-21 18:19:59.741 [Task submitter] INFO  nextflow.Session - [68/c7c1aa] Submitted process > HAMA_CSV_TO_BED
+Jun-21 18:19:59.756 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jun-21 18:19:59.756 [Task submitter] INFO  nextflow.Session - [96/0c45d4] Submitted process > ACCESSORY_FILES_DOWNLOAD
+Jun-21 18:19:59.767 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jun-21 18:19:59.768 [Task submitter] INFO  nextflow.Session - [95/0a2844] Submitted process > CREATE_DICT
+Jun-21 18:19:59.779 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jun-21 18:19:59.780 [Task submitter] INFO  nextflow.Session - [62/4ca6fe] Submitted process > FASTP (1)
+Jun-21 18:19:59.793 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jun-21 18:19:59.793 [Task submitter] INFO  nextflow.Session - [17/e2c778] Submitted process > INDEX_HUMAN
+Jun-21 18:19:59.805 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jun-21 18:19:59.806 [Task submitter] INFO  nextflow.Session - [7c/ff0e8e] Submitted process > INDEX_REFERENCE
+Jun-21 18:20:01.014 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 7; name: FASTP (1); status: COMPLETED; exit: 0; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/62/4ca6fe0d5389a4331fa985f351a889]
+Jun-21 18:20:01.088 [Actor Thread 107] DEBUG nextflow.container.SingularityCache - Singularity found local store for image=docker://quay.io/biocontainers/multiqc:1.25.2--pyhdfd78af_0; path=/projects/academic/rpili/tgross2/singularity_cache/quay.io-biocontainers-multiqc-1.25.2--pyhdfd78af_0.img
+Jun-21 18:20:01.110 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jun-21 18:20:01.111 [Task submitter] INFO  nextflow.Session - [79/3fb31b] Submitted process > MULTIQC
+Jun-21 18:20:02.397 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 4; name: HAMA_CSV_TO_BED; status: COMPLETED; exit: 0; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/68/c7c1aacff79506fd0eae680bdd9038]
+Jun-21 18:20:08.214 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 8; name: MULTIQC; status: COMPLETED; exit: 0; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/79/3fb31bf3748135add7de66bfea1095]
+Jun-21 18:20:09.595 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 2; name: INDEX_REFERENCE; status: COMPLETED; exit: 0; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/7c/ff0e8e9c4724c35a4bc3977736d3ab]
+Jun-21 18:20:25.929 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 6; name: CREATE_DICT; status: COMPLETED; exit: 0; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/95/0a2844572dda6e3e48f4c84065ec4e]
+Jun-21 18:24:59.302 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 3 -- submitted tasks are shown below
+~> TaskHandler[id: 3; name: INDEX_MOUSE; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/00/b5f8a8e9b03a27109c43f78c6c9b5f]
+~> TaskHandler[id: 1; name: ACCESSORY_FILES_DOWNLOAD; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/96/0c45d4e8c2bb8cfee7028bae4308b6]
+~> TaskHandler[id: 5; name: INDEX_HUMAN; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/17/e2c778693cd9b1f323edead253c271]
+Jun-21 18:29:59.373 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 3 -- submitted tasks are shown below
+~> TaskHandler[id: 3; name: INDEX_MOUSE; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/00/b5f8a8e9b03a27109c43f78c6c9b5f]
+~> TaskHandler[id: 1; name: ACCESSORY_FILES_DOWNLOAD; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/96/0c45d4e8c2bb8cfee7028bae4308b6]
+~> TaskHandler[id: 5; name: INDEX_HUMAN; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/17/e2c778693cd9b1f323edead253c271]
+Jun-21 18:34:59.400 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 3 -- submitted tasks are shown below
+~> TaskHandler[id: 3; name: INDEX_MOUSE; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/00/b5f8a8e9b03a27109c43f78c6c9b5f]
+~> TaskHandler[id: 1; name: ACCESSORY_FILES_DOWNLOAD; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/96/0c45d4e8c2bb8cfee7028bae4308b6]
+~> TaskHandler[id: 5; name: INDEX_HUMAN; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/17/e2c778693cd9b1f323edead253c271]
+Jun-21 18:39:59.428 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 3 -- submitted tasks are shown below
+~> TaskHandler[id: 3; name: INDEX_MOUSE; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/00/b5f8a8e9b03a27109c43f78c6c9b5f]
+~> TaskHandler[id: 1; name: ACCESSORY_FILES_DOWNLOAD; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/96/0c45d4e8c2bb8cfee7028bae4308b6]
+~> TaskHandler[id: 5; name: INDEX_HUMAN; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/17/e2c778693cd9b1f323edead253c271]
+Jun-21 18:44:59.470 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 3 -- submitted tasks are shown below
+~> TaskHandler[id: 3; name: INDEX_MOUSE; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/00/b5f8a8e9b03a27109c43f78c6c9b5f]
+~> TaskHandler[id: 1; name: ACCESSORY_FILES_DOWNLOAD; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/96/0c45d4e8c2bb8cfee7028bae4308b6]
+~> TaskHandler[id: 5; name: INDEX_HUMAN; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/17/e2c778693cd9b1f323edead253c271]
+Jun-21 18:49:59.517 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 3 -- submitted tasks are shown below
+~> TaskHandler[id: 3; name: INDEX_MOUSE; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/00/b5f8a8e9b03a27109c43f78c6c9b5f]
+~> TaskHandler[id: 1; name: ACCESSORY_FILES_DOWNLOAD; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/96/0c45d4e8c2bb8cfee7028bae4308b6]
+~> TaskHandler[id: 5; name: INDEX_HUMAN; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/17/e2c778693cd9b1f323edead253c271]
+Jun-21 18:54:59.546 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 3 -- submitted tasks are shown below
+~> TaskHandler[id: 3; name: INDEX_MOUSE; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/00/b5f8a8e9b03a27109c43f78c6c9b5f]
+~> TaskHandler[id: 1; name: ACCESSORY_FILES_DOWNLOAD; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/96/0c45d4e8c2bb8cfee7028bae4308b6]
+~> TaskHandler[id: 5; name: INDEX_HUMAN; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/17/e2c778693cd9b1f323edead253c271]
+Jun-21 18:59:59.565 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 3 -- submitted tasks are shown below
+~> TaskHandler[id: 3; name: INDEX_MOUSE; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/00/b5f8a8e9b03a27109c43f78c6c9b5f]
+~> TaskHandler[id: 1; name: ACCESSORY_FILES_DOWNLOAD; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/96/0c45d4e8c2bb8cfee7028bae4308b6]
+~> TaskHandler[id: 5; name: INDEX_HUMAN; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/17/e2c778693cd9b1f323edead253c271]
+Jun-21 19:04:59.606 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 3 -- submitted tasks are shown below
+~> TaskHandler[id: 3; name: INDEX_MOUSE; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/00/b5f8a8e9b03a27109c43f78c6c9b5f]
+~> TaskHandler[id: 1; name: ACCESSORY_FILES_DOWNLOAD; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/96/0c45d4e8c2bb8cfee7028bae4308b6]
+~> TaskHandler[id: 5; name: INDEX_HUMAN; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/17/e2c778693cd9b1f323edead253c271]
+Jun-21 19:09:59.631 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 3 -- submitted tasks are shown below
+~> TaskHandler[id: 3; name: INDEX_MOUSE; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/00/b5f8a8e9b03a27109c43f78c6c9b5f]
+~> TaskHandler[id: 1; name: ACCESSORY_FILES_DOWNLOAD; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/96/0c45d4e8c2bb8cfee7028bae4308b6]
+~> TaskHandler[id: 5; name: INDEX_HUMAN; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/17/e2c778693cd9b1f323edead253c271]
+Jun-21 19:14:59.663 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 3 -- submitted tasks are shown below
+~> TaskHandler[id: 3; name: INDEX_MOUSE; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/00/b5f8a8e9b03a27109c43f78c6c9b5f]
+~> TaskHandler[id: 1; name: ACCESSORY_FILES_DOWNLOAD; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/96/0c45d4e8c2bb8cfee7028bae4308b6]
+~> TaskHandler[id: 5; name: INDEX_HUMAN; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/17/e2c778693cd9b1f323edead253c271]
+Jun-21 19:19:59.689 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! executor local > tasks to be completed: 3 -- submitted tasks are shown below
+~> TaskHandler[id: 3; name: INDEX_MOUSE; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/00/b5f8a8e9b03a27109c43f78c6c9b5f]
+~> TaskHandler[id: 1; name: ACCESSORY_FILES_DOWNLOAD; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/96/0c45d4e8c2bb8cfee7028bae4308b6]
+~> TaskHandler[id: 5; name: INDEX_HUMAN; status: RUNNING; exit: -; error: -; workDir: /projects/academic/rpili/pdx_pipeline_test/pdx_somatic_variant_calling/.nf-test/tests/714d7be4378705704a85f45e0f205d3f/work/17/e2c778693cd9b1f323edead253c271]
