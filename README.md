@@ -244,6 +244,9 @@ Provided is an example of a Python script that you can use to visualize contamin
 ![Contamination_analysis](images/contamination_analysis_preview.png)
 
 ## Testing
+
+Must have nf-test installed in your environment
+
 ### Generation of test datasets
 
 Create and activate conda environment:
@@ -310,6 +313,16 @@ simulate_sample() {
 simulate_sample "pdx1" "1"
 simulate_sample "pdx2" "2"
 ```
+
+There's some testing reference files that are too large to host on github. I am exploring options for hosting these in a google bucket, but in the meantime, they can be created in the following ways:
+- Reference genomes (hg38_chr22.fa and mm39_chr19.fa)
+```bash
+mkdir -p tests/data/references
+curl -L -o tests/data/references/hg38_chr22.fa https://zenodo.org/record/3901966/files/hg38_chr22.fa
+curl -L -o tests/data/references/mm39_chr19.fa https://zenodo.org/record/3901966/files/mm39_chr19.fa
+```
+- Index files for each reference must be created by running nf-test test tests/modules/index_human.nf.test and nf-test test tests/modules/index_mouse.nf.test and then copying the created index files from the respective .nf-test work directory into tests/data/alignment_input/index_human/ and tests/data/alignment_input/index_mouse/, respectively
+
 
 ## Planned Updates
 - The following changes are expected to made (in no particular order) to increase usability and improve analysis in the near future. Collaboration is welcome!
