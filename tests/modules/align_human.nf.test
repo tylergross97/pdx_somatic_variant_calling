@@ -1,0 +1,48 @@
+import java.nio.file.Paths
+
+nextflow_process {
+    name "Test Process ALIGN_HUMAN"
+    script "modules/local/align_human.nf"
+    process "ALIGN_HUMAN"
+    
+    test("Process runs successfully with two samples") {
+        when {
+            process {
+                """
+                // Input reads
+                def reads_ch = Channel.fromFilePairs(
+                    "${projectDir}/tests/data/alignment_input/fastp_output/*_trimmed_{1,2}.fastq.gz",
+                    checkIfExists: true
+                )
+            
+                // Index files - the genome parameter should match the prefix
+                def index_ch = Channel.value([
+                    'human', 
+                    [
+                        file("${projectDir}/tests/data/alignment_input/index_human/human.0123"),
+                        file("${projectDir}/tests/data/alignment_input/index_human/human.amb"),
+                        file("${projectDir}/tests/data/alignment_input/index_human/human.ann"),
+                        file("${projectDir}/tests/data/alignment_input/index_human/human.bwt.2bit.64"),
+                        file("${projectDir}/tests/data/alignment_input/index_human/human.pac")
+                    ]
+                ])
+                input[0] = reads_ch
+                input[1] = index_ch
+                """
+            }
+        }
+        
+        then {
+            assert process.success
+            def bam_files = process.out.bam
+            println("BAM files: ${bam_files}")
+            def bam_paths = bam_files.collect { it[1] }
+            println("BAM paths: ${bam_paths}")
+            assert bam_paths.size() == 2, "Expected 2 BAM files, got ${bam_paths.size()}"
+            bam_paths.each { bam_path ->
+                assert bam(bam_path).getFileType() == 'BAM', "Expected BAM file, got ${bam(bam_path).getFileType()}"
+                println("BAM statistics: ${bam(bam_path).getStatistics()}")
+            }
+        }
+    }
+}

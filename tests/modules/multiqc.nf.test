@@ -1,0 +1,33 @@
+nextflow_process {
+    name "Test Process MULTIQC"
+    script "modules/local/multiqc.nf"
+    process "MULTIQC"
+    
+    test("Process runs successfully") {
+        setup {
+            run("FASTP") {
+                script "modules/local/fastp.nf"
+                process {
+                    """
+                    input[0] = Channel
+                        .fromFilePairs("${projectDir}/tests/data/fastp_input/synthetic_pdx/*_S*_R{1,2}_001.fastq.gz", checkIfExists: true)
+                    """
+                }
+            }
+        }
+        
+        when {
+            process {
+                """
+                input[0] = FASTP.out.json_report.collect()
+                """
+            }
+        }
+        
+        then {
+            def report = process.out.report.get(0)
+            println("Report file: ${report}")
+            assert process.success
+        }
+    }
+}

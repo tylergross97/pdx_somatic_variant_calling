@@ -1,0 +1,8 @@
+Jul-18 10:08:30.059 [main] INFO  com.askimed.nf.test.App - nf-test 0.9.2
+Jul-18 10:08:30.086 [main] INFO  com.askimed.nf.test.App - Arguments: [test, tests/modules/fastp.nf.test, --verbose]
+Jul-18 10:08:31.865 [main] INFO  com.askimed.nf.test.App - Nextflow Version: 25.04.4
+Jul-18 10:08:31.870 [main] WARN  com.askimed.nf.test.commands.RunTestsCommand - No nf-test config file found.
+Jul-18 10:08:31.880 [main] INFO  com.askimed.nf.test.lang.dependencies.DependencyResolver - Loaded 0 files from directory /Users/tylergross/Desktop/pdx_somatic_variant_calling/tests/data in 0.006 sec
+Jul-18 10:08:31.885 [main] INFO  com.askimed.nf.test.lang.dependencies.DependencyResolver - Found 0 files containing tests.
+Jul-18 10:08:31.886 [main] DEBUG com.askimed.nf.test.lang.dependencies.DependencyResolver - Found files: []
+Jul-18 10:08:31.892 [main] INFO  com.askimed.nf.test.commands.RunTestsCommand - Found 0 tests to execute.

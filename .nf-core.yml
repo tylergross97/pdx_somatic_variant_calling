@@ -1,0 +1,8 @@
+repository_type: pipeline
+pipeline_name: pdx_somatic_variant_calling
+pipeline_description: |
+  A Nextflow pipeline for somatic variant calling in PDX models, utilizing GATK Best Practices.
+pipeline_authors:
+  - name: Tyler Gross
+    email: tylergenegross97@gmail.com
+org_path: nf-core

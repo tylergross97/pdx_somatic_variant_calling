@@ -1,0 +1,27 @@
+nextflow_process {
+    name "Test Process INDEX_HUMAN"
+    script "modules/local/index_human.nf"
+    process "INDEX_HUMAN"
+    
+    test("Process runs successfully") {
+        
+        when {
+            process {
+                """
+                input[0] = Channel.fromPath("${projectDir}/tests/data/references/hg38_chr22.fa")
+                """
+            }
+        }
+        
+        then {
+            def output = process.out.get(0)[0]
+            def species = output[0]
+            println("Species: ${species}")
+            def index_files = output[1]
+            println("Index files: ${index_files}")
+            assert process.success
+            assert process.trace.tasks().size() == 1, "Expected 1 task, got ${process.trace.tasks().size()}"
+            assert index_files.size() == 5, "Expected 5 index files to be generated, got ${index_files}"
+        }
+    }
+}

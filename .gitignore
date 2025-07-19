@@ -1,0 +1,23 @@
+nextflow.config
+.nextflow*
+work/
+results*/
+.DS_Store
+slurm*
+run.sh
+
+# nf-test working directory and cache
+.nf-test/
+
+# nf-test temporary files
+**/.nf-test.tmp/
+
+# nf-test logs
+.nf-test.log
+
+# Any nf-test generated reports
+nf-test-report.html
+
+data/high_risk_HAMA_list.csv
+tests/data/alignment_input/
+tests/data/references/
