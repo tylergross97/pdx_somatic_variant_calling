@@ -1,0 +1,60 @@
+nextflow_process {
+    name "Test Process BAMCMP"
+    script "modules/local/bamcmp.nf"
+    process "BAMCMP"
+    
+    test("Process runs successfully") {
+        setup {
+            run("SORT_BAM") {
+                script "modules/local/sort_bam.nf"
+                process {
+                    """
+                    input[0] = Channel
+                        .fromPath("${projectDir}/tests/data/alignment_output/*.bam")
+                        .map { bam_path ->
+                            def sample_id = bam_path.getSimpleName()
+                            tuple(sample_id, bam_path)
+                        }
+                    """
+                }
+            }
+        }
+        
+        when {
+            process {
+                """
+                input[0] = SORT_BAM.out.sorted_bam
+                    .map { sample_id, bam ->
+                        def species = bam.name.contains("human") ? "human" : "mouse"
+                        tuple(sample_id, species, bam)
+                    }
+                    .groupTuple(by: [0, 1])
+                    .map { sample_id, species, bams -> 
+                        tuple(sample_id, species, bams[0])
+                    }
+                    .branch {
+                        human: it[1] == "human"
+                        mouse: it[1] == "mouse"
+                    }
+                    .set { sorted_bams }
+                
+                // Create the paired input for BAMCMP
+                input[0] = sorted_bams.human
+                    .join(sorted_bams.mouse, by: 0)
+                    .map { sample_id, human_species, human_bam, mouse_species, mouse_bam ->
+                        tuple(sample_id, human_bam, mouse_bam)
+                    }
+                """
+            }
+        }
+        
+        then {
+            def pdx1_human_better = process.out.human_better.get(0)
+            println("PDX1 Human Better BAM: ${pdx1_human_better}")
+            def pdx1_mouse_better = process.out.mouse_better.get(0)
+            println("PDX1 Mouse Better BAM: ${pdx1_mouse_better}")
+            println("PDX1 Human Better BAM statistics: ${bam(pdx1_human_better[1]).getStatistics()}")
+            println("PDX1 Mouse Better BAM statistics: ${bam(pdx1_mouse_better[1]).getStatistics()}")
+        }
+    }
+}
