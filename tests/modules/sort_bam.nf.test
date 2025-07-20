@@ -1,0 +1,36 @@
+nextflow_process {
+    name "Test Process SORT_BAM"
+    script "modules/local/sort_bam.nf"
+    process "SORT_BAM"
+    
+    test("Process runs successfully") {
+        
+        when {
+            process {
+                """
+                input[0] = Channel
+                    .fromPath("${projectDir}/tests/data/alignment_output/*.bam")
+                    .map { bam_path ->
+                        def sample_id = bam_path.getSimpleName()
+                        tuple(sample_id, bam_path)
+                    }
+                """
+            }
+        }
+        
+        then {
+            assert process.success
+            def sorted_bam_files = process.out.sorted_bam
+            println("Sorted. BAM files: ${sorted_bam_files}")
+            def sorted_bam_paths = sorted_bam_files.collect { it[1] }
+            println("Sorted BAM paths: ${sorted_bam_paths}")
+            assert sorted_bam_paths.size() == 4, "Expected 4 BAM files, got ${sorted_bam_paths.size()}"
+            sorted_bam_paths.each { sorted_bam_path ->
+                assert bam(sorted_bam_path).getFileType() == 'BAM', "Expected BAM file, got ${bam(sorted_bam_path).getFileType()}"
+                def stats = bam(sorted_bam_path).getStatistics().toString()
+                // Note that sorted:false is expected because we are name-sorting and not coordinate-sorting the BAM files
+                println("Sorted BAM statistics: ${stats}")
+            }
+        }
+    }
+}

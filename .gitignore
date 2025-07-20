@@ -19,5 +19,4 @@ run.sh
 nf-test-report.html
 
 data/high_risk_HAMA_list.csv
-tests/data/alignment_input/
-tests/data/references/
+tests/data/
