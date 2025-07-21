@@ -18,5 +18,4 @@ run.sh
 # Any nf-test generated reports
 nf-test-report.html
 
-data/high_risk_HAMA_list.csv
 tests/data/

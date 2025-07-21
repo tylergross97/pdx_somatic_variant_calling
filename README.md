@@ -247,37 +247,13 @@ Provided is an example of a Python script that you can use to visualize contamin
 
 Must have nf-test installed in your environment
 
-### Generation of test datasets
-
-Create and activate conda environment:
-```bash
-# 1. Create a new environment
-conda create -n wgsim_env -c bioconda -c conda-forge wgsim
-
-# 2. Activate the environment
-conda activate wgsim_env
-
-# 3. Verify installation
-wgsim -h
-```
-Create two synthetic PDX samples - one with 10% mouse contamination (pdx90_S1) and one with 30% mouse contamination (pdx70_S2)
-
-From project directory, run:
+Much of the testing data is too large to host on github. For this reason, it is stored in a [google bucket](https://console.cloud.google.com/storage/browser/pdx_somatic_testing_data;tab=objects?inv=1&invt=Ab3WEA&prefix=&forceOnObjectsSortingFiltering=false) and is approximately 2.7GB. To download this data to the appropriate directories (where the test scripts expect them to be), run the following bash command:
 
 ```bash
-./scripts/simulate_pdx_reads.sh
+./scripts/test_data_download.sh
 ```
 
-There's some testing reference files that are too large to host on github. I am exploring options for hosting these in a google bucket, but in the meantime, they can be created in the following ways:
-- Reference genomes (hg38_chr22.fa and mm39_chr19.fa)
-```bash
-mkdir -p tests/data/references
-curl -L -o tests/data/references/hg38_chr22.fa https://zenodo.org/record/3901966/files/hg38_chr22.fa
-curl -L -o tests/data/references/mm39_chr19.fa https://zenodo.org/record/3901966/files/mm39_chr19.fa
-```
-- Index files for each reference must be created by running nf-test test tests/modules/index_human.nf.test and nf-test test tests/modules/index_mouse.nf.test and then copying the created index files from the respective .nf-test work directory into tests/data/alignment_input/index_human/ and tests/data/alignment_input/index_mouse/, respectively
-
-- After running fastp.nf.test, outputs from the work dirs should be copied to tests/data/fastp_output
+Note that the fastq files for testing are located in the 'tests/data/fastp_input/synthetic_pdx/' directory. There are two samples, pdx70 and pdx90. The 70 and the 90 refer to the percentage of human reads in the pdx sample. In other words, pdx70 contains 30% mouse contamination and pdx90 contains 10% mouse contamination. The synthetic fastq files were generated using the 'scripts/simulate_pdx_reads.sh' script which I provided for your reference to see how the test files were generated.
 
 
 ## Planned Updates
