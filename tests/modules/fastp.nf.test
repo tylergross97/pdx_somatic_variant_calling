@@ -4,7 +4,7 @@ nextflow_process {
     name "Test Process FASTP"
     script "modules/local/fastp.nf"
     process "FASTP"
-    test("Test tiny fastq are valid") {
+    test("Process runs successfully with synthetic PDX reads") {
         when {
             process {
                 """
@@ -15,11 +15,6 @@ nextflow_process {
         }
         then {
             println("Output: ${process.out.trimmed_reads}")
-            def sample1_tuple = process.out.trimmed_reads.get(0)
-            def sample1 = sample1_tuple[0]
-            println("Sample 1 ID: ${sample1}")
-            def sample1_reads = sample1_tuple[1]
-            println("Sample 1 reads: ${sample1_reads}")
             assert process.success
             assert process.trace.tasks().size() == 2, "Expected 2 tasks, got ${process.trace.tasks().size()}"
         }

@@ -260,58 +260,12 @@ conda activate wgsim_env
 # 3. Verify installation
 wgsim -h
 ```
-Create two synthetic PDX samples with 10% mouse contamination:
+Create two synthetic PDX samples - one with 10% mouse contamination (pdx90_S1) and one with 30% mouse contamination (pdx70_S2)
+
+From project directory, run:
+
 ```bash
-#!/bin/bash
-set -e
-
-# === USER CONFIGURABLE SETTINGS ===
-HUMAN_REF="hg38_chr22.fa"
-MOUSE_REF="mm39_chr19.fa"
-HUMAN_READS=500000           # Human read pairs
-CONTAM_RATIO=0.1             # 10% contamination
-READ_LENGTH=150
-
-# === FUNCTION TO SIMULATE ONE SAMPLE ===
-simulate_sample() {
-  SAMPLE_NAME=$1
-  SAMPLE_NUM=$2
-
-  # Output FASTQ names
-  R1_OUT="${SAMPLE_NAME}_S${SAMPLE_NUM}_R1_001.fastq.gz"
-  R2_OUT="${SAMPLE_NAME}_S${SAMPLE_NUM}_R2_001.fastq.gz"
-
-  # Temporary files
-  TMP_HUMAN_R1="tmp_human_${SAMPLE_NAME}_R1.fq"
-  TMP_HUMAN_R2="tmp_human_${SAMPLE_NAME}_R2.fq"
-  TMP_MOUSE_R1="tmp_mouse_${SAMPLE_NAME}_R1.fq"
-  TMP_MOUSE_R2="tmp_mouse_${SAMPLE_NAME}_R2.fq"
-
-  # Calculate mouse read count
-  MOUSE_READS=$(echo "$HUMAN_READS * $CONTAM_RATIO" | bc | awk '{print int($1)}')
-
-  echo "🧬 Simulating sample: $SAMPLE_NAME (S$SAMPLE_NUM)"
-  echo "   - Human reads: $HUMAN_READS"
-  echo "   - Mouse reads: $MOUSE_READS"
-
-  # Simulate reads
-  wgsim -N $HUMAN_READS -1 $READ_LENGTH -2 $READ_LENGTH -e 0 $HUMAN_REF $TMP_HUMAN_R1 $TMP_HUMAN_R2
-  wgsim -N $MOUSE_READS -1 $READ_LENGTH -2 $READ_LENGTH -e 0 $MOUSE_REF $TMP_MOUSE_R1 $TMP_MOUSE_R2
-
-  # Merge and compress
-  cat $TMP_HUMAN_R1 $TMP_MOUSE_R1 | gzip > $R1_OUT
-  cat $TMP_HUMAN_R2 $TMP_MOUSE_R2 | gzip > $R2_OUT
-
-  # Cleanup
-  rm $TMP_HUMAN_R1 $TMP_HUMAN_R2 $TMP_MOUSE_R1 $TMP_MOUSE_R2
-
-  echo "✅ Created: $R1_OUT and $R2_OUT"
-  echo
-}
-
-# === GENERATE TWO SAMPLES ===
-simulate_sample "pdx1" "1"
-simulate_sample "pdx2" "2"
+./scripts/simulate_pdx_reads.sh
 ```
 
 There's some testing reference files that are too large to host on github. I am exploring options for hosting these in a google bucket, but in the meantime, they can be created in the following ways:
@@ -322,6 +276,8 @@ curl -L -o tests/data/references/hg38_chr22.fa https://zenodo.org/record/3901966
 curl -L -o tests/data/references/mm39_chr19.fa https://zenodo.org/record/3901966/files/mm39_chr19.fa
 ```
 - Index files for each reference must be created by running nf-test test tests/modules/index_human.nf.test and nf-test test tests/modules/index_mouse.nf.test and then copying the created index files from the respective .nf-test work directory into tests/data/alignment_input/index_human/ and tests/data/alignment_input/index_mouse/, respectively
+
+- After running fastp.nf.test, outputs from the work dirs should be copied to tests/data/fastp_output
 
 
 ## Planned Updates
