@@ -13,7 +13,6 @@ include { SORT_BAM } from './modules/local/sort_bam.nf'
 include { BAMCMP } from './modules/local/bamcmp.nf'
 include { MERGE_BAMS } from './modules/local/merge_bams.nf'
 include { INDEX_BAM } from './modules/local/index_bam.nf'
-include { COUNT_READS } from './modules/local/count_reads.nf'
 include { MARK_DUPLICATES } from './modules/local/mark_duplicates.nf'
 include { INDEX_REFERENCE } from './modules/local/index_reference.nf'
 include { CREATE_DICT } from './modules/local/create_dict.nf'
@@ -81,14 +80,6 @@ workflow {
         }
     MERGE_BAMS(bams_to_merge)
     INDEX_BAM(MERGE_BAMS.out.human_merged_sorted_bam)
-    bams_for_counting = BAMCMP.out.human_only
-        .mix(BAMCMP.out.human_better)
-        .mix(BAMCMP.out.mouse_only)
-        .mix(BAMCMP.out.mouse_better)
-        .mix(BAMCMP.out.human_loss)
-        .mix(BAMCMP.out.mouse_loss)
-        .groupTuple()
-    COUNT_READS(bams_for_counting)
     MARK_DUPLICATES(MERGE_BAMS.out.human_merged_sorted_bam)
     INDEX_REFERENCE(params.hg38_fasta)
     CREATE_DICT(params.hg38_fasta)
