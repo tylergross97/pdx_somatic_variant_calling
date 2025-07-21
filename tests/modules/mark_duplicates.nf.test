@@ -1,0 +1,30 @@
+nextflow_process {
+
+    name "Test Process MARK_DUPLICATES"
+    script "modules/local/mark_duplicates.nf"
+    process "MARK_DUPLICATES"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel
+                    .fromPath("${projectDir}/tests/data/variant_calling_input/*.bam")
+                    .map { bam_path ->
+                        def sample_id = bam_path.getBaseName().replace('.bam', '')
+                        tuple(sample_id, bam_path)
+                    }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert process.out.marked_dup_bam.size() == 2, "Expected 2 marked dup BAM files, got ${process.out.marked_dup_bam.size()}"
+            assert process.out.marked_dup_metrics.size() == 2, "Expected 2 marked dup metrics files, got ${process.out.marked_dup_metrics.size()}"
+        }
+
+    }
+
+}
