@@ -149,9 +149,11 @@ Before running this pipeline, ensure you have the following tools and resources 
 ### Preparing your [nextflow.config](https://www.nextflow.io/docs/latest/config.html) file
 
 In your cloned repository directory, you have a nextflow.config.template file. All you need to do is copy this file as 'nextflow.config' and edit it to reflect the paths of your accessory files you just downloaded and your fastq files
+
 ```bash
 cp nextflow.config.template nextflow.config
 ```
+
 ##### Adding Intervals
 If you have WES data, you can add the following param to your nextflow.config file and specify its path
    ![Nextflow config with intervals](images/nextflow.config.template.intervals.png)
@@ -234,15 +236,6 @@ chr2	74474365	A	G	chr2_74474365_G_A
 .
 ```
 
-## Downstream analyses
-
-### Contamination Analysis (Python)
-Provided is an example of a Python script that you can use to visualize contamination present in your original sample. Set the directory variable to ".results/bamcmp/" to run your analysis on the output of the bamcmp process.
-
-[Python script](scripts/contamination_bamcmp.py)
-
-![Contamination_analysis](images/contamination_analysis_preview.png)
-
 ## Testing
 
 Must have nf-test installed in your environment
@@ -253,7 +246,7 @@ Much of the testing data is too large to host on github. For this reason, it is 
 ./scripts/test_data_download.sh
 ```
 
-Note that the fastq files for testing are located in the 'tests/data/fastp_input/synthetic_pdx/' directory. There are two samples, pdx70 and pdx90. The 70 and the 90 refer to the percentage of human reads in the pdx sample. In other words, pdx70 contains 30% mouse contamination and pdx90 contains 10% mouse contamination. The synthetic fastq files were generated using the 'scripts/simulate_pdx_reads.sh' script which I provided for your reference to see how the test files were generated.
+Note that the fastq files for testing are located in the 'tests/data/fastp_input/synthetic_pdx/' directory. There are two samples, pdx70 and pdx90. The 70 and the 90 refer to the percentage of human reads in the pdx sample. In other words, pdx70 contains 30% mouse contamination and pdx90 contains 10% mouse contamination. The synthetic fastq files were generated using the 'scripts/simulate_pdx_reads.sh' script which I provided for your reference
 
 
 ## Planned Updates
