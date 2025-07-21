@@ -1,0 +1,48 @@
+nextflow_process {
+    name "Test Process MERGE_BAMS"
+    script "modules/local/merge_bams.nf"
+    process "MERGE_BAMS"
+    
+    test("Process runs successfully") {
+        
+        when {
+            process {
+                """
+                def human_only_bams = Channel
+                    .fromPath("${projectDir}/tests/data/bamcmp_output/*_humanOnly.bam")
+                    .view { "Found file: \$it" }
+                    .map { bam_file ->
+                        def sample_id = bam_file.getBaseName().replace('_humanOnly', '')
+                        def human_better_bam = file("\${bam_file.getParent()}/\${sample_id}_humanBetter.bam")
+                        tuple(sample_id, bam_file, human_better_bam)
+                    }
+                input[0] = human_only_bams
+                """
+            }
+        }
+        then {
+            assert process.success
+            def sorted_bams = process.out.human_merged_sorted_bam
+            println("Sorted BAMs: ${sorted_bams}")
+            def pdx70_human_sorted = sorted_bams.get(0)[1]
+            def pdx90_human_sorted = sorted_bams.get(1)[1]
+
+            def pdx70_human_stats = bam(pdx70_human_sorted).getStatistics().toString()
+            println("PDX70 Human-Aligned BAM Stats: ${pdx70_human_stats}")
+            def pdx90_human_stats = bam(pdx90_human_sorted).getStatistics().toString()
+            println("PDX90 Human-Aligned BAM Stats: ${pdx90_human_stats}")
+
+            def pdx70_human_sorted_reads = (pdx70_human_stats =~ /readCount:(\d+)/)[0][1] as int
+            def pdx90_human_sorted_reads = (pdx90_human_stats =~ /readCount:(\d+)/)[0][1] as int
+
+            assert pdx90_human_sorted_reads > pdx70_human_sorted_reads : "Expected pdx90 to have a higher number of human reads after merging than pdx70"
+
+            def pdx70_sorted = (pdx70_human_stats =~ /sorted:(\w+)/)[0][1]
+            assert pdx70_sorted == "true" : "Expected sorted:true for pdx70 human BAM, got ${pdx70_sorted}"
+            def pdx90_sorted = (pdx90_human_stats =~ /sorted:(\w+)/)[0][1]
+            assert pdx90_sorted == "true" : "Expected sorted:true for pdx90 human BAM, got ${pdx90_sorted}"
+            
+            assert process.success
+        }
+    }
+}
