@@ -1,0 +1,25 @@
+nextflow_process {
+
+    name "Test Process INDEX_REFERENCE"
+    script "modules/local/index_reference.nf"
+    process "INDEX_REFERENCE"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.fromPath("${projectDir}/tests/data/references/hg38_chr22.fa")
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            println("Fasta file: ${process.out.fasta_file}")
+            println("Fasta index: ${process.out.fasta_index}")
+        }
+
+    }
+
+}

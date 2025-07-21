@@ -1,0 +1,24 @@
+nextflow_process {
+
+    name "Test Process CREATE_DICT"
+    script "modules/local/create_dict.nf"
+    process "CREATE_DICT"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.fromPath("${projectDir}/tests/data/references/hg38_chr22.fa")
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            println("Fasta dict: ${process.out.dict_file}")
+        }
+
+    }
+
+}
