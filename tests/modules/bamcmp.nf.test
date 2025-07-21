@@ -49,7 +49,6 @@ nextflow_process {
         }
         
         then {
-            println("Output: ${process.out}")
             def pdx70_human_better = process.out.human_better.get(0)
             println("PDX70 Human Better BAM: ${pdx70_human_better}")
             def pdx70_mouse_better = process.out.mouse_better.get(0)

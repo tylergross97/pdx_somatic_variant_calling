@@ -1,0 +1,33 @@
+nextflow_process {
+
+    name "Test Process INDEX_BAM"
+    script "modules/local/index_bam.nf"
+    process "INDEX_BAM"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel
+                    .fromPath("${projectDir}/tests/data/variant_calling_input/*.bam")
+                    .map { bam_path ->
+                        def sample_id = bam_path.getBaseName().replace('.bam', '')
+                        tuple(sample_id, bam_path)
+                    }
+                """
+            }
+        }
+
+        then {
+            def pdx70 = process.out.indexed_bam.get(0)
+            def pdx90 = process.out.indexed_bam.get(1)
+
+            assert pdx70.size() == 3, "Expected 3 elements in pdx70 tuple, got ${pdx70.size()}"
+            assert pdx90.size() == 3, "Expected 3 elements in pdx90 tuple, got ${pdx90.size()}"
+            assert process.success, "Process did not complete successfully"
+        }
+
+    }
+
+}
