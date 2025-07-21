@@ -1,0 +1,28 @@
+nextflow_process {
+
+    name "Test Process HAMA_CSV_TO_BED"
+    script "modules/local/hama_csv_to_bed.nf"
+    process "HAMA_CSV_TO_BED"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.fromPath("${projectDir}/data/high_risk_HAMA_list.csv")
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            println("HAMA BED file: ${process.out.hama_bed}")
+            def hama_bed_file = path(process.out.hama_bed[0]).csv(sep: '\t', header: false)
+            print("hama_bed structure: ${hama_bed_file.view()}")
+            assert hama_bed_file.rowCount == 465436, "Expected 465436 rows, got ${hama_bed_file.rowCount}"
+            assert hama_bed_file.columnCount == 4, "Expected 4 columns, got ${hama_bed_file.columnCount}"
+        }
+
+    }
+
+}
