@@ -1,0 +1,37 @@
+nextflow_process {
+
+    name "Test Process BASE_RECALIBRATOR"
+    script "modules/local/base_recalibrator.nf"
+    process "BASE_RECALIBRATOR"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.fromPath("${projectDir}/tests/data/variant_calling_input/*.bam")
+                    .map { bam_file ->
+                        def sample_id = bam_file.getBaseName().replace('.human.bamcmp.coordinatesorted', '')
+                        tuple(sample_id, bam_file)
+                    }
+                input[1] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.fa"))
+                input[2] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.fa.fai"))
+                input[3] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.dict"))
+                input[4] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/Homo_sapiens_assembly38.dbsnp138.chr22.vcf"))
+                input[5] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/Homo_sapiens_assembly38.dbsnp138.chr22.vcf.idx"))
+                input[6] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/Homo_sapiens_assembly38.known_indels.chr22.vcf.gz"))
+                input[7] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/Homo_sapiens_assembly38.known_indels.chr22.vcf.gz.tbi"))
+                input[8] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/Mills_and_1000G_gold_standard.indels.hg38.chr22.vcf.gz"))
+                input[9] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/Mills_and_1000G_gold_standard.indels.hg38.chr22.vcf.gz.tbi"))
+                """
+            }
+        }
+
+        then {
+            println("Output: ${process.out.recal_data_table}")
+            assert process.success
+        }
+
+    }
+
+}
