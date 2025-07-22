@@ -10,7 +10,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel
-                    .fromPath("${projectDir}/tests/data/variant_calling_input/*.bam")
+                    .fromPath("${projectDir}/tests/data/variant_calling_input/marked_dup_bams/*.bam")
                     .map { bam_path ->
                         def sample_id = bam_path.getBaseName().replace('.bam', '')
                         tuple(sample_id, bam_path)
@@ -20,6 +20,7 @@ nextflow_process {
         }
 
         then {
+            println("Output: ${process.out.marked_dup_bam}")
             assert process.success
             assert process.out.marked_dup_bam.size() == 2, "Expected 2 marked dup BAM files, got ${process.out.marked_dup_bam.size()}"
             assert process.out.marked_dup_metrics.size() == 2, "Expected 2 marked dup metrics files, got ${process.out.marked_dup_metrics.size()}"

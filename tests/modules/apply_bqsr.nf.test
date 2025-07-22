@@ -1,0 +1,34 @@
+nextflow_process {
+
+    name "Test Process APPLY_BQSR"
+    script "modules/local/apply_bqsr.nf"
+    process "APPLY_BQSR"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.from([
+                    tuple(
+                        "pdx70_S2",
+                        file("${projectDir}/tests/data/variant_calling_input/marked_dup_bams/pdx70_S2.humancmp.coordinatesorted.marked_duplicates.bam"),
+                        file("${projectDir}/tests/data/variant_calling_input/recal_tables/pdx70_S2.recal_data.table")
+                    ),
+                    tuple(
+                        "pdx90_S1",
+                        file("${projectDir}/tests/data/variant_calling_input/marked_dup_bams/pdx90_S1.humancmp.coordinatesorted.marked_duplicates.bam"),
+                        file("${projectDir}/tests/data/variant_calling_input/recal_tables/pdx90_S1.recal_data.table")
+                    )
+                ])
+                """
+            }
+        }
+
+        then {
+            println("Output: ${process.out}")
+        }
+
+    }
+
+}
