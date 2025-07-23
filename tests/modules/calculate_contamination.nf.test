@@ -1,0 +1,29 @@
+nextflow_process {
+
+    name "Test Process CALCULATE_CONTAMINATION"
+    script "modules/local/calculate_contamination.nf"
+    process "CALCULATE_CONTAMINATION"
+
+    test("Should run without failures") {
+
+        when {
+
+            process {
+                """
+                input[0] = Channel.fromPath("${projectDir}/tests/data/variant_calling_output/pileups/*.table")
+                    .map { pileup_table ->
+                        def sample_id = pileup_table.getBaseName().replace('.pileups', '')
+                        tuple(sample_id, pileup_table)
+                    }
+                """
+            }
+        }
+
+        then {
+            println("Output: ${process.out}")
+            assert process.success
+        }
+
+    }
+
+}
