@@ -1,0 +1,30 @@
+nextflow_process {
+
+    name "Test Process GET_PILEUP_SUMMARIES"
+    script "modules/local/get_pileup_summaries.nf"
+    process "GET_PILEUP_SUMMARIES"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.fromPath("${projectDir}/tests/data/variant_calling_input/recal_bams/*.bam")
+                    .map { bam_file ->
+                        def sample_id = bam_file.getBaseName().replace('.recal', '')
+                        tuple(sample_id, bam_file)
+                    }
+		        input[1] = Channel.value("${projectDir}/tests/data/hg38_chr22_accessory_files/small_exac_common_3.hg38.chr22.vcf.gz")
+		        input[2] = Channel.value("${projectDir}/tests/data/hg38_chr22_accessory_files/small_exac_common_3.hg38.chr22.vcf.gz.tbi")
+                """
+            }
+        }
+
+        then {
+            println("Output: ${process.out}")
+            assert process.success
+        }
+
+    }
+
+}
