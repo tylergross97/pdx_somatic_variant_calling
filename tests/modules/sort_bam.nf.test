@@ -24,7 +24,7 @@ nextflow_process {
             println("Sorted. BAM files: ${sorted_bam_files}")
             def sorted_bam_paths = sorted_bam_files.collect { it[1] }
             println("Sorted BAM paths: ${sorted_bam_paths}")
-            assert sorted_bam_paths.size() == 4, "Expected 4 BAM files, got ${sorted_bam_paths.size()}"
+            assert sorted_bam_paths.size() == 6, "Expected 6 BAM files, got ${sorted_bam_paths.size()}"
             sorted_bam_paths.each { sorted_bam_path ->
                 assert bam(sorted_bam_path).getFileType() == 'BAM', "Expected BAM file, got ${bam(sorted_bam_path).getFileType()}"
                 def stats = bam(sorted_bam_path).getStatistics().toString()

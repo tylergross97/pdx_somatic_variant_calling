@@ -51,9 +51,11 @@ workflow {
     // Separate human and mouse BAMs
     sorted_bams = SORT_BAM.out.sorted_bam
         .map { sample_id, bam ->
-            def species = bam.name.contains("human") ? "human": "mouse"
+            def species = bam.name.contains(".human.") ? "human" : 
+                        bam.name.contains(".mouse.") ? "mouse" : "unknown"
             return tuple(sample_id, species, bam)
         }
+        .filter { sample_id, species, bam -> species != "unknown" }
         .groupTuple(by: [0, 1])
         .map { sample_id, species, bams -> 
             return tuple(sample_id, species, bams[0])

@@ -19,4 +19,19 @@ nextflow_process {
             assert process.trace.tasks().size() == 2, "Expected 2 tasks, got ${process.trace.tasks().size()}"
         }
     }
+    test("Process runs successfully with human reads") {
+        when {
+            process {
+                """
+                input[0] = Channel
+                    .fromFilePairs("${projectDir}/tests/data/fastp_input/synthetic_human/*_S*_R{1,2}_001.fastq.gz", checkIfExists: true)
+                """
+            }
+        }
+        then {
+            println("Output: ${process.out.trimmed_reads}")
+            assert process.success
+            assert process.trace.tasks().size() == 1, "Expected 1 task, got ${process.trace.tasks().size()}"
+        }
+    }
 }

@@ -53,5 +53,6 @@ simulate_sample() {
 }
 
 # Create pdx90 (90% human reads) and pdx70 (70% human reads)
-simulate_sample "pdx90_S1" 90
-simulate_sample "pdx70_S2" 70
+#simulate_sample "pdx90_S1" 90
+#simulate_sample "pdx70_S2" 70
+simulate_sample "human_S3" 100

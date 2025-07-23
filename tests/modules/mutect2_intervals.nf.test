@@ -1,0 +1,42 @@
+nextflow_process {
+
+    name "Test Process MUTECT2_INTERVALS"
+    script "modules/local/mutect2_intervals.nf"
+    process "MUTECT2_INTERVALS"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.fa"))
+                input[1] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.fa.fai"))
+                input[2] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.dict"))
+                input[3] = Channel.fromPath("${projectDir}/tests/data/variant_calling_input/recal_bams_wes/*.bam")
+                    .map { bam_file ->
+                        def sample_id = bam_file.getBaseName().replace('.recal', '')
+                        tuple(sample_id, bam_file)
+                    }
+                input[4] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/af-only-gnomad.hg38.chr22.vcf.gz"))
+                input[5] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/af-only-gnomad.hg38.chr22.vcf.gz.tbi"))
+                input[6] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/1000g_pon.hg38.chr22.vcf.gz"))
+                input[7] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/1000g_pon.hg38.chr22.vcf.gz.tbi"))
+                input[8] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.bed"))
+                """
+            }
+        }
+
+        then {
+            println("Output: ${process.out}")
+            assert process.success, "Process did not complete successfully"
+            process.out.unfiltered_vcf.each { tuple ->
+                def vcf = path(tuple[1])
+                assert vcf.exists(), "VCF file missing: ${vcf}"
+                def vcf_file = vcf.vcf
+                println("Number of variants: ${vcf_file.variantCount}")
+            }
+        }
+
+    }
+
+}

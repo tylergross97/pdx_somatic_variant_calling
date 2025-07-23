@@ -3,7 +3,7 @@ process BASE_RECALIBRATOR_INTERVALS {
 	publishDir params.outdir_bqsr, mode: 'symlink'
 
 	input:
-	tuple val(sample_id), path(bam_file), path(indexed_bam)
+	tuple val(sample_id), path(bam_file)
 	path fasta
 	path fasta_index
 	path dict_file

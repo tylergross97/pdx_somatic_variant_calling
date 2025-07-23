@@ -11,7 +11,7 @@ nextflow_process {
                 """
                 // Input reads
                 def reads_ch = Channel.fromFilePairs(
-                    "${projectDir}/tests/data/alignment_input/fastp_output/*_trimmed_{1,2}.fastq.gz",
+                    "${projectDir}/tests/data/alignment_input/fastp_output/pdx*_trimmed_{1,2}.fastq.gz",
                     checkIfExists: true
                 )
             
@@ -39,6 +39,46 @@ nextflow_process {
             def bam_paths = bam_files.collect { it[1] }
             println("BAM paths: ${bam_paths}")
             assert bam_paths.size() == 2, "Expected 2 BAM files, got ${bam_paths.size()}"
+            bam_paths.each { bam_path ->
+                assert bam(bam_path).getFileType() == 'BAM', "Expected BAM file, got ${bam(bam_path).getFileType()}"
+                println("BAM statistics: ${bam(bam_path).getStatistics()}")
+            }
+        }
+    }
+    test("Process runs successfully with human reads") {
+        when {
+            process {
+                """
+                // Input reads
+                def reads_ch = Channel.fromFilePairs(
+                    "${projectDir}/tests/data/alignment_input/fastp_output/human*_trimmed_{1,2}.fastq.gz",
+                    checkIfExists: true
+                )
+            
+                // Index files - the genome parameter should match the prefix
+                def index_ch = Channel.value([
+                    'mouse', 
+                    [
+                        file("${projectDir}/tests/data/alignment_input/index_mouse/mouse.0123"),
+                        file("${projectDir}/tests/data/alignment_input/index_mouse/mouse.amb"),
+                        file("${projectDir}/tests/data/alignment_input/index_mouse/mouse.ann"),
+                        file("${projectDir}/tests/data/alignment_input/index_mouse/mouse.bwt.2bit.64"),
+                        file("${projectDir}/tests/data/alignment_input/index_mouse/mouse.pac")
+                    ]
+                ])
+                input[0] = reads_ch
+                input[1] = index_ch
+                """
+            }
+        }
+        
+        then {
+            assert process.success
+            def bam_files = process.out.bam
+            println("BAM files: ${bam_files}")
+            def bam_paths = bam_files.collect { it[1] }
+            println("BAM paths: ${bam_paths}")
+            assert bam_paths.size() == 1, "Expected 1 BAM file, got ${bam_paths.size()}"
             bam_paths.each { bam_path ->
                 assert bam(bam_path).getFileType() == 'BAM', "Expected BAM file, got ${bam(bam_path).getFileType()}"
                 println("BAM statistics: ${bam(bam_path).getStatistics()}")

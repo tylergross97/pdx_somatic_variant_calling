@@ -10,6 +10,7 @@ process APPLY_BQSR {
 
 	script:
 	"""
+	samtools index ${bam_file}
 	gatk ApplyBQSR \
 		-I ${bam_file} \
 		--bqsr-recal-file ${recal_table} \

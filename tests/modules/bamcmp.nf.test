@@ -3,7 +3,7 @@ nextflow_process {
     script "modules/local/bamcmp.nf"
     process "BAMCMP"
     
-    test("Process runs successfully") {
+    test("Process runs successfully on both pure human and pdx bam files") {
         setup {
             run("SORT_BAM") {
                 script "modules/local/sort_bam.nf"
@@ -25,7 +25,9 @@ nextflow_process {
                 """
                 input[0] = SORT_BAM.out.sorted_bam
                     .map { sample_id, bam ->
-                        def species = bam.name.contains("human") ? "human" : "mouse"
+                        // Fix the species detection here
+                        def species = bam.name.contains(".human.") ? "human" :
+                                    bam.name.contains(".mouse.") ? "mouse" : "unknown"
                         tuple(sample_id, species, bam)
                     }
                     .groupTuple(by: [0, 1])
@@ -37,7 +39,7 @@ nextflow_process {
                         mouse: it[1] == "mouse"
                     }
                     .set { sorted_bams }
-                
+
                 // Create the paired input for BAMCMP
                 input[0] = sorted_bams.human
                     .join(sorted_bams.mouse, by: 0)
@@ -49,33 +51,58 @@ nextflow_process {
         }
         
         then {
-            def pdx70_human_better = process.out.human_better.get(0)
+            println("Output: ${process.out}")
+            // Get outputs
+            def human_human_better = process.out.human_better.get(0)
+            def human_mouse_better = process.out.mouse_better.get(0)
+            def pdx70_human_better = process.out.human_better.get(1)
+            def pdx70_mouse_better = process.out.mouse_better.get(1)
+            def pdx90_human_better = process.out.human_better.get(2)
+            def pdx90_mouse_better = process.out.mouse_better.get(2)
+
+            // Print BAM paths
+            println("Pure Human BAM: ${human_human_better}")
+            println("Pure Human Mouse BAM: ${human_mouse_better}")
             println("PDX70 Human Better BAM: ${pdx70_human_better}")
-            def pdx70_mouse_better = process.out.mouse_better.get(0)
             println("PDX70 Mouse Better BAM: ${pdx70_mouse_better}")
-            def pdx90_human_better = process.out.human_better.get(1)
             println("PDX90 Human Better BAM: ${pdx90_human_better}")
-            def pdx90_mouse_better = process.out.mouse_better.get(1)
             println("PDX90 Mouse Better BAM: ${pdx90_mouse_better}")
 
+            // Get stats
+            def human_human_stats = bam(human_human_better[1]).getStatistics().toString()
+            def human_mouse_stats = bam(human_mouse_better[1]).getStatistics().toString()
             def pdx70_human_stats = bam(pdx70_human_better[1]).getStatistics().toString()
-            println("PDX70 Human Stats: ${pdx70_human_stats}")
             def pdx70_mouse_stats = bam(pdx70_mouse_better[1]).getStatistics().toString()
-            println("PDX70 Mouse Stats: ${pdx70_mouse_stats}")
             def pdx90_human_stats = bam(pdx90_human_better[1]).getStatistics().toString()
-            println("PDX90 Human Stats: ${pdx90_human_stats}")
             def pdx90_mouse_stats = bam(pdx90_mouse_better[1]).getStatistics().toString()
+
+            println("Pure Human Stats: ${human_human_stats}")
+            println("Pure Human Mouse Stats: ${human_mouse_stats}")
+            println("PDX70 Human Stats: ${pdx70_human_stats}")
+            println("PDX70 Mouse Stats: ${pdx70_mouse_stats}")
+            println("PDX90 Human Stats: ${pdx90_human_stats}")
             println("PDX90 Mouse Stats: ${pdx90_mouse_stats}")
 
+            // Extract read counts
+            def human_human_reads = (human_human_stats =~ /readCount:(\d+)/)[0][1] as int
+            def human_mouse_reads = (human_mouse_stats =~ /readCount:(\d+)/)[0][1] as int
             def pdx70_human_reads = (pdx70_human_stats =~ /readCount:(\d+)/)[0][1] as int
             def pdx70_mouse_reads = (pdx70_mouse_stats =~ /readCount:(\d+)/)[0][1] as int
             def pdx90_human_reads = (pdx90_human_stats =~ /readCount:(\d+)/)[0][1] as int
             def pdx90_mouse_reads = (pdx90_mouse_stats =~ /readCount:(\d+)/)[0][1] as int
 
+            // Calculate proportions
+            def human_human_prop = human_human_reads / (human_human_reads + human_mouse_reads)
             def pdx70_human_prop = pdx70_human_reads / (pdx70_human_reads + pdx70_mouse_reads)
             def pdx90_human_prop = pdx90_human_reads / (pdx90_human_reads + pdx90_mouse_reads)
 
-            assert pdx90_human_prop > pdx70_human_prop : "Expected pdx90 to have a higher human read proportion than pdx70"
+            println("Pure Human Proportion: ${human_human_prop}")
+            println("PDX70 Human Proportion: ${pdx70_human_prop}")
+            println("PDX90 Human Proportion: ${pdx90_human_prop}")
+
+            // Assertions
+            assert human_human_prop > pdx90_human_prop : "Expected pure human to have higher human read proportion than pdx90"
+            assert pdx90_human_prop > pdx70_human_prop : "Expected pdx90 to have higher human read proportion than pdx70"
             assert process.success
         }
     }

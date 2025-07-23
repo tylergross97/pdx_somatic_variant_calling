@@ -1,0 +1,42 @@
+nextflow_process {
+
+    name "Test Process APPLY_BQSR_INTERVALS"
+    script "modules/local/apply_bqsr_intervals.nf"
+    process "APPLY_BQSR_INTERVALS"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.from([
+                    tuple(
+                        "pdx70_S2",
+                        file("${projectDir}/tests/data/variant_calling_input/marked_dup_bams/pdx70_S2.humancmp.coordinatesorted.marked_duplicates.bam"),
+                        file("${projectDir}/tests/data/variant_calling_input/recal_tables_wes/pdx70_S2.recal_data.table")
+                    ),
+                    tuple(
+                        "pdx90_S1",
+                        file("${projectDir}/tests/data/variant_calling_input/marked_dup_bams/pdx90_S1.humancmp.coordinatesorted.marked_duplicates.bam"),
+                        file("${projectDir}/tests/data/variant_calling_input/recal_tables_wes/pdx90_S1.recal_data.table")
+                    )
+                ])
+                input[1] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.bed"))
+                """
+            }
+        }
+
+        then {
+            println("Output: ${process.out.recal_bam}")
+            assert process.success, "Process did not complete successfully"
+            assert process.out.recal_bam.size() == 2, "Expected 2 recalibrated BAM files, got ${process.out.recal_bam.size()}"
+            process.out.recal_bam.each { tuple ->
+                def bam = file(tuple[1])
+                assert bam.exists(), "BAM file missing: ${bam}"
+                assert bam.getName().endsWith('.bam'), "Output BAM file name incorrect"
+            }
+        }
+
+    }
+
+}
