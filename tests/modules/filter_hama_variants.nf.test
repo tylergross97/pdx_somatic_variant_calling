@@ -1,0 +1,26 @@
+nextflow_process {
+
+    name "Test Process FILTER_HAMA_VARIANTS"
+    script "modules/local/filter_hama_variants.nf"
+    process "FILTER_HAMA_VARIANTS"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.from([tuple("pdx70_S2", file("${projectDir}/tests/data/variant_calling_output/filtered_vcfs/pdx70_S2.filtered.vcf.gz")),
+                                         tuple("pdx90_S1", file("${projectDir}/tests/data/variant_calling_output/filtered_vcfs/pdx90_S1.filtered.vcf.gz"))])
+                input[1] = Channel.value(file("${projectDir}/tests/data/hama_list/high_risk_HAMA_filtered.bed"))
+                """
+            }
+        }
+
+        then {
+            println("Output: ${process.out}")
+            assert process.success
+        }
+
+    }
+
+}

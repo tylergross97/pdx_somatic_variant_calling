@@ -1,0 +1,50 @@
+nextflow_process {
+
+    name "Test Process FILTER_MUTECT_CALLS"
+    script "modules/local/filter_mutect_calls.nf"
+    process "FILTER_MUTECT_CALLS"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.fa"))
+                input[1] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.fa.fai"))
+                input[2] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.dict"))
+                input[3] = Channel.from([
+                    tuple(
+                        "pdx70_S2",
+                        file("${projectDir}/tests/data/variant_calling_output/unfiltered_vcfs/pdx70_S2.unfiltered.vcf.gz"),
+                        file("${projectDir}/tests/data/variant_calling_output/unfiltered_vcfs/pdx70_S2.unfiltered.vcf.gz.stats"),
+                        file("${projectDir}/tests/data/variant_calling_output/contamination/pdx70_S2.contamination.table"),
+                        file("${projectDir}/tests/data/variant_calling_output/contamination/pdx70_S2.segments.tsv"),
+                        file("${projectDir}/tests/data/variant_calling_output/unfiltered_vcfs_idx/pdx70_S2.unfiltered.vcf.gz.tbi")
+                    ),
+                    tuple(
+                        "pdx90_S1",
+                        file("${projectDir}/tests/data/variant_calling_output/unfiltered_vcfs/pdx90_S1.unfiltered.vcf.gz"),
+                        file("${projectDir}/tests/data/variant_calling_output/unfiltered_vcfs/pdx90_S1.unfiltered.vcf.gz.stats"),
+                        file("${projectDir}/tests/data/variant_calling_output/contamination/pdx90_S1.contamination.table"),
+                        file("${projectDir}/tests/data/variant_calling_output/contamination/pdx90_S1.segments.tsv"),
+                        file("${projectDir}/tests/data/variant_calling_output/unfiltered_vcfs_idx/pdx90_S1.unfiltered.vcf.gz.tbi")
+                    )
+                ])
+                """
+            }
+        }
+
+        then {
+            println("Output: ${process.out}")
+            assert process.success
+            process.out.filtered_vcf.each { tuple ->
+                def vcf = path(tuple[1])
+                assert vcf.exists(), "VCF file missing: ${vcf}"
+                def vcf_file = vcf.vcf
+                println("Number of variants: ${vcf_file.variantCount}")
+            }
+        }
+
+    }
+
+}
