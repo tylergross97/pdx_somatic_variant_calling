@@ -16,7 +16,7 @@ echo "Using mouse reference: $MOUSE_REF"
 
 HUMAN_REF="${REF_DIR}/hg38_chr22.fa"
 MOUSE_REF="${REF_DIR}/mm39_chr19.fa"
-TOTAL_READS=500000           # Total read pairs per sample
+TOTAL_READS=50000           # Total read pairs per sample
 READ_LENGTH=150
 
 mkdir -p "$OUT_DIR"

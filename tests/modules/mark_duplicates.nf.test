@@ -10,7 +10,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel
-                    .fromPath("${projectDir}/tests/data/variant_calling_input/marked_dup_bams/*.bam")
+                    .fromPath("${projectDir}/tests/data/variant_calling_input/*.bam")
                     .map { bam_path ->
                         def sample_id = bam_path.getBaseName().replace('.bam', '')
                         tuple(sample_id, bam_path)
