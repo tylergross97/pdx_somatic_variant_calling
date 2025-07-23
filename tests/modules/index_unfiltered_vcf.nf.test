@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process INDEX_UNFILTERED_VCF"
+    script "modules/local/index_unfiltered_vcf.nf"
+    process "INDEX_UNFILTERED_VCF"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.from([
+                    tuple(
+                        "pdx70_S2",
+                        file("${projectDir}/tests/data/variant_calling_output/unfiltered_vcfs/pdx70_S2.unfiltered.vcf.gz"),
+                        file("${projectDir}/tests/data/variant_calling_output/unfiltered_vcfs/pdx70_S2.unfiltered.vcf.gz.stats")
+                    ),
+                    tuple(
+                        "pdx90_S1",
+                        file("${projectDir}/tests/data/variant_calling_output/unfiltered_vcfs/pdx90_S1.unfiltered.vcf.gz"),
+                        file("${projectDir}/tests/data/variant_calling_output/unfiltered_vcfs/pdx90_S1.unfiltered.vcf.gz.stats")
+                    )
+                ])
+                """
+            }
+        }
+
+        then {
+            println("Output: ${process.out}")
+            assert process.success
+        }
+
+    }
+
+}
