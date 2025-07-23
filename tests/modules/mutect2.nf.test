@@ -15,7 +15,6 @@ nextflow_process {
                 input[3] = Channel.fromPath("${projectDir}/tests/data/variant_calling_input/recal_bams/*.bam")
                     .map { bam_file ->
                         def sample_id = bam_file.getBaseName().replace('.recal', '')
-                        def bai_file = file(bam_file.toString().replace('.bam', '.bam.bai'))
                         tuple(sample_id, bam_file)
                     }
                 input[4] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/af-only-gnomad.hg38.chr22.vcf.gz"))
@@ -28,6 +27,13 @@ nextflow_process {
 
         then {
             println("Output: ${process.out}")
+            assert process.success, "Process did not complete successfully"
+            process.out.unfiltered_vcf.each { tuple ->
+                def vcf = path(tuple[1])
+                assert vcf.exists(), "VCF file missing: ${vcf}"
+                def vcf_file = vcf.vcf
+                println("Number of variants: ${vcf_file.variantCount}")
+            }
         }
 
     }

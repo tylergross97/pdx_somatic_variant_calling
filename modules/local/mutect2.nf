@@ -1,12 +1,12 @@
 process MUTECT2 {
-	container "community.wave.seqera.io/library/gatk4:4.6.1.0--e3124bcb2431f4a9"
+	container "community.wave.seqera.io/library/gatk4_samtools:464a35b5e2f0c13d"
 	publishDir params.outdir_mutect2, mode: "copy"
 
 	input:
 	path fasta
 	path fasta_index
 	path dict_file
-	tuple val(sample_id), path(recal_bam), path(recal_bam_idx)
+	tuple val(sample_id), path(recal_bam)
 	path germline_resource
 	path germline_resource_idx
 	path panel_of_normals
@@ -17,6 +17,7 @@ process MUTECT2 {
 
 	script:
 	"""
+	samtools index ${recal_bam}
 	gatk Mutect2 \
 		-R ${fasta} \
 		-I ${recal_bam} \

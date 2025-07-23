@@ -26,7 +26,14 @@ nextflow_process {
         }
 
         then {
-            println("Output: ${process.out}")
+            println("Output: ${process.out.recal_bam}")
+            assert process.success, "Process did not complete successfully"
+            assert process.out.recal_bam.size() == 2, "Expected 2 recalibrated BAM files, got ${process.out.recal_bam.size()}"
+            process.out.recal_bam.each { tuple ->
+                def bam = file(tuple[1])
+                assert bam.exists(), "BAM file missing: ${bam}"
+                assert bam.getName().endsWith('.bam'), "Output BAM file name incorrect"
+            }
         }
 
     }

@@ -6,7 +6,7 @@ process APPLY_BQSR {
 	tuple val(sample_id), path(bam_file), path(recal_table)
 
 	output:
-	tuple val(sample_id), path("${sample_id}.recal.bam"), path("${sample_id}.recal.bam.bai"), emit: recal_bam
+	tuple val(sample_id), path("${sample_id}.recal.bam"), emit: recal_bam
 
 	script:
 	"""
@@ -14,6 +14,5 @@ process APPLY_BQSR {
 		-I ${bam_file} \
 		--bqsr-recal-file ${recal_table} \
 		-O ${sample_id}.recal.bam
-	samtools index ${sample_id}.recal.bam
 	"""
 }
