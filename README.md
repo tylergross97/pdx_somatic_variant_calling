@@ -240,25 +240,27 @@ chr2	74474365	A	G	chr2_74474365_G_A
 
 Must have nf-test installed in your environment
 
-Much of the testing data is too large to host on github. For this reason, it is stored in a [google bucket](https://console.cloud.google.com/storage/browser/pdx_somatic_testing_data;tab=objects?inv=1&invt=Ab3WEA&prefix=&forceOnObjectsSortingFiltering=false) and is approximately 2.7GB. To download this data to the appropriate directories (where the test scripts expect them to be), run the following bash command:
+Much of the testing data is too large to host on github. For this reason, it is stored in a [google bucket](https://console.cloud.google.com/storage/browser/pdx_somatic_testing_data;tab=objects?inv=1&invt=Ab3WEA&prefix=&forceOnObjectsSortingFiltering=false) and is approximately 1.3GB. To download this data to the appropriate directories (where the test scripts expect them to be), run the following bash command:
 
 ```bash
 ./scripts/test_data_download.sh
 ```
 
-Note that the fastq files for testing are located in the 'tests/data/fastp_input/synthetic_pdx/' directory. There are two samples, pdx70 and pdx90. The 70 and the 90 refer to the percentage of human reads in the pdx sample. In other words, pdx70 contains 30% mouse contamination and pdx90 contains 10% mouse contamination. The synthetic fastq files were generated using the 'scripts/simulate_pdx_reads.sh' script which I provided for your reference
+Note that the fastq files for testing are located in the 'tests/data/fastp_input/synthetic_pdx/' directory. There are three samples, pdx70, pdx90, and human. The 70 and the 90 refer to the percentage of human reads in the pdx sample. In other words, pdx70 contains 30% mouse contamination and pdx90 contains 10% mouse contamination. The human sample contains purely human reads. The synthetic fastq files were generated using the 'scripts/simulate_pdx_reads.sh' script which I provided for your reference.
+
+To run process-level tests, use the following command:
+```bash
+nf-test test tests/modules/
+```
 
 
 ## Planned Updates
 - The following changes are expected to made (in no particular order) to increase usability and improve analysis in the near future. Collaboration is welcome!
    - Providing additionality functionality for those with a matched-normal sample:
       - Using this to filter germline variants
-   - Providing additional functionality for those with the original patient tumor sample:
-      - Quantifying the degree of similarity between the PDX sample and the original patient sample
-   - Perform somatic copy number analysis
-   - Add public dataset for users to test the pipeline on
    - Allow for a sample sheet for input files
    - Benchmarking Pipeline  
+   
 ## Citations
 
 If you use this pipeline in your work, please cite:
