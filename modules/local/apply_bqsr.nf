@@ -1,12 +1,12 @@
 process APPLY_BQSR {
-	container "community.wave.seqera.io/library/gatk4:4.6.1.0--e3124bcb2431f4a9"
+	container "community.wave.seqera.io/library/gatk4_samtools:464a35b5e2f0c13d"
 	publishDir params.outdir_bqsr, mode: 'symlink'
 
 	input:
 	tuple val(sample_id), path(bam_file), path(recal_table)
 
 	output:
-	tuple val(sample_id), path("${sample_id}.recal.bam"), emit: recal_bam
+	tuple val(sample_id), path("${sample_id}.recal.bam"), path("${sample_id}.recal.bam.bai"), emit: recal_bam
 
 	script:
 	"""
@@ -14,5 +14,6 @@ process APPLY_BQSR {
 		-I ${bam_file} \
 		--bqsr-recal-file ${recal_table} \
 		-O ${sample_id}.recal.bam
+	samtools index ${sample_id}.recal.bam
 	"""
 }

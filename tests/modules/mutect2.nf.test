@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process MUTECT2"
+    script "modules/local/mutect2.nf"
+    process "MUTECT2"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.fa"))
+                input[1] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.fa.fai"))
+                input[2] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.dict"))
+                input[3] = Channel.fromPath("${projectDir}/tests/data/variant_calling_input/recal_bams/*.bam")
+                    .map { bam_file ->
+                        def sample_id = bam_file.getBaseName().replace('.recal', '')
+                        def bai_file = file(bam_file.toString().replace('.bam', '.bam.bai'))
+                        tuple(sample_id, bam_file)
+                    }
+                input[4] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/af-only-gnomad.hg38.chr22.vcf.gz"))
+                input[5] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/af-only-gnomad.hg38.chr22.vcf.gz.tbi"))
+                input[6] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/1000g_pon.hg38.chr22.vcf.gz"))
+                input[7] = Channel.value(file("${projectDir}/tests/data/hg38_chr22_accessory_files/1000g_pon.hg38.chr22.vcf.gz.tbi"))
+                """
+            }
+        }
+
+        then {
+            println("Output: ${process.out}")
+        }
+
+    }
+
+}

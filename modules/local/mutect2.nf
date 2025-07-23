@@ -6,7 +6,7 @@ process MUTECT2 {
 	path fasta
 	path fasta_index
 	path dict_file
-	tuple val(sample_id), path(recal_bam)
+	tuple val(sample_id), path(recal_bam), path(recal_bam_idx)
 	path germline_resource
 	path germline_resource_idx
 	path panel_of_normals

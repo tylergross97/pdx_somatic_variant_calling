@@ -20,6 +20,7 @@ nextflow_process {
         }
 
         then {
+            println("Output: ${process.out}")
             def pdx70 = process.out.indexed_bam.get(0)
             def pdx90 = process.out.indexed_bam.get(1)
 
