@@ -14,6 +14,7 @@ include { BAMCMP } from './modules/local/bamcmp.nf'
 include { MERGE_BAMS } from './modules/local/merge_bams.nf'
 include { INDEX_BAM } from './modules/local/index_bam.nf'
 include { MARK_DUPLICATES } from './modules/local/mark_duplicates.nf'
+include { INDEX_MARKED_DUPLICATES } from './modules/local/index_marked_duplicates.nf'
 include { INDEX_REFERENCE } from './modules/local/index_reference.nf'
 include { CREATE_DICT } from './modules/local/create_dict.nf'
 include { GET_PILEUP_SUMMARIES } from './modules/local/get_pileup_summaries.nf'
@@ -29,16 +30,71 @@ include { APPLY_BQSR } from './modules/local/apply_bqsr.nf'
 include { MUTECT2 } from './modules/local/mutect2.nf'
 
 // Modules for interval workflow
-include { INDEX_MARKED_DUPLICATES_INTERVALS } from './modules/local/index_marked_duplicates_intervals.nf'
+
 include { BASE_RECALIBRATOR_INTERVALS } from './modules/local/base_recalibrator_intervals.nf'
 include { APPLY_BQSR_INTERVALS } from './modules/local/apply_bqsr_intervals.nf'
-include { MUTECT2_INTERVALS }
+include { MUTECT2_INTERVALS } from './modules/local/mutect2_intervals.nf'
 
 workflow {
-    // Common initial steps for both workflows
-    ACCESSORY_FILES_DOWNLOAD()
-    // Convert to meta map format required by nf-core modules
-    ch_fastq = Channel.fromFilePairs("${params.fastq}/*_S*_R{1,2}_001.fastq.gz", checkIfExists: true)
+    // Check if we're running in test mode
+    def is_test_profile = workflow.profile.contains('test')
+
+    if (is_test_profile) {
+        // Use local test reference files - chr22 specific filenames
+        ch_dbsnp_vcf = Channel.value(file("${params.test_data_base}/Homo_sapiens_assembly38.dbsnp138.chr22.vcf", checkIfExists: true))
+        ch_dbsnp_vcf_idx = Channel.value(file("${params.test_data_base}/Homo_sapiens_assembly38.dbsnp138.chr22.vcf.idx", checkIfExists: true))
+        ch_known_indels = Channel.value(file("${params.test_data_base}/Homo_sapiens_assembly38.known_indels.chr22.vcf.gz", checkIfExists: true))
+        ch_known_indels_idx = Channel.value(file("${params.test_data_base}/Homo_sapiens_assembly38.known_indels.chr22.vcf.gz.tbi", checkIfExists: true))
+        ch_mills_indels = Channel.value(file("${params.test_data_base}/Mills_and_1000G_gold_standard.indels.hg38.chr22.vcf.gz", checkIfExists: true))
+        ch_mills_indels_idx = Channel.value(file("${params.test_data_base}/Mills_and_1000G_gold_standard.indels.hg38.chr22.vcf.gz.tbi", checkIfExists: true))
+        ch_gnomad = Channel.value(file("${params.test_data_base}/af-only-gnomad.hg38.chr22.vcf.gz", checkIfExists: true))
+        ch_gnomad_idx = Channel.value(file("${params.test_data_base}/af-only-gnomad.hg38.chr22.vcf.gz.tbi", checkIfExists: true))
+        ch_filtered_vcf = Channel.value(file("${params.test_data_base}/small_exac_common_3.hg38.chr22.vcf.gz", checkIfExists: true))
+        ch_filtered_vcf_idx = Channel.value(file("${params.test_data_base}/small_exac_common_3.hg38.chr22.vcf.gz.tbi", checkIfExists: true))
+        ch_pon = Channel.value(file("${params.test_data_base}/1000g_pon.hg38.chr22.vcf.gz", checkIfExists: true))
+        ch_pon_idx = Channel.value(file("${params.test_data_base}/1000g_pon.hg38.chr22.vcf.gz.tbi", checkIfExists: true))
+        
+        // Use test FASTQ input - search recursively in subdirectories
+        ch_fastq = Channel.fromFilePairs("${params.fastq}/**/*_S*_R{1,2}_001.fastq.gz", checkIfExists: true)
+        
+        log.info "Running in TEST mode with chr22 test data"
+        log.info "FASTQ input directory: ${params.fastq}"
+        log.info "Test accessory files: ${params.test_data_base}"
+    } else {
+        // Production mode - download accessory files
+        ACCESSORY_FILES_DOWNLOAD()
+        
+        // Map all the process outputs to the same channel variable names
+        ch_dbsnp_vcf = ACCESSORY_FILES_DOWNLOAD.out.dbsnp_vcf
+        ch_dbsnp_vcf_idx = ACCESSORY_FILES_DOWNLOAD.out.dbsnp_vcf_idx
+        ch_known_indels = ACCESSORY_FILES_DOWNLOAD.out.known_indels
+        ch_known_indels_idx = ACCESSORY_FILES_DOWNLOAD.out.known_indels_idx
+        ch_mills_indels = ACCESSORY_FILES_DOWNLOAD.out.mills_indels
+        ch_mills_indels_idx = ACCESSORY_FILES_DOWNLOAD.out.mills_indels_idx
+        ch_gnomad = ACCESSORY_FILES_DOWNLOAD.out.gnomad
+        ch_gnomad_idx = ACCESSORY_FILES_DOWNLOAD.out.gnomad_idx
+        ch_filtered_vcf = ACCESSORY_FILES_DOWNLOAD.out.filtered_vcf
+        ch_filtered_vcf_idx = ACCESSORY_FILES_DOWNLOAD.out.filtered_vcf_idx
+        ch_pon = ACCESSORY_FILES_DOWNLOAD.out.pon
+        ch_pon_idx = ACCESSORY_FILES_DOWNLOAD.out.pon_idx
+        
+        // Use production FASTQ input
+        ch_fastq = Channel.fromFilePairs("${params.fastq}/*_S*_R{1,2}_001.fastq.gz", checkIfExists: true)
+        
+        log.info "Running in PRODUCTION mode"
+    }
+
+    if (params.containsKey('intervals') && params.intervals) {
+        // Convert relative path to absolute path
+        def intervals_file = file(params.intervals, checkIfExists: true)
+        ch_intervals = Channel.value(intervals_file)
+        log.info "Using intervals file: ${intervals_file}"
+    } else {
+        ch_intervals = Channel.empty()
+        log.info "No intervals specified - running whole genome analysis"
+    }
+
+    // common initial steps for both workflows
     FASTP(ch_fastq)
     MULTIQC(FASTP.out.json_report.collect())
     human_index = INDEX_HUMAN(params.hg38_fasta)
@@ -67,7 +123,7 @@ workflow {
             human: it[1] == "human"
             mouse: it[1] == "mouse"
         }
-    
+
     bamcmp_input = paired_bams.human
         .join(paired_bams.mouse, by: 0)
         .map { sample_id, human_species, human_bam, mouse_species, mouse_bam ->
@@ -83,6 +139,7 @@ workflow {
     MERGE_BAMS(bams_to_merge)
     INDEX_BAM(MERGE_BAMS.out.human_merged_sorted_bam)
     MARK_DUPLICATES(MERGE_BAMS.out.human_merged_sorted_bam)
+    INDEX_MARKED_DUPLICATES(MARK_DUPLICATES.out.marked_dup_bam)
     INDEX_REFERENCE(params.hg38_fasta)
     CREATE_DICT(params.hg38_fasta)
     
@@ -94,41 +151,41 @@ workflow {
     // Conditional workflow based on whether intervals are provided
     if (params.containsKey('intervals') && params.intervals) {
         // Interval-based workflow
-        INDEX_MARKED_DUPLICATES_INTERVALS(MARK_DUPLICATES.out.marked_dup_bam)
+  
         BASE_RECALIBRATOR_INTERVALS(
-            INDEX_MARKED_DUPLICATES_INTERVALS.out.indexed_bam,
+            INDEX_MARKED_DUPLICATES.out.indexed_bam,
             params.hg38_fasta,
             INDEX_REFERENCE.out.fasta_index,
             CREATE_DICT.out.dict_file,
-            ACCESSORY_FILES_DOWNLOAD.out.dbsnp_vcf,
-            ACCESSORY_FILES_DOWNLOAD.out.dbsnp_vcf_idx,
-            ACCESSORY_FILES_DOWNLOAD.out.known_indels,
-            ACCESSORY_FILES_DOWNLOAD.out.known_indels_idx,
-            ACCESSORY_FILES_DOWNLOAD.out.mills_indels,
-            ACCESSORY_FILES_DOWNLOAD.out.mills_indels_idx,
-            params.intervals
+            ch_dbsnp_vcf,
+            ch_dbsnp_vcf_idx,
+            ch_known_indels,
+            ch_known_indels_idx,
+            ch_mills_indels,
+            ch_mills_indels_idx,
+            ch_intervals
         )
-        bqsr_input = INDEX_MARKED_DUPLICATES_INTERVALS.out.indexed_bam
+        bqsr_input = INDEX_MARKED_DUPLICATES.out.indexed_bam
             .join(BASE_RECALIBRATOR_INTERVALS.out.recal_data_table)
             .map { sample_id, bam, bai, recal_table ->
                 tuple(sample_id, bam, bai, recal_table)
             }
-        APPLY_BQSR_INTERVALS(bqsr_input, params.intervals)
+        APPLY_BQSR_INTERVALS(bqsr_input, ch_intervals)
         MUTECT2_INTERVALS(
             params.hg38_fasta,
             INDEX_REFERENCE.out.fasta_index,
             CREATE_DICT.out.dict_file,
             APPLY_BQSR_INTERVALS.out.recal_bam,
-            ACCESSORY_FILES_DOWNLOAD.out.gnomad,
-            ACCESSORY_FILES_DOWNLOAD.out.gnomad_idx,
-            ACCESSORY_FILES_DOWNLOAD.out.pon,
-            ACCESSORY_FILES_DOWNLOAD.out.pon_idx,
-            params.intervals
+            ch_gnomad,
+            ch_gnomad_idx,
+            ch_pon,
+            ch_pon_idx,
+            ch_intervals
         )
         GET_PILEUP_SUMMARIES(
             APPLY_BQSR_INTERVALS.out.recal_bam,
-            ACCESSORY_FILES_DOWNLOAD.out.filtered_vcf,
-            ACCESSORY_FILES_DOWNLOAD.out.filtered_vcf_idx
+            ch_filtered_vcf,
+            ch_filtered_vcf_idx
         )
         CALCULATE_CONTAMINATION(GET_PILEUP_SUMMARIES.out.pileup_table)
         INDEX_UNFILTERED_VCF(MUTECT2_INTERVALS.out.unfiltered_vcf)
@@ -138,33 +195,33 @@ workflow {
     } else {
         // Non-interval workflow
         BASE_RECALIBRATOR(
-            MARK_DUPLICATES.out.marked_dup_bam,
+            INDEX_MARKED_DUPLICATES.out.indexed_bam,
             params.hg38_fasta,
             INDEX_REFERENCE.out.fasta_index,
             CREATE_DICT.out.dict_file,
-            ACCESSORY_FILES_DOWNLOAD.out.dbsnp_vcf,
-            ACCESSORY_FILES_DOWNLOAD.out.dbsnp_vcf_idx,
-            ACCESSORY_FILES_DOWNLOAD.out.known_indels,
-            ACCESSORY_FILES_DOWNLOAD.out.known_indels_idx,
-            ACCESSORY_FILES_DOWNLOAD.out.mills_indels,
-            ACCESSORY_FILES_DOWNLOAD.out.mills_indels_idx
+            ch_dbsnp_vcf,
+            ch_dbsnp_vcf_idx,
+            ch_known_indels,
+            ch_known_indels_idx,
+            ch_mills_indels,
+            ch_mills_indels_idx
         )
-        bqsr_input = MARK_DUPLICATES.out.marked_dup_bam.join(BASE_RECALIBRATOR.out.recal_data_table)
+        bqsr_input = INDEX_MARKED_DUPLICATES.out.indexed_bam.join(BASE_RECALIBRATOR.out.recal_data_table)
         APPLY_BQSR(bqsr_input)
         MUTECT2(
             params.hg38_fasta,
             INDEX_REFERENCE.out.fasta_index,
             CREATE_DICT.out.dict_file,
             APPLY_BQSR.out.recal_bam,
-            ACCESSORY_FILES_DOWNLOAD.out.gnomad,
-            ACCESSORY_FILES_DOWNLOAD.out.gnomad_idx,
-            ACCESSORY_FILES_DOWNLOAD.out.pon,
-            ACCESSORY_FILES_DOWNLOAD.out.pon_idx
+            ch_gnomad,
+            ch_gnomad_idx,
+            ch_pon,
+            ch_pon_idx
         )
         GET_PILEUP_SUMMARIES(
             APPLY_BQSR.out.recal_bam,
-            ACCESSORY_FILES_DOWNLOAD.out.filtered_vcf,
-            ACCESSORY_FILES_DOWNLOAD.out.filtered_vcf_idx
+            ch_filtered_vcf,
+            ch_filtered_vcf_idx
         )
         CALCULATE_CONTAMINATION(GET_PILEUP_SUMMARIES.out.pileup_table)
         INDEX_UNFILTERED_VCF(MUTECT2.out.unfiltered_vcf)

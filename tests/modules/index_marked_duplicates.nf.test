@@ -1,0 +1,39 @@
+nextflow_process {
+
+    name "Test Process INDEX_MARKED_DUPLICATES_INTERVALS"
+    script "modules/local/index_marked_duplicates.nf"
+    process "INDEX_MARKED_DUPLICATES_INTERVALS"
+
+    test("Should run without failures") {
+        setup {
+            run("MARK_DUPLICATES") {
+                script "modules/local/mark_duplicates.nf"
+                process {
+                    """
+                    input[0] = Channel
+                        .fromPath("${projectDir}/tests/data/variant_calling_input/*.bam")
+                        .map { bam_path ->
+                            def sample_id = bam_path.getBaseName().replace('.bam', '')
+                            tuple(sample_id, bam_path)
+                        }
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = MARK_DUPLICATES.out.marked_dup_bam
+                """
+            }
+        }
+
+        then {
+            println("Output: ${process.out.indexed_bam}")
+            assert process.success
+        }
+
+    }
+
+}

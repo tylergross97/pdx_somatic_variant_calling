@@ -3,7 +3,7 @@ process APPLY_BQSR {
 	publishDir params.outdir_bqsr, mode: 'symlink'
 
 	input:
-	tuple val(sample_id), path(bam_file), path(recal_table)
+	tuple val(sample_id), path(bam_file), path(bai), path(recal_table)
 
 	output:
 	tuple val(sample_id), path("${sample_id}.recal.bam"), emit: recal_bam

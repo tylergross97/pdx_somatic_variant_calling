@@ -1,0 +1,54 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+
+    test("Should run without failures - no intervals") {
+
+        when {
+            params {
+                outdir = "${outputDir}"
+                // No intervals parameter - tests non-interval workflow
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.trace.tasks().size() > 0 },
+                // Verify non-interval processes ran
+                { assert workflow.trace.tasks().findAll { it.name == 'BASE_RECALIBRATOR' }.size() > 0 },
+                { assert workflow.trace.tasks().findAll { it.name == 'MUTECT2' }.size() > 0 },
+                { assert snapshot(
+                    path("${params.outdir}/fastp").list(),
+                    path("${params.outdir}/multiqc").list(),
+                    path("${params.outdir}/variants").list()
+                ).match() }
+            )
+        }
+    }
+
+    test("Should run without failures - with intervals") {
+
+        when {
+            params {
+                intervals = "${projectDir}/tests/data/references/chr22_intervals.bed"
+                outdir = "${outputDir}"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.trace.tasks().size() > 0 },
+                // Verify interval-based processes ran
+                { assert workflow.trace.tasks().findAll { it.name == 'BASE_RECALIBRATOR_INTERVALS' }.size() > 0 },
+                { assert workflow.trace.tasks().findAll { it.name == 'MUTECT2_INTERVALS' }.size() > 0 },
+                { assert snapshot(
+                    path("${params.outdir}/variants").list()
+                ).match() }
+            )
+        }
+    }
+
+}

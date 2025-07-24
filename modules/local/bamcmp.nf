@@ -6,12 +6,12 @@ process BAMCMP {
 	tuple val(sample_id), path(bam_human), path(bam_mouse)
 
 	output:
-	tuple val(sample_id), path("${sample_id}_humanOnly.bam"), emit: human_only
-	tuple val(sample_id), path("${sample_id}_humanBetter.bam"), emit: human_better
-	tuple val(sample_id), path("${sample_id}_mouseOnly.bam"), emit: mouse_only
-	tuple val(sample_id), path("${sample_id}_mouseBetter.bam"), emit: mouse_better
-	tuple val(sample_id), path("${sample_id}_humanLoss.bam"), emit: human_loss
-	tuple val(sample_id), path("${sample_id}_mouseLoss.bam"), emit: mouse_loss
+	tuple val(sample_id), path("${sample_id}_humanOnly.bam"), emit: human_only, optional: true
+	tuple val(sample_id), path("${sample_id}_humanBetter.bam"), emit: human_better, optional: true
+	tuple val(sample_id), path("${sample_id}_mouseOnly.bam"), emit: mouse_only, optional: true
+	tuple val(sample_id), path("${sample_id}_mouseBetter.bam"), emit: mouse_better, optional: true
+	tuple val(sample_id), path("${sample_id}_humanLoss.bam"), emit: human_loss, optional: true
+	tuple val(sample_id), path("${sample_id}_mouseLoss.bam"), emit: mouse_loss, optional: true
 
 	script:
 	"""

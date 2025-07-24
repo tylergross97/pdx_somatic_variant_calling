@@ -15,7 +15,11 @@ run.sh
 # nf-test logs
 .nf-test.log
 
+.nf-test*.nf
+
 # Any nf-test generated reports
 nf-test-report.html
 
 tests/data/
+
+.nextflow.log*

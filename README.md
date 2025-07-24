@@ -3,6 +3,7 @@
 A Nextflow pipeline specifically designed to perform tumor-only SNP and Indel variant calling from Patient-Derived Xenograft (PDX) models. The pipeline is designed to be easy to implement for HPC users or locally and can be used on whole-genome sequencing (WGS) or whole-exome sequencing (WES) data.
 
 ## Table of Contents
+
 1. [Introduction](#introduction)
 2. [Pipeline Workflow](#pipeline-workflow)
 3. [Pipeline Steps](#pipeline-steps)
@@ -27,19 +28,23 @@ Source: [Charles River](https://www.criver.com/products-services/discovery-servi
 Somatic short variant calling of PDX models without matched-normals is a common task for bioinformaticians. However, it is important to address the unique set of challenges that this task presents, which will be covered shortly.
 
 This pipeline can be conceptually broken down into three main parts:
+
 - Deconvolution (filtering) of mouse reads
 - Tumor-only somatic short variant calling of human reads
 - Lenient blacklisting of human genome-aligned mouse alleles (HAMAs) [1]
 
 ### Deconvolution of mouse reads
+
 First, it is important to understand that although the tumor is implanted into the mouse, it originated from a human patient and we are interested in these human tumor cells. However, during and after implanation of the tumor into the mouse, there is some degree of infiltration of mouse cells into the tumor, leading to "contamination". As discussed and explored throughly in [Jo et al., 2019](https://link.springer.com/article/10.1186/s13059-019-1849-2), this can lead to false-positive variant calls. This is because mouse reads can align to the human reference genome and be detected as variants. This pipeline utilizes the [bamcmp](https://github.com/CRUKMI-ComputationalBiology/bamcmp) tool, although there are others available to accomplish deconvolution of mouse reads.
 
 ### Tumor-only somatic short variant calling
+
 In an ideal world, a matched-normal tissue, which is typically a blood sample or a nearby healthy tissue, is collected from the same patient from which the tumor was extracted. This allows bioinformaticians to identify which variants are present in the tumor and matched-normal tissue and mark these are germline, meaning that they are inherited. The variants from the tumor that are not present in the matched-normal tissue are therefore somatic.
 
 In reality, we often do not have a matched-normal tissue. In the case of PDX models, it can be particularly challenging to retrospectively obtain these matched-normal tissues. The next-best thing is to leverage a database of common germline variants from the general population in place of the matched-normal tissue. If the variants from the tumor are present in this database, we can infer that these variants are germline. This "tumor-only" approach to somatic variant calling should be interpreted with caution, as there is a higher risk for germline variants (particularly rare ones) being called as false-positive somatic variants. This topic is extensively covered in [Haperlin et al., 2017](https://link.springer.com/article/10.1186/s12920-017-0296-8). This pipeline leverages [Mutect2's](https://www.biorxiv.org/content/10.1101/861054v1.abstract) tumor-only mode and follows [GATK's best practices](https://gatk.broadinstitute.org/hc/en-us/articles/360035894731-Somatic-short-variant-discovery-SNVs-Indels)[2]. The output of the pipeline are called variants in VCF format.
 
 ### Lenient blacklisting of human genome-aligned mouse alleles (HAMAs)
+
 As described in Jo et al. (2019), although deconvolution and filtering of mouse reads via a tool such as bamcmp can remove a large number of mouse reads, there is still a risk of false-positive variant calls, particuarly from mouse reads that are alignable to the human genome, known as HAMAs. To be conservative, this pipeline performs lenient blacklisting, by annotating high-risk HAMAs from the VCF file, as recommended by the authors of the paper as a minimum-risk general strategy. See [Pipeline Outputs](#pipeline-outputs) for more details.
 
 ## Pipeline Workflow
@@ -67,7 +72,9 @@ To get started with this pipeline, clone the repository to your local machine or
 git clone https://github.com/tylergross97/pdx_somatic_variant_calling.git
 cd pdx_somatic_variant_calling
 ```
+
 ### Install software and accessory files
+
 Before running this pipeline, ensure you have the following tools and resources installed. This is the hardest part, but I have provided documentation!
 
 1. Nextflow (version 23.10.0 or later)
@@ -76,72 +83,70 @@ Before running this pipeline, ensure you have the following tools and resources 
 
 2. Singularity (preferred for HPCs) or Docker
    - Singularity: [Singularity Installation Guide](https://sylabs.io/guides/3.0/user-guide/installation.html)
-      - Note that this may already be installed on your HPC system
+     - Note that this may already be installed on your HPC system
    - Docker: [Docker Installation Guide](https://docs.docker.com/get-docker/)
 
 3. Reference Genomes:
    - As explained in [Zverinova et al, 2021](https://onlinelibrary.wiley.com/doi/10.1002/humu.24311), we recommend using primary genome assemblies for references
-      - Human (hg38)
-        ```bash
-        curl -O https://42basepairs.com/download/s3/ont-open-data/colo829_2023.04/analysis/sup_wf_som_var/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
-        ```
-      - Mouse (mm39 or mm10_nsg)
-        - General: mouse (mm39)
-        ```bash
-        curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/GCF_000001635.27_GRCm39_genomic.fna.gz
-        gunzip GCF_000001635.27_GRCm39_genomic.fna.gz
-         ```
-        - If your PDX models utilized NSG (immunocompromised) mice, we recommend using the following NSG-adapted reference genome from [Hynds et al., 2024](https://www.nature.com/articles/s41467-024-47547-3)
-           - Use of this reference genome has been shown to improve the filtering of mouse reads when NSG mice are used for the PDX models
-             ```bash
-             curl -O https://zenodo.org/records/10304175/files/nsg_adapted_reference.zip?download=1
-             mv 'nsg_adapted_reference.zip?download=1' nsg_adapted_reference.zip
-             unzip nsg_adapted_reference.zip
-             cd nsgReference/
-             ls
-             ```
-             - Here you will see the 'mm10.nsgSpike.fa' reference genome that you can specify in your nextflow.config file for params.mm39_fasta instead of the unmodified mouse reference genome
+     - Human (hg38)
+       ```bash
+       curl -O https://42basepairs.com/download/s3/ont-open-data/colo829_2023.04/analysis/sup_wf_som_var/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
+       ```
+     - Mouse (mm39 or mm10_nsg)
+       - General: mouse (mm39)
+       ```bash
+       curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/GCF_000001635.27_GRCm39_genomic.fna.gz
+       gunzip GCF_000001635.27_GRCm39_genomic.fna.gz
+       ```
+
+       - If your PDX models utilized NSG (immunocompromised) mice, we recommend using the following NSG-adapted reference genome from [Hynds et al., 2024](https://www.nature.com/articles/s41467-024-47547-3)
+         - Use of this reference genome has been shown to improve the filtering of mouse reads when NSG mice are used for the PDX models
+           ```bash
+           curl -O https://zenodo.org/records/10304175/files/nsg_adapted_reference.zip?download=1
+           mv 'nsg_adapted_reference.zip?download=1' nsg_adapted_reference.zip
+           unzip nsg_adapted_reference.zip
+           cd nsgReference/
+           ls
+           ```
+
+           - Here you will see the 'mm10.nsgSpike.fa' reference genome that you can specify in your nextflow.config file for params.mm39_fasta instead of the unmodified mouse reference genome
 
 4. GATK Resource Bundle (accessory files)
-   - The required accessory files are automatically downloaded from [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle) at the beginning of the pipeline
-         - Note that some of these files are multiple GBs - this is one of the reasons I personally use an HPC system and not my local computer!
-         - I've provided some details on the accessory files for you [here](images/accessory_files.pdf)
+   - The required accessory files are automatically downloaded from [GATK Resource Bundle](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle) at the beginning of the pipeline - Note that some of these files are multiple GBs - this is one of the reasons I personally use an HPC system and not my local computer! - I've provided some details on the accessory files for you [here](images/accessory_files.pdf)
 5. FASTQ files:
    - Paired-end FASTQ files from your PDX samples
-      - FASTQ File Naming Convention:
-         This pipeline requires a specific naming convention for input FASTQ files. Files should follow this pattern:
-         
-         *_S*_R{1,2}_001.fastq.gz
-         
-         Where:
-         
-         * can be any string (usually sample name or identifier)
-         S* represents the sample number (e.g., S1, S2, S3, etc.)
+     - FASTQ File Naming Convention:
+       This pipeline requires a specific naming convention for input FASTQ files. Files should follow this pattern:
+
+       _\_S_\_R{1,2}\_001.fastq.gz
+
+       Where:
+       - can be any string (usually sample name or identifier)
+         S\* represents the sample number (e.g., S1, S2, S3, etc.)
          R{1,2} specifies whether it's the forward (R1) or reverse (R2) read file
          001 is a common suffix in Illumina sequencing output
          Files must be gzipped (.gz extension)
-   
-         Examples of correctly named files:
-         
-         Sample1_S1_R1_001.fastq.gz and Sample1_S1_R2_001.fastq.gz
-        
-         PDX-tumor_S2_R1_001.fastq.gz and PDX-tumor_S2_R2_001.fastq.gz
-   
-         If your files don't match this naming convention, you may need to rename them before running the pipeline.
+
+       Examples of correctly named files:
+
+       Sample1_S1_R1_001.fastq.gz and Sample1_S1_R2_001.fastq.gz
+
+       PDX-tumor_S2_R1_001.fastq.gz and PDX-tumor_S2_R2_001.fastq.gz
+
+       If your files don't match this naming convention, you may need to rename them before running the pipeline.
 
 6. Intervals.bed file (for WES data)
-      - The default behavior of this pipeline is to perform variant calling across the entire genome (main.nf)
-      - If you have WES data, you may want to provide the capture-kit-specific intervals of the capture site in the form of a BED file
-         - If params.intervals is provided in your nextflow.config file, variant calling will be performed only on these targeted regions
-         - Targeting your analysis to specific intervals improves computational effiency and reduces off-target noise of both base recalibration and variant calling
-         - However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred and you may miss some important variants - for this reason we pad each genomic interval by 100 base pairs on each side
-            - See this [article](https://sites.google.com/a/broadinstitute.org/legacy-gatk-documentation/frequently-asked-questions/4133-When-should-I-use-L-to-pass-in-a-list-of-intervals) for a discussion around this topic
-         - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#adding-intervals)
-            - Here is a command to download the .bed file provided by Illumina for their Illumina Exome 2.5 Panel HG38 genome:
-                 ```bash
-                 curl -O https://support.illumina.com/content/dam/illumina-support/documents/downloads/productfiles/illumina-prep/exome/hg38_Twist_ILMN_Exome_2.5_Panel_annotated.BED
-                 ```
-      
+   - The default behavior of this pipeline is to perform variant calling across the entire genome (main.nf)
+   - If you have WES data, you may want to provide the capture-kit-specific intervals of the capture site in the form of a BED file
+     - If params.intervals is provided in your nextflow.config file, variant calling will be performed only on these targeted regions
+     - Targeting your analysis to specific intervals improves computational effiency and reduces off-target noise of both base recalibration and variant calling
+     - However, it comes with important considerations, as it possible that sequencing outside of the targeted regions occurred and you may miss some important variants - for this reason we pad each genomic interval by 100 base pairs on each side
+       - See this [article](https://sites.google.com/a/broadinstitute.org/legacy-gatk-documentation/frequently-asked-questions/4133-When-should-I-use-L-to-pass-in-a-list-of-intervals) for a discussion around this topic
+     - If you choose you provide an interval file, you must add its path to your nextflow.config file as a param as shown [here](#adding-intervals)
+       - Here is a command to download the .bed file provided by Illumina for their Illumina Exome 2.5 Panel HG38 genome:
+         ```bash
+         curl -O https://support.illumina.com/content/dam/illumina-support/documents/downloads/productfiles/illumina-prep/exome/hg38_Twist_ILMN_Exome_2.5_Panel_annotated.BED
+         ```
 
 7. Python (version 3.6 or later) for downstream analysis of contamination
    - Installation instructions: [Python Installation Guide](https://www.python.org/downloads/)
@@ -155,9 +160,12 @@ cp nextflow.config.template nextflow.config
 ```
 
 ##### Adding Intervals
+
 If you have WES data, you can add the following param to your nextflow.config file and specify its path
-   ![Nextflow config with intervals](images/nextflow.config.template.intervals.png)
+![Nextflow config with intervals](images/nextflow.config.template.intervals.png)
+
 ##### Profiles
+
 To run with singularity (recommended for HPC) specify with the '-profile singularity' command line tag
 To run with Docker specify with the '-profile docker' command line tag
 
@@ -170,6 +178,7 @@ With your nextflow.config and main.nf (or main.intervals.nf) files in your curre
 ```bash
 nextflow run main.nf
 ```
+
 ### Running on SLURM
 
 If you're using a high-performance computing (HPC) cluster that uses SLURM for job scheduling, you can create a [SLURM script](https://www.arch.jhu.edu/short-tutorial-how-to-create-a-slurm-script/) to run the pipeline. It may look something like this:
@@ -196,6 +205,7 @@ export NXF_SINGULARITY_CACHEDIR=$HOME/nextflow_singularity_cache
 # Run the Nextflow pipeline
 nextflow run main.nf
 ```
+
 ## Pipeline Outputs
 
 There are many intermediate files generated that will be placed in the results directory you specify in your nextflow.config file. The main file we are interested are the {sample}.filtered.hama_annotated.vcf.gz [.vcf](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format) file, saved to the ./results/mutect2/directory.
@@ -238,7 +248,7 @@ chr2	74474365	A	G	chr2_74474365_G_A
 
 ## Testing
 
-Must have nf-test installed in your environment
+Must have gsutil, nf-test and docker installed in your environment
 
 Much of the testing data is too large to host on github. For this reason, it is stored in a [google bucket](https://console.cloud.google.com/storage/browser/pdx_somatic_testing_data;tab=objects?inv=1&invt=Ab3WEA&prefix=&forceOnObjectsSortingFiltering=false) and is approximately 1.3GB. To download this data to the appropriate directories (where the test scripts expect them to be), run the following bash command:
 
@@ -249,24 +259,40 @@ Much of the testing data is too large to host on github. For this reason, it is 
 Note that the fastq files for testing are located in the 'tests/data/fastp_input/synthetic_pdx/' directory. There are three samples, pdx70, pdx90, and human. The 70 and the 90 refer to the percentage of human reads in the pdx sample. In other words, pdx70 contains 30% mouse contamination and pdx90 contains 10% mouse contamination. The human sample contains purely human reads. The synthetic fastq files were generated using the 'scripts/simulate_pdx_reads.sh' script which I provided for your reference.
 
 To run process-level tests, use the following command:
+
 ```bash
 nf-test test tests/modules/
 ```
 
+To run pipeline level tests:
+
+- In WGS mode:
+
+```bash
+nextflow run main.nf -profile test
+```
+
+- In WES mode:
+
+```bash
+nextflow run main.nf -profile test --intervals tests/data/references/hg38_chr22.bed
+```
 
 ## Planned Updates
+
 - The following changes are expected to made (in no particular order) to increase usability and improve analysis in the near future. Collaboration is welcome!
-   - Providing additionality functionality for those with a matched-normal sample:
-      - Using this to filter germline variants
-   - Allow for a sample sheet for input files
-   - Benchmarking Pipeline  
-   
+  - Providing additionality functionality for those with a matched-normal sample:
+    - Using this to filter germline variants
+  - Allow for a sample sheet for input files
+  - Benchmarking Pipeline
+
 ## Citations
 
 If you use this pipeline in your work, please cite:
 [Tyler Gross] (2025). Tumor-Only PDX Somatic Variant Calling with Nextflow [Computer software]. https://github.com/tylergross97/pdx_somatic_variant_calling
 
 This pipeline is based on the following conceptual frameworks and best practices:
+
 1. Jo, S. Y., Kim, E., & Kim, S. (2019). Impact of mouse contamination in genomic profiling of patient-derived models and best practice for robust analysis. Genome Biology, 20, 1-13.
 2. GATK Best Practices for somatic short variant discovery (SNVs + Indels)
    Broad Institute. (2023). Somatic short variant discovery (SNVs + Indels). Retrieved Jan. 2025, from https://gatk.broadinstitute.org/hc/en-us/articles/360035894731-Somatic-short-variant-discovery-SNVs-Indels
@@ -281,4 +307,3 @@ This pipeline uses several tools that should be cited independently:
 8. Li, H. (2013). Aligning sequence reads, clone sequences and assembly contigs with BWA-MEM. arXiv preprint arXiv:1303.3997.
 9. Halperin, R. F., Carpten, J. D., Manojlovic, Z., Aldrich, J., Keats, J., Byron, S., ... & Craig, D. W. (2017). A method to reduce ancestry related germline false positives in tumor only somatic variant calling. BMC medical genomics, 10, 1-17.
 10. Hynds, R. E., Huebner, A., Pearce, D. R., Hill, M. S., Akarca, A. U., Moore, D. A., ... & Swanton, C. (2024). Representation of genomic intratumor heterogeneity in multi-region non-small cell lung cancer patient-derived xenograft models. Nature communications, 15(1), 4653.
-

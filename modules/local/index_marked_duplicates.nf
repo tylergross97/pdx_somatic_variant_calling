@@ -1,4 +1,4 @@
-process INDEX_MARKED_DUPLICATES_INTERVALS {
+process INDEX_MARKED_DUPLICATES {
 	container "community.wave.seqera.io/library/samtools:1.21--0d76da7c3cf7751c"
     	publishDir params.outdir_markduplicates, mode: 'symlink'
 
