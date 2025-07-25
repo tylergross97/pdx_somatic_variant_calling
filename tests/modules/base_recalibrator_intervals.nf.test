@@ -9,11 +9,18 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.fromPath("${projectDir}/tests/data/variant_calling_input/*.bam")
-                    .map { bam_file ->
-                        def sample_id = bam_file.getBaseName().replace('.human.bamcmp.coordinatesorted', '')
-                        tuple(sample_id, bam_file)
-                    }
+                input[0] = Channel.of(
+                    [
+                        "pdx70_S2", 
+                        file("${projectDir}/tests/data/variant_calling_input/pdx70_S2.human.bamcmp.coordinatesorted.bam"),
+                        file("${projectDir}/tests/data/variant_calling_input/pdx70_S2.human.bamcmp.coordinatesorted.bam.bai")
+                    ],
+                    [
+                        "pdx90_S1", 
+                        file("${projectDir}/tests/data/variant_calling_input/pdx90_S1.human.bamcmp.coordinatesorted.bam"),
+                        file("${projectDir}/tests/data/variant_calling_input/pdx90_S1.human.bamcmp.coordinatesorted.bam.bai")
+                    ]
+                )
                 input[1] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.fa"))
                 input[2] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.fa.fai"))
                 input[3] = Channel.value(file("${projectDir}/tests/data/references/hg38_chr22.dict"))

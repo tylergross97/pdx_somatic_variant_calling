@@ -1,8 +1,8 @@
 nextflow_process {
 
-    name "Test Process INDEX_MARKED_DUPLICATES_INTERVALS"
+    name "Test Process INDEX_MARKED_DUPLICATES"
     script "modules/local/index_marked_duplicates.nf"
-    process "INDEX_MARKED_DUPLICATES_INTERVALS"
+    process "INDEX_MARKED_DUPLICATES"
 
     test("Should run without failures") {
         setup {

@@ -51,7 +51,6 @@ nextflow_process {
         }
         
         then {
-            println("Output: ${process.out}")
             // Get outputs
             def human_human_better = process.out.human_better.get(0)
             def human_mouse_better = process.out.mouse_better.get(0)
